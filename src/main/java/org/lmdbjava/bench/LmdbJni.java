@@ -18,11 +18,15 @@ package org.lmdbjava.bench;
 import java.io.File;
 import static java.io.File.createTempFile;
 import java.io.IOException;
+import static java.lang.Boolean.TRUE;
+import static java.lang.System.setProperty;
 import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
 import org.fusesource.lmdbjni.BufferCursor;
 import org.fusesource.lmdbjni.Database;
 import org.fusesource.lmdbjni.DirectBuffer;
+import static org.fusesource.lmdbjni.DirectBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
+import static org.fusesource.lmdbjni.DirectBuffer.SHOULD_BOUNDS_CHECK;
 import org.fusesource.lmdbjni.Env;
 import org.fusesource.lmdbjni.Transaction;
 import org.lmdbjava.LmdbException;
@@ -31,6 +35,10 @@ final class LmdbJni extends AbstractStore {
 
   private static final int POSIX_MODE = 0664;
   static final String LMDBJNI = "lmdbjni";
+
+  static {
+    setProperty(DISABLE_BOUNDS_CHECKS_PROP_NAME, TRUE.toString());
+  }
   private final Database db;
   private final Env env;
   private final DirectBuffer keyDb;
@@ -42,6 +50,10 @@ final class LmdbJni extends AbstractStore {
   LmdbJni(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
                                                              IOException {
     super(key, val);
+
+    if (SHOULD_BOUNDS_CHECK) {
+      throw new IllegalStateException();
+    }
 
     keyMapped = allocateDirect(key.capacity());
     valMapped = allocateDirect(val.capacity());

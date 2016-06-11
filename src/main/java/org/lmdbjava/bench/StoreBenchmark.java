@@ -47,8 +47,8 @@ import org.openjdk.jmh.infra.Blackhole;
 @State(Thread)
 @OutputTimeUnit(MILLISECONDS)
 @Fork(1)
-@Warmup(iterations = 2, time = 1, timeUnit = SECONDS)
-@Measurement(iterations = 2, time = 1, timeUnit = SECONDS)
+@Warmup(iterations = 3, time = 1, timeUnit = SECONDS)
+@Measurement(iterations = 3, time = 1, timeUnit = SECONDS)
 @BenchmarkMode(AverageTime)
 public class StoreBenchmark {
 

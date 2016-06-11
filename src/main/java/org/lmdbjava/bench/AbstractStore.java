@@ -15,6 +15,9 @@
  */
 package org.lmdbjava.bench;
 
+import org.lmdbjava.LmdbException;
+
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -23,6 +26,7 @@ import static java.lang.Long.BYTES;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.BIG_ENDIAN;
 import static java.util.Objects.requireNonNull;
+
 import java.util.zip.CRC32;
 
 /**
@@ -96,26 +100,16 @@ abstract class AbstractStore {
   abstract void startWritePhase() throws Exception;
 
 
-  static Constructor<? extends AbstractStore> constructor(
-    final Class<? extends AbstractStore> store) {
-    final Class<?>[] types = new Class<?>[]{ByteBuffer.class, ByteBuffer.class};
-    try {
-      return store.getDeclaredConstructor(types);
-    } catch (NoSuchMethodException | SecurityException ex) {
-      throw new RuntimeException(ex);
-    }
-  }
-
-  static AbstractStore create(
-    Constructor<? extends AbstractStore> c, int keySize, int valSize) {
+  static AbstractStore create(String name, int keySize, int valSize)
+    throws IOException, LmdbException {
     final ByteBuffer key = allocateDirect(keySize).order(BIG_ENDIAN);
     final ByteBuffer val = allocateDirect(valSize);
-    final Object[] objs = new Object[]{key, val};
-    try {
-      return c.newInstance(objs);
-    } catch (InstantiationException | IllegalAccessException |
-      IllegalArgumentException | InvocationTargetException e) {
-      throw new RuntimeException(e);
+    if (name.equals("lmdbjni")) {
+      return new LmdbJni(key, val);
+    } else if (name.equals("lmdbjava")) {
+      return new LmdbJava(key, val);
+    } else {
+      throw new IllegalArgumentException("Unknown store: '" + name + "'");
     }
   }
 

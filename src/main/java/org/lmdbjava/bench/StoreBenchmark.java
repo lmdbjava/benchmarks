@@ -15,22 +15,17 @@
  */
 package org.lmdbjava.bench;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.ByteBuffer;
-import static java.nio.ByteBuffer.allocateDirect;
-import static java.nio.ByteOrder.BIG_ENDIAN;
+import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import java.util.zip.CRC32;
 
-import static org.lmdbjava.bench.AbstractStore.constructor;
 import static org.lmdbjava.bench.LmdbJava.LMDBJAVA;
 import static org.lmdbjava.bench.LmdbJni.LMDBJNI;
+
+import org.lmdbjava.LmdbException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -56,13 +51,6 @@ public class StoreBenchmark {
   private static final CRC32 CRC = new CRC32();
 
   private static final Random RND = new SecureRandom();
-  private static final Map<String, Constructor<? extends AbstractStore>> STORES
-      = new HashMap<>();
-
-  static {
-    STORES.put(LMDBJNI, constructor(LmdbJni.class));
-    STORES.put(LMDBJAVA, constructor(LmdbJava.class));
-  }
 
   @Param({"false"})
   private boolean random;
@@ -135,11 +123,8 @@ public class StoreBenchmark {
   }
 
   @Setup(value = Iteration)
-  public void setup() {
-    if (!STORES.containsKey(store)) {
-      throw new IllegalArgumentException("Unknown store: '" + store + "'");
-    }
-    this.target = AbstractStore.create(STORES.get(store), Long.SIZE, valBytes);
+  public void setup() throws IOException, LmdbException {
+    this.target = AbstractStore.create(store, Long.BYTES, valBytes);
     this.valByteRnd = new byte[valBytes];
   }
 }

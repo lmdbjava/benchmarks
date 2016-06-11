@@ -73,8 +73,11 @@ public class StoreBenchmark {
     }
   }
 
-  @Param({"15000", "50000"})
-  private long entries;
+  @Param({"false"})
+  private boolean random;
+
+  @Param({"15000", "30000"})
+  private long size;
 
   @Param(value = {LMDBJAVA, LMDBJNI})
   private String store;
@@ -86,21 +89,18 @@ public class StoreBenchmark {
   @Param({"512"})
   private int valBytes;
 
-  @Param({"true", "false"})
-  private boolean valRandom;
-
   @Benchmark
   public void quickTest(Blackhole bh) throws Exception {
     CRC.reset();
     target.startWritePhase();
-    for (long i = 0; i < entries; i++) {
+    for (long i = 0; i < size; i++) {
       target.key.clear();
       target.key.putLong(i);
       target.key.flip();
       CRC.update(target.key);
       target.key.flip();
 
-      if (valRandom) {
+      if (random) {
         RND.nextBytes(valByteRnd);
       }
       target.val.clear();
@@ -116,7 +116,7 @@ public class StoreBenchmark {
 
     CRC.reset();
     target.startReadPhase();
-    for (int i = 0; i < entries; i++) {
+    for (int i = 0; i < size; i++) {
       target.key.clear();
       target.key.putLong(i);
       target.key.flip();

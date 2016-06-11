@@ -16,21 +16,33 @@
 package org.lmdbjava.bench;
 
 import java.io.File;
+
 import static java.io.File.createTempFile;
+
 import java.io.IOException;
+
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
+
 import java.nio.ByteBuffer;
+
 import static java.nio.ByteBuffer.allocateDirect;
+
 import org.lmdbjava.Cursor;
+
 import static org.lmdbjava.CursorOp.MDB_FIRST;
 import static org.lmdbjava.CursorOp.MDB_NEXT;
+
 import org.lmdbjava.Dbi;
+
 import static org.lmdbjava.DbiFlags.MDB_CREATE;
+
 import org.lmdbjava.Env;
+
 import static org.lmdbjava.Env.DISABLE_CHECKS_PROP;
 import static org.lmdbjava.Env.SHOULD_CHECK;
 import static org.lmdbjava.EnvFlags.MDB_NOSUBDIR;
+
 import org.lmdbjava.LmdbException;
 import org.lmdbjava.Txn;
 
@@ -42,14 +54,16 @@ final class LmdbJava extends AbstractStore {
   static {
     setProperty(DISABLE_CHECKS_PROP, TRUE.toString());
   }
+
   private final Dbi db;
   private final Env env;
   private final ByteBuffer mappedKey;
   private final ByteBuffer mappedVal;
   private Txn tx;
+  private Cursor cursor;
 
   LmdbJava(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
-                                                              IOException {
+    IOException {
     super(key, val);
 
     if (SHOULD_CHECK) {
@@ -99,6 +113,11 @@ final class LmdbJava extends AbstractStore {
   }
 
   @Override
+  void cursorGetFirst() throws Exception {
+    cursor.get(mappedKey, mappedVal, MDB_FIRST);
+  }
+
+  @Override
   void put() throws Exception {
     db.put(tx, key, val);
   }
@@ -110,6 +129,7 @@ final class LmdbJava extends AbstractStore {
   @Override
   void startWritePhase() throws Exception {
     tx = new Txn(env);
+    cursor = db.openCursor(tx);
   }
 
 }

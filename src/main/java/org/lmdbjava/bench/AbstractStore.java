@@ -15,7 +15,13 @@
  */
 package org.lmdbjava.bench;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
+
+import static java.lang.Long.BYTES;
+import static java.nio.ByteBuffer.allocateDirect;
+import static java.nio.ByteOrder.BIG_ENDIAN;
 import static java.util.Objects.requireNonNull;
 import java.util.zip.CRC32;
 
@@ -68,6 +74,8 @@ abstract class AbstractStore {
    */
   abstract void get() throws Exception;
 
+  abstract void cursorGetFirst() throws Exception;
+
   /**
    * Puts the key-value pair contained in the {@link #key} and {@link #val}
    * fields. The benchmark guarantees there will only be exactly one key for
@@ -86,5 +94,29 @@ abstract class AbstractStore {
    * Starts the write phase.
    */
   abstract void startWritePhase() throws Exception;
+
+
+  static Constructor<? extends AbstractStore> constructor(
+    final Class<? extends AbstractStore> store) {
+    final Class<?>[] types = new Class<?>[]{ByteBuffer.class, ByteBuffer.class};
+    try {
+      return store.getDeclaredConstructor(types);
+    } catch (NoSuchMethodException | SecurityException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  static AbstractStore create(
+    Constructor<? extends AbstractStore> c, int keySize, int valSize) {
+    final ByteBuffer key = allocateDirect(keySize).order(BIG_ENDIAN);
+    final ByteBuffer val = allocateDirect(valSize);
+    final Object[] objs = new Object[]{key, val};
+    try {
+      return c.newInstance(objs);
+    } catch (InstantiationException | IllegalAccessException |
+      IllegalArgumentException | InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
 }

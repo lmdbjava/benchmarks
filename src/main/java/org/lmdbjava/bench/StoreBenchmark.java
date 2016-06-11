@@ -15,7 +15,6 @@
  */
 package org.lmdbjava.bench;
 
-import static java.lang.Long.BYTES;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -28,6 +27,8 @@ import java.util.Random;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import java.util.zip.CRC32;
+
+import static org.lmdbjava.bench.AbstractStore.constructor;
 import static org.lmdbjava.bench.LmdbJava.LMDBJAVA;
 import static org.lmdbjava.bench.LmdbJni.LMDBJNI;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -61,16 +62,6 @@ public class StoreBenchmark {
   static {
     STORES.put(LMDBJNI, constructor(LmdbJni.class));
     STORES.put(LMDBJAVA, constructor(LmdbJava.class));
-  }
-
-  private static Constructor<? extends AbstractStore> constructor(
-      final Class<? extends AbstractStore> store) {
-    final Class<?>[] types = new Class<?>[]{ByteBuffer.class, ByteBuffer.class};
-    try {
-      return store.getDeclaredConstructor(types);
-    } catch (NoSuchMethodException | SecurityException ex) {
-      throw new RuntimeException(ex);
-    }
   }
 
   @Param({"false"})
@@ -148,20 +139,7 @@ public class StoreBenchmark {
     if (!STORES.containsKey(store)) {
       throw new IllegalArgumentException("Unknown store: '" + store + "'");
     }
-    this.target = create(STORES.get(store));
+    this.target = AbstractStore.create(STORES.get(store), Long.SIZE, valBytes);
     this.valByteRnd = new byte[valBytes];
   }
-
-  private AbstractStore create(Constructor<? extends AbstractStore> c) {
-    final ByteBuffer key = allocateDirect(BYTES).order(BIG_ENDIAN);
-    final ByteBuffer val = allocateDirect(valBytes);
-    final Object[] objs = new Object[]{key, val};
-    try {
-      return c.newInstance(objs);
-    } catch (InstantiationException | IllegalAccessException |
-             IllegalArgumentException | InvocationTargetException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
 }

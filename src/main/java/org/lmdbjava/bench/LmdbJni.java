@@ -22,13 +22,12 @@ import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
 import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
-import org.fusesource.lmdbjni.BufferCursor;
-import org.fusesource.lmdbjni.Database;
-import org.fusesource.lmdbjni.DirectBuffer;
+
+import org.fusesource.lmdbjni.*;
+
 import static org.fusesource.lmdbjni.DirectBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
 import static org.fusesource.lmdbjni.DirectBuffer.SHOULD_BOUNDS_CHECK;
-import org.fusesource.lmdbjni.Env;
-import org.fusesource.lmdbjni.Transaction;
+
 import org.lmdbjava.LmdbException;
 
 final class LmdbJni extends AbstractStore {
@@ -44,6 +43,7 @@ final class LmdbJni extends AbstractStore {
   private final DirectBuffer keyDb;
   private final ByteBuffer keyMapped;
   private Transaction tx;
+  private Cursor cursor;
   private final DirectBuffer valDb;
   private final ByteBuffer valMapped;
 
@@ -109,6 +109,11 @@ final class LmdbJni extends AbstractStore {
   }
 
   @Override
+  void cursorGetFirst() throws Exception {
+    cursor.position(keyDb, valDb, GetOp.FIRST);
+  }
+
+  @Override
   void put() throws Exception {
     if (db.put(tx, keyDb, valDb, 0) != 0) {
       throw new IllegalStateException();
@@ -124,6 +129,7 @@ final class LmdbJni extends AbstractStore {
   @Override
   void startWritePhase() throws Exception {
     tx = env.createWriteTransaction();
+    cursor = db.openCursor(tx);
     keyDb.wrap(key);
     valDb.wrap(val);
   }

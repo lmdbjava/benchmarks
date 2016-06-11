@@ -15,6 +15,7 @@
  */
 package org.lmdbjava.bench;
 
+import java.nio.ByteBuffer;
 import static java.util.Objects.requireNonNull;
 import java.util.zip.CRC32;
 
@@ -32,13 +33,13 @@ abstract class AbstractStore {
   /**
    * The field used by the benchmark to set a key.
    */
-  final byte[] key;
+  final ByteBuffer key;
   /**
    * The field used by the benchmark to get or set a value.
    */
-  final byte[] val;
+  final ByteBuffer val;
 
-  protected AbstractStore(byte[] key, byte[] val) {
+  protected AbstractStore(final ByteBuffer key, final ByteBuffer val) {
     requireNonNull(key);
     requireNonNull(val);
     this.key = key;
@@ -46,16 +47,14 @@ abstract class AbstractStore {
   }
 
   /**
-   * Iterate every key, in order, and return the CRC32 of such keys. The CRC32
-   * instance should be created in the constructor of an implementation so as to
-   * avoid its overhead in this method.
-   *
-   * @return the CRC of each key and value pair
+   * Iterate every key, in order, and update the CRC field. The benchmark
+   * guarantees to reset the CRC field before each invocation.
    */
-  abstract long crc32() throws Exception;
+  abstract void crc32() throws Exception;
 
   /**
-   * Called when the CRC phase has completed.
+   * Called when the CRC phase has completed. The implementation must perform
+   * any clean up required so that a fresh run can be made.
    */
   abstract void finishCrcPhase() throws Exception;
 
@@ -63,17 +62,18 @@ abstract class AbstractStore {
    * Fetch the key. The key to fetch is indicated by the {@link #key}. An
    * implementation must set the {@link #val} to the value. The benchmark
    * guarantees it will only request keys it has previously stored. The
-   * implementation must permit the benchmark to mutate the key/value fields
-   * without restriction.
+   * benchmark guarantees it will not mutate the value buffer, however the
+   * implementation must be free to mutate the key buffer for the subsequent get
+   * call.
    */
   abstract void get() throws Exception;
 
   /**
    * Puts the key-value pair contained in the {@link #key} and {@link #val}
    * fields. The benchmark guarantees there will only be exactly one key for
-   * each value. There is no requirement an implementation must store many
-   * values for a single key. The implementation must permit the benchmark to
-   * mutate the key/value fields without restriction.
+   * each value and a given key will only ever be presented once per run. The
+   * implementation must permit the benchmark to mutate the key/value fields
+   * without restriction.
    */
   abstract void put() throws Exception;
 

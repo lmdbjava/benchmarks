@@ -19,7 +19,7 @@ import static java.lang.Long.BYTES;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import static java.nio.ByteBuffer.allocate;
+import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.BIG_ENDIAN;
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -47,12 +47,11 @@ import org.openjdk.jmh.infra.Blackhole;
 @State(Thread)
 @OutputTimeUnit(MILLISECONDS)
 @Fork(1)
-@Warmup(iterations = 5, time = 1, timeUnit = SECONDS)
-@Measurement(iterations = 5, time = 2, timeUnit = SECONDS)
+@Warmup(iterations = 2, time = 1, timeUnit = SECONDS)
+@Measurement(iterations = 2, time = 1, timeUnit = SECONDS)
 @BenchmarkMode(AverageTime)
 public class StoreBenchmark {
 
-  private static final ByteBuffer BUFFER = allocate(BYTES).order(BIG_ENDIAN);
   private static final CRC32 CRC = new CRC32();
 
   private static final Random RND = new SecureRandom();
@@ -66,14 +65,15 @@ public class StoreBenchmark {
 
   private static Constructor<? extends AbstractStore> constructor(
       final Class<? extends AbstractStore> store) {
-    final Class<?>[] types = new Class<?>[]{byte[].class, byte[].class};
+    final Class<?>[] types = new Class<?>[]{ByteBuffer.class, ByteBuffer.class};
     try {
       return store.getDeclaredConstructor(types);
     } catch (NoSuchMethodException | SecurityException ex) {
       throw new RuntimeException(ex);
     }
   }
-  @Param({"50000"})
+
+  @Param({"15000", "50000"})
   private long entries;
 
   @Param(value = {LMDBJAVA, LMDBJNI})
@@ -81,21 +81,33 @@ public class StoreBenchmark {
 
   private AbstractStore target;
 
+  private byte[] valByteRnd;
+
   @Param({"512"})
   private int valBytes;
+
+  @Param({"true", "false"})
+  private boolean valRandom;
 
   @Benchmark
   public void quickTest(Blackhole bh) throws Exception {
     CRC.reset();
     target.startWritePhase();
     for (long i = 0; i < entries; i++) {
-      BUFFER.clear();
-      BUFFER.putLong(0, i);
-      BUFFER.get(target.key);
+      target.key.clear();
+      target.key.putLong(i);
+      target.key.flip();
       CRC.update(target.key);
+      target.key.flip();
 
-      RND.nextBytes(target.val);
+      if (valRandom) {
+        RND.nextBytes(valByteRnd);
+      }
+      target.val.clear();
+      target.val.put(valByteRnd);
+      target.val.flip();
       CRC.update(target.val);
+      target.val.flip();
 
       target.put();
     }
@@ -105,11 +117,13 @@ public class StoreBenchmark {
     CRC.reset();
     target.startReadPhase();
     for (int i = 0; i < entries; i++) {
-      BUFFER.clear();
-      BUFFER.putLong(0, i);
-      BUFFER.get(target.key, 0, BYTES);
-      target.get();
+      target.key.clear();
+      target.key.putLong(i);
+      target.key.flip();
 
+      target.val.clear();
+
+      target.get();
       CRC.update(target.key);
       CRC.update(target.val);
     }
@@ -120,7 +134,8 @@ public class StoreBenchmark {
     }
 
     target.CRC.reset();
-    final long crcSequential = target.crc32();
+    target.crc32();
+    final long crcSequential = target.CRC.getValue();
     if (crcSequential != crcWrites) {
       throw new IllegalStateException();
     }
@@ -134,12 +149,13 @@ public class StoreBenchmark {
       throw new IllegalArgumentException("Unknown store: '" + store + "'");
     }
     this.target = create(STORES.get(store));
+    this.valByteRnd = new byte[valBytes];
   }
 
   private AbstractStore create(Constructor<? extends AbstractStore> c) {
-    final byte[] key = new byte[BUFFER.capacity()];
-    final byte[] val = new byte[valBytes];
-    Object[] objs = new Object[]{key, val};
+    final ByteBuffer key = allocateDirect(BYTES).order(BIG_ENDIAN);
+    final ByteBuffer val = allocateDirect(valBytes);
+    final Object[] objs = new Object[]{key, val};
     try {
       return c.newInstance(objs);
     } catch (InstantiationException | IllegalAccessException |

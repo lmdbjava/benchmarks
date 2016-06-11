@@ -23,6 +23,7 @@ import static java.nio.ByteBuffer.allocateDirect;
 import org.fusesource.lmdbjni.BufferCursor;
 import org.fusesource.lmdbjni.Database;
 import org.fusesource.lmdbjni.DirectBuffer;
+import org.fusesource.lmdbjni.Env;
 import org.fusesource.lmdbjni.Transaction;
 import org.lmdbjava.LmdbException;
 
@@ -31,21 +32,21 @@ final class LmdbJni extends AbstractStore {
   private static final int POSIX_MODE = 0664;
   static final String LMDBJNI = "lmdbjni";
   private final Database db;
-  private final org.fusesource.lmdbjni.Env env;
-  private final ByteBuffer keyBb;
+  private final Env env;
   private final DirectBuffer keyDb;
+  private final ByteBuffer keyMapped;
   private Transaction tx;
-
-  private final ByteBuffer valBb;
   private final DirectBuffer valDb;
+  private final ByteBuffer valMapped;
 
-  LmdbJni(final byte[] key, final byte[] val) throws LmdbException, IOException {
+  LmdbJni(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
+                                                             IOException {
     super(key, val);
 
-    keyBb = allocateDirect(key.length);
-    valBb = allocateDirect(val.length);
-    keyDb = new DirectBuffer(keyBb);
-    valDb = new DirectBuffer(valBb);
+    keyMapped = allocateDirect(key.capacity());
+    valMapped = allocateDirect(val.capacity());
+    keyDb = new DirectBuffer(key);
+    valDb = new DirectBuffer(val);
 
     final File tmp = createTempFile("bench", ".db");
     env = new org.fusesource.lmdbjni.Env();
@@ -62,21 +63,23 @@ final class LmdbJni extends AbstractStore {
   }
 
   @Override
-  long crc32() throws Exception {
-    keyBb.clear();
-    valBb.clear();
-    keyDb.wrap(keyBb);
-    valDb.wrap(valBb);
-    final BufferCursor c = db.bufferCursor(tx, keyDb, valDb);
-    if (c.first()) {
-      do {
-        keyDb.getBytes(0, key);
-        valDb.getBytes(0, val);
-        CRC.update(key);
-        CRC.update(val);
-      } while (c.next());
+  void crc32() throws Exception {
+    keyDb.wrap(keyMapped);
+    valDb.wrap(valMapped);
+    try (final BufferCursor c = db.bufferCursor(tx, keyDb, valDb)) {
+      if (c.first()) {
+        do {
+          keyDb.getBytes(0, keyMapped, keyMapped.capacity());
+          valDb.getBytes(0, valMapped, valMapped.capacity());
+          keyMapped.flip();
+          valMapped.flip();
+          CRC.update(keyMapped);
+          CRC.update(valMapped);
+          keyMapped.flip();
+          valMapped.clear();
+        } while (c.next());
+      }
     }
-    return CRC.getValue();
   }
 
   @Override
@@ -86,23 +89,31 @@ final class LmdbJni extends AbstractStore {
 
   @Override
   void get() throws Exception {
-    keyDb.putBytes(0, key);
-    db.get(tx, keyDb, valDb);
-    valDb.getBytes(0, val);
+    if (db.get(tx, keyDb, valDb) != 0) {
+      throw new IllegalStateException();
+    }
+    valDb.getBytes(0, val, val.capacity());
+    val.flip();
   }
 
   @Override
   void put() throws Exception {
-    db.put(tx, key, val);
+    if (db.put(tx, keyDb, valDb, 0) != 0) {
+      throw new IllegalStateException();
+    }
   }
 
   @Override
   void startReadPhase() throws Exception {
+    keyDb.wrap(key);
+    valDb.wrap(valMapped);
   }
 
   @Override
   void startWritePhase() throws Exception {
     tx = env.createWriteTransaction();
+    keyDb.wrap(key);
+    valDb.wrap(val);
   }
 
 }

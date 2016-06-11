@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
 import org.lmdbjava.Cursor;
+import static org.lmdbjava.CursorOp.MDB_FIRST;
 import static org.lmdbjava.CursorOp.MDB_NEXT;
 import org.lmdbjava.Dbi;
-import org.lmdbjava.Dbi.KeyNotFoundException;
 import static org.lmdbjava.DbiFlags.MDB_CREATE;
 import org.lmdbjava.Env;
 import static org.lmdbjava.EnvFlags.MDB_NOSUBDIR;
@@ -36,16 +36,16 @@ final class LmdbJava extends AbstractStore {
   static final String LMDBJAVA = "lmdbjava";
   private final Dbi db;
   private final Env env;
-  private final ByteBuffer keyBb;
+  private final ByteBuffer mappedKey;
+  private final ByteBuffer mappedVal;
   private Txn tx;
 
-  private final ByteBuffer valBb;
-
-  LmdbJava(final byte[] key, final byte[] val) throws LmdbException, IOException {
+  LmdbJava(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
+                                                              IOException {
     super(key, val);
 
-    keyBb = allocateDirect(key.length);
-    valBb = allocateDirect(val.length);
+    mappedKey = allocateDirect(0);
+    mappedVal = allocateDirect(0);
 
     final File tmp = createTempFile("bench", ".db");
     env = new Env();
@@ -60,16 +60,18 @@ final class LmdbJava extends AbstractStore {
   }
 
   @Override
-  long crc32() throws Exception {
-    final Cursor c = db.openCursor(tx);
-    try {
-      while (c.get(keyBb, valBb, MDB_NEXT)) {
-        CRC.update(keyBb);
-        CRC.update(valBb);
+  void crc32() throws Exception {
+    try (final Cursor c = db.openCursor(tx)) {
+      if (!c.get(mappedKey, mappedVal, MDB_FIRST)) {
+        throw new IllegalStateException();
       }
-    } catch (KeyNotFoundException eof) {
+
+      do {
+        CRC.update(mappedKey);
+        CRC.update(mappedVal);
+        mappedKey.flip();
+      } while (c.get(mappedKey, mappedVal, MDB_NEXT));
     }
-    return CRC.getValue();
   }
 
   @Override
@@ -79,19 +81,14 @@ final class LmdbJava extends AbstractStore {
 
   @Override
   void get() throws Exception {
-    keyBb.clear();
-    keyBb.put(key);
-    db.get(tx, keyBb, valBb);
-    valBb.get(val);
+    db.get(tx, key, mappedVal);
+    val.put(mappedVal);
+    val.flip();
   }
 
   @Override
   void put() throws Exception {
-    keyBb.clear();
-    valBb.clear();
-    keyBb.put(key);
-    valBb.put(val);
-    db.put(tx, keyBb, valBb);
+    db.put(tx, key, val);
   }
 
   @Override

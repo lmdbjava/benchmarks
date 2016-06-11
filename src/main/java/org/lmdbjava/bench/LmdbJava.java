@@ -63,11 +63,7 @@ final class LmdbJava extends AbstractStore {
   long crc32() throws Exception {
     final Cursor c = db.openCursor(tx);
     try {
-      // TODO: Need Cursor.next ported
-      while (true) {
-        keyBb.clear();
-        valBb.clear();
-        c.get(keyBb, valBb, MDB_NEXT);
+      while (c.get(keyBb, valBb, MDB_NEXT)) {
         CRC.update(keyBb);
         CRC.update(valBb);
       }

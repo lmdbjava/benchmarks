@@ -18,11 +18,8 @@ package org.lmdbjava.bench;
 import org.lmdbjava.LmdbException;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 
-import static java.lang.Long.BYTES;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.BIG_ENDIAN;
 import static java.util.Objects.requireNonNull;
@@ -45,15 +42,27 @@ abstract class AbstractStore {
    */
   final ByteBuffer key;
   /**
-   * The field used by the benchmark to get or set a value.
+   * The field used by the benchmark to set a value.
    */
   final ByteBuffer val;
+  
+  /**
+   * The field used by the benchmark to read a retrieved key.
+   */
+  final ByteBuffer roKey;
+  
+  /**
+   * The field used by the benchmark to read a retrieved value.
+   */
+  final ByteBuffer roVal;
 
-  protected AbstractStore(final ByteBuffer key, final ByteBuffer val) {
+  protected AbstractStore(final ByteBuffer key, final ByteBuffer val, final ByteBuffer roKey, final ByteBuffer roVal) {
     requireNonNull(key);
     requireNonNull(val);
     this.key = key;
     this.val = val;
+    this.roKey = roKey;
+    this.roVal = roVal;
   }
 
   /**

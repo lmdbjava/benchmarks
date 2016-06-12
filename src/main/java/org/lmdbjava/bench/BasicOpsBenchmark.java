@@ -1,12 +1,9 @@
 package org.lmdbjava.bench;
 
-
+import static java.lang.Long.BYTES;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
-import java.security.SecureRandom;
-import java.util.Random;
-import java.util.zip.CRC32;
 
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -24,16 +21,6 @@ import static org.openjdk.jmh.annotations.Scope.Thread;
 @BenchmarkMode(AverageTime)
 public class BasicOpsBenchmark {
 
-  private static final CRC32 CRC = new CRC32();
-
-  private static final Random RND = new SecureRandom();
-
-  @Param({"false"})
-  private boolean random;
-
-  @Param({"15000", "30000"})
-  private long size;
-
   @Param(value = {LMDBJAVA, LMDBJNI})
   private String store;
 
@@ -41,26 +28,41 @@ public class BasicOpsBenchmark {
 
   private byte[] valByteRnd;
 
-  @Param({"512"})
-  private int valBytes;
+  private static final long KEY = 12345;
+  private static final long VAL = 67890;
 
   @Setup(value = Iteration)
   public void setup() throws Exception {
-    this.target = AbstractStore.create(store, Long.BYTES, valBytes);
-    this.valByteRnd = new byte[valBytes];
+    this.target = AbstractStore.create(store, BYTES, BYTES);
+    this.target.key.putLong(KEY).flip();
+    this.target.val.putLong(VAL).flip();
     this.target.startWritePhase();
     this.target.put();
+    this.target.startReadPhase();
   }
 
   @Benchmark
   public void get(Blackhole bh) throws Exception {
     this.target.get();
+    // key not checked as get does an exact match (so we know the key already)
+    final long v = this.target.roVal.getLong();
+    if (v != VAL) {
+      throw new IllegalStateException("v:" + v);
+    }
+    bh.consume(v);
   }
 
   @Benchmark
-  public void cursorGet(Blackhole bh) throws Exception {
+  public void cursorGetFirst(Blackhole bh) throws Exception {
     this.target.cursorGetFirst();
+    // key and value checked as in theory first row might have different key
+    final long k = this.target.roKey.getLong();
+    final long v = this.target.roVal.getLong();
+    if (k != KEY || v != VAL) {
+      throw new IllegalStateException("k:" + k + " v:" + v);
+    }
+    bh.consume(k);
+    bh.consume(v);
   }
-
 
 }

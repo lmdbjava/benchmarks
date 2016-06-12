@@ -16,6 +16,7 @@
 package org.lmdbjava.bench;
 
 import java.io.IOException;
+import static java.lang.Long.BYTES;
 import java.security.SecureRandom;
 import java.util.Random;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -124,7 +125,7 @@ public class StoreBenchmark {
 
   @Setup(value = Iteration)
   public void setup() throws IOException, LmdbException {
-    this.target = AbstractStore.create(store, Long.BYTES, valBytes);
+    this.target = AbstractStore.create(store, BYTES, valBytes);
     this.valByteRnd = new byte[valBytes];
   }
 }

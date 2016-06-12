@@ -27,6 +27,7 @@ import org.fusesource.lmdbjni.*;
 
 import static org.fusesource.lmdbjni.DirectBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
 import static org.fusesource.lmdbjni.DirectBuffer.SHOULD_BOUNDS_CHECK;
+import static org.fusesource.lmdbjni.GetOp.FIRST;
 
 import org.lmdbjava.LmdbException;
 
@@ -38,25 +39,24 @@ final class LmdbJni extends AbstractStore {
   static {
     setProperty(DISABLE_BOUNDS_CHECKS_PROP_NAME, TRUE.toString());
   }
+  private Cursor cursor;
   private final Database db;
   private final Env env;
   private final DirectBuffer keyDb;
-  private final ByteBuffer keyMapped;
   private Transaction tx;
-  private Cursor cursor;
   private final DirectBuffer valDb;
-  private final ByteBuffer valMapped;
 
   LmdbJni(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
                                                              IOException {
-    super(key, val);
+    super(key,
+          val,
+          allocateDirect(key.capacity()),
+          allocateDirect(val.capacity()));
 
     if (SHOULD_BOUNDS_CHECK) {
       throw new IllegalStateException();
     }
 
-    keyMapped = allocateDirect(key.capacity());
-    valMapped = allocateDirect(val.capacity());
     keyDb = new DirectBuffer(key);
     valDb = new DirectBuffer(val);
 
@@ -76,22 +76,31 @@ final class LmdbJni extends AbstractStore {
 
   @Override
   void crc32() throws Exception {
-    keyDb.wrap(keyMapped);
-    valDb.wrap(valMapped);
+    keyDb.wrap(roKey);
+    valDb.wrap(roVal);
     try (final BufferCursor c = db.bufferCursor(tx, keyDb, valDb)) {
       if (c.first()) {
         do {
-          keyDb.getBytes(0, keyMapped, keyMapped.capacity());
-          valDb.getBytes(0, valMapped, valMapped.capacity());
-          keyMapped.flip();
-          valMapped.flip();
-          CRC.update(keyMapped);
-          CRC.update(valMapped);
-          keyMapped.flip();
-          valMapped.clear();
+          keyDb.getBytes(0, roKey, roKey.capacity());
+          valDb.getBytes(0, roVal, roVal.capacity());
+          roKey.flip();
+          roVal.flip();
+          CRC.update(roKey);
+          CRC.update(roVal);
+          roKey.flip();
+          roVal.clear();
         } while (c.next());
       }
     }
+  }
+
+  @Override
+  void cursorGetFirst() throws Exception {
+    cursor.position(keyDb, valDb, FIRST);
+    keyDb.getBytes(0, roKey, roKey.capacity());
+    roKey.flip();
+    valDb.getBytes(0, roVal, roVal.capacity());
+    roVal.flip();
   }
 
   @Override
@@ -104,13 +113,8 @@ final class LmdbJni extends AbstractStore {
     if (db.get(tx, keyDb, valDb) != 0) {
       throw new IllegalStateException();
     }
-    valDb.getBytes(0, val, val.capacity());
-    val.flip();
-  }
-
-  @Override
-  void cursorGetFirst() throws Exception {
-    cursor.position(keyDb, valDb, GetOp.FIRST);
+    valDb.getBytes(0, roVal, roVal.capacity());
+    roVal.flip();
   }
 
   @Override
@@ -123,7 +127,7 @@ final class LmdbJni extends AbstractStore {
   @Override
   void startReadPhase() throws Exception {
     keyDb.wrap(key);
-    valDb.wrap(valMapped);
+    valDb.wrap(roVal);
   }
 
   @Override

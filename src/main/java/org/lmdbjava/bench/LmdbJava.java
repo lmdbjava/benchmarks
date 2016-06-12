@@ -54,24 +54,18 @@ final class LmdbJava extends AbstractStore {
   static {
     setProperty(DISABLE_CHECKS_PROP, TRUE.toString());
   }
-
+  private Cursor cursor;
   private final Dbi db;
   private final Env env;
-  private final ByteBuffer mappedKey;
-  private final ByteBuffer mappedVal;
   private Txn tx;
-  private Cursor cursor;
 
   LmdbJava(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
-    IOException {
-    super(key, val);
+                                                              IOException {
+    super(key, val, allocateDirect(0), allocateDirect(0));
 
     if (SHOULD_CHECK) {
       throw new IllegalStateException();
     }
-
-    mappedKey = allocateDirect(0);
-    mappedVal = allocateDirect(0);
 
     final File tmp = createTempFile("bench", ".db");
     env = new Env();
@@ -87,17 +81,22 @@ final class LmdbJava extends AbstractStore {
 
   @Override
   void crc32() throws Exception {
-    try (final Cursor c = db.openCursor(tx)) {
-      if (!c.get(mappedKey, mappedVal, MDB_FIRST)) {
+    try (final Cursor c = db.openCursor(tx, roKey, roVal)) {
+      if (!c.position(MDB_FIRST)) {
         throw new IllegalStateException();
       }
 
       do {
-        CRC.update(mappedKey);
-        CRC.update(mappedVal);
-        mappedKey.flip();
-      } while (c.get(mappedKey, mappedVal, MDB_NEXT));
+        CRC.update(roKey);
+        CRC.update(roVal);
+        roKey.flip();
+      } while (c.position(MDB_NEXT));
     }
+  }
+
+  @Override
+  void cursorGetFirst() throws Exception {
+    cursor.position(MDB_FIRST);
   }
 
   @Override
@@ -107,14 +106,7 @@ final class LmdbJava extends AbstractStore {
 
   @Override
   void get() throws Exception {
-    db.get(tx, key, mappedVal);
-    val.put(mappedVal);
-    val.flip();
-  }
-
-  @Override
-  void cursorGetFirst() throws Exception {
-    cursor.get(mappedKey, mappedVal, MDB_FIRST);
+    db.get(tx, key, roVal);
   }
 
   @Override
@@ -129,7 +121,7 @@ final class LmdbJava extends AbstractStore {
   @Override
   void startWritePhase() throws Exception {
     tx = new Txn(env);
-    cursor = db.openCursor(tx);
+    cursor = db.openCursor(tx, roKey, roVal);
   }
 
 }

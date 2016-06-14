@@ -28,8 +28,8 @@ public class BasicOpsBenchmark {
 
   private byte[] valByteRnd;
 
-  private static final long KEY = 12345;
-  private static final long VAL = 67890;
+  static final long KEY = 12345;
+  static final long VAL = 67890;
 
   @Setup(value = Iteration)
   public void setup() throws Exception {
@@ -55,14 +55,5 @@ public class BasicOpsBenchmark {
   @Benchmark
   public void cursorGetFirst(Blackhole bh) throws Exception {
     this.target.cursorGetFirst();
-    // key and value checked as in theory first row might have different key
-    final long k = this.target.roKey.getLong();
-    final long v = this.target.roVal.getLong();
-    if (k != KEY || v != VAL) {
-      throw new IllegalStateException("k:" + k + " v:" + v);
-    }
-    bh.consume(k);
-    bh.consume(v);
   }
-
 }

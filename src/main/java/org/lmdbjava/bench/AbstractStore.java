@@ -16,6 +16,7 @@
 package org.lmdbjava.bench;
 
 import org.lmdbjava.LmdbException;
+import org.lmdbjava.Val;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -56,6 +57,9 @@ abstract class AbstractStore {
    */
   final ByteBuffer roVal;
 
+  final Val keyVal;
+  final Val valVal;
+
   protected AbstractStore(final ByteBuffer key, final ByteBuffer val, final ByteBuffer roKey, final ByteBuffer roVal) {
     requireNonNull(key);
     requireNonNull(val);
@@ -63,6 +67,8 @@ abstract class AbstractStore {
     this.val = val;
     this.roKey = roKey;
     this.roVal = roVal;
+    this.keyVal = new Val(key);
+    this.valVal = new Val(val);
   }
 
   /**

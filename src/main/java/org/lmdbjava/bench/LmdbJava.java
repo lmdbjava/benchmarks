@@ -81,8 +81,8 @@ final class LmdbJava extends AbstractStore {
 
   @Override
   void crc32() throws Exception {
-    try (final Cursor c = db.openCursor(tx, roKey, roVal)) {
-      if (!c.position(MDB_FIRST)) {
+    try (final Cursor c = db.openCursor(tx)) {
+      if (!c.position(keyVal, valVal, MDB_FIRST)) {
         throw new IllegalStateException();
       }
 
@@ -90,13 +90,20 @@ final class LmdbJava extends AbstractStore {
         CRC.update(roKey);
         CRC.update(roVal);
         roKey.flip();
-      } while (c.position(MDB_NEXT));
+      } while (c.position(keyVal, valVal, MDB_NEXT));
     }
   }
 
   @Override
   void cursorGetFirst() throws Exception {
-    cursor.position(MDB_FIRST);
+    cursor.position(keyVal, valVal, MDB_FIRST);
+    // key and value checked as in theory first row might have different key
+    final long k = keyVal.getByteBuffer().getLong();
+    final long v = valVal.getByteBuffer().getLong();
+
+    if (k != BasicOpsBenchmark.KEY || v != BasicOpsBenchmark.VAL) {
+      throw new IllegalStateException("k:" + k + " v:" + v);
+    }
   }
 
   @Override
@@ -121,7 +128,7 @@ final class LmdbJava extends AbstractStore {
   @Override
   void startWritePhase() throws Exception {
     tx = new Txn(env);
-    cursor = db.openCursor(tx, roKey, roVal);
+    cursor = db.openCursor(tx);
   }
 
 }

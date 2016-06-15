@@ -35,16 +35,27 @@ import java.util.zip.CRC32;
  */
 abstract class AbstractStore {
 
+  static AbstractStore create(String name, int keySize, int valSize)
+      throws IOException, LmdbException {
+    final ByteBuffer key = allocateDirect(keySize).order(BIG_ENDIAN);
+    final ByteBuffer val = allocateDirect(valSize);
+    if (name.equals("lmdbjni")) {
+      return new LmdbJni(key, val);
+    } else if (name.equals("lmdbjava")) {
+      return new LmdbJava(key, val);
+    } else if (name.equals("lmdbjavab")) {
+      return new LmdbJavaB(key, val);
+    } else {
+      throw new IllegalArgumentException("Unknown store: '" + name + "'");
+    }
+  }
+
   final CRC32 CRC = new CRC32();
 
   /**
    * The field used by the benchmark to set a key.
    */
   final ByteBuffer key;
-  /**
-   * The field used by the benchmark to set a value.
-   */
-  final ByteBuffer val;
 
   /**
    * The field used by the benchmark to read a retrieved key.
@@ -54,7 +65,12 @@ abstract class AbstractStore {
   /**
    * The field used by the benchmark to read a retrieved value.
    */
-  final ByteBuffer roVal;
+  ByteBuffer roVal;
+
+  /**
+   * The field used by the benchmark to set a value.
+   */
+  final ByteBuffer val;
 
   protected AbstractStore(final ByteBuffer key, final ByteBuffer val,
                           final ByteBuffer roKey, final ByteBuffer roVal) {
@@ -72,6 +88,8 @@ abstract class AbstractStore {
    */
   abstract void crc32() throws Exception;
 
+  abstract void cursorGetFirst() throws Exception;
+
   /**
    * Called when the CRC phase has completed. The implementation must perform
    * any clean up required so that a fresh run can be made.
@@ -87,8 +105,6 @@ abstract class AbstractStore {
    * call.
    */
   abstract void get() throws Exception;
-
-  abstract void cursorGetFirst() throws Exception;
 
   /**
    * Puts the key-value pair contained in the {@link #key} and {@link #val}
@@ -109,17 +125,12 @@ abstract class AbstractStore {
    */
   abstract void startWritePhase() throws Exception;
 
-  static AbstractStore create(String name, int keySize, int valSize)
-      throws IOException, LmdbException {
-    final ByteBuffer key = allocateDirect(keySize).order(BIG_ENDIAN);
-    final ByteBuffer val = allocateDirect(valSize);
-    if (name.equals("lmdbjni")) {
-      return new LmdbJni(key, val);
-    } else if (name.equals("lmdbjava")) {
-      return new LmdbJava(key, val);
-    } else {
-      throw new IllegalArgumentException("Unknown store: '" + name + "'");
-    }
-  }
+  /**
+   * Iterates every key and value, in order, summing the total size.
+   *
+   * @return the total number of bytes
+   * @throws Exception
+   */
+  abstract long sumData() throws Exception;
 
 }

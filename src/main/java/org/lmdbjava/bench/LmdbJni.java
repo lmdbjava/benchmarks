@@ -62,7 +62,7 @@ final class LmdbJni extends AbstractStore {
 
     final File tmp = createTempFile("bench", ".db");
     env = new org.fusesource.lmdbjni.Env();
-    env.setMapSize(1_024 * 1_024 * 128);
+    env.setMapSize(1_024 * 1_024 * 1_024);
     env.setMaxDbs(1);
     env.setMaxReaders(1);
     final int noSubDir = 0x4000;
@@ -110,7 +110,7 @@ final class LmdbJni extends AbstractStore {
 
   @Override
   void get() throws Exception {
-    if (db.get(tx, keyDb, valDb) != 0) {
+    if (cursor.seekPosition(keyDb, valDb, SeekOp.KEY) != 0) {
       throw new IllegalStateException();
     }
     valDb.getBytes(0, roVal, roVal.capacity());
@@ -119,7 +119,7 @@ final class LmdbJni extends AbstractStore {
 
   @Override
   void put() throws Exception {
-    if (db.put(tx, keyDb, valDb, 0) != 0) {
+    if (cursor.put(keyDb, valDb, 0) != 0) {
       throw new IllegalStateException();
     }
   }
@@ -136,6 +136,22 @@ final class LmdbJni extends AbstractStore {
     cursor = db.openCursor(tx);
     keyDb.wrap(key);
     valDb.wrap(val);
+  }
+
+  @Override
+  long sumData() throws Exception {
+    long result = 0;
+    keyDb.wrap(roKey);
+    valDb.wrap(roVal);
+    try (final BufferCursor c = db.bufferCursor(tx, keyDb, valDb)) {
+      if (c.first()) {
+        do {
+          result += keyDb.capacity();
+          result += valDb.capacity();
+        } while (c.next());
+      }
+    }
+    return result;
   }
 
 }

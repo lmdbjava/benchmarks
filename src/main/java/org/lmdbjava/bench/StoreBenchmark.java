@@ -27,6 +27,7 @@ import static org.lmdbjava.bench.LmdbJava.LMDBJAVA;
 import static org.lmdbjava.bench.LmdbJni.LMDBJNI;
 
 import org.lmdbjava.LmdbException;
+import static org.lmdbjava.bench.LmdbJavaB.LMDBJAVAB;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -56,10 +57,10 @@ public class StoreBenchmark {
   @Param({"false"})
   private boolean random;
 
-  @Param({"15000", "30000"})
+  @Param({"30000"})
   private long size;
 
-  @Param(value = {LMDBJAVA, LMDBJNI})
+  @Param(value = {LMDBJAVA, LMDBJAVAB, LMDBJNI})
   private String store;
 
   private AbstractStore target;
@@ -72,12 +73,15 @@ public class StoreBenchmark {
   @Benchmark
   public void quickTest(Blackhole bh) throws Exception {
     CRC.reset();
+    long sum = 0;
     target.startWritePhase();
     for (long i = 0; i < size; i++) {
       target.key.clear();
       target.key.putLong(i);
       target.key.flip();
       CRC.update(target.key);
+      sum += target.key.capacity();
+      sum += target.val.capacity();
       target.key.flip();
 
       if (random) {
@@ -120,6 +124,12 @@ public class StoreBenchmark {
       throw new IllegalStateException();
     }
     bh.consume(crcSequential);
+
+    final long summed = target.sumData();
+    if (summed != sum) {
+      throw new IllegalStateException();
+    }
+
     target.finishCrcPhase();
   }
 

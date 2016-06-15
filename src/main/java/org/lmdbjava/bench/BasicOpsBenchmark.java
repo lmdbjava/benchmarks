@@ -8,6 +8,7 @@ import org.openjdk.jmh.infra.Blackhole;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.lmdbjava.bench.LmdbJava.LMDBJAVA;
+import static org.lmdbjava.bench.LmdbJavaB.LMDBJAVAB;
 import static org.lmdbjava.bench.LmdbJni.LMDBJNI;
 import static org.openjdk.jmh.annotations.Level.Iteration;
 import static org.openjdk.jmh.annotations.Mode.AverageTime;
@@ -21,7 +22,7 @@ import static org.openjdk.jmh.annotations.Scope.Thread;
 @BenchmarkMode(AverageTime)
 public class BasicOpsBenchmark {
 
-  @Param(value = {LMDBJAVA, LMDBJNI})
+  @Param(value = {LMDBJAVA, LMDBJAVAB, LMDBJNI})
   private String store;
 
   private AbstractStore target;

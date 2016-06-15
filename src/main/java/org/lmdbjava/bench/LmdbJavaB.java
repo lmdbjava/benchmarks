@@ -17,7 +17,6 @@ package org.lmdbjava.bench;
 
 import java.io.File;
 
-
 import java.io.IOException;
 
 import static java.lang.Boolean.TRUE;
@@ -26,8 +25,6 @@ import static java.lang.System.setProperty;
 import java.nio.ByteBuffer;
 
 import static java.nio.ByteBuffer.allocateDirect;
-
-import org.lmdbjava.Cursor;
 
 import static org.lmdbjava.CursorOp.MDB_FIRST;
 import static org.lmdbjava.CursorOp.MDB_NEXT;
@@ -44,33 +41,36 @@ import static org.lmdbjava.EnvFlags.MDB_NOSUBDIR;
 
 import org.lmdbjava.LmdbException;
 import org.lmdbjava.Txn;
-import org.lmdbjava.Val;
 import static java.io.File.createTempFile;
+import org.lmdbjava.ByteBufferValB;
+import org.lmdbjava.CursorB;
 import org.lmdbjava.CursorOp;
 
-final class LmdbJava extends AbstractStore {
+final class LmdbJavaB extends AbstractStore {
 
   private static final int POSIX_MODE = 0664;
-  static final String LMDBJAVA = "lmdbjava";
+  static final String LMDBJAVAB = "lmdbjavab";
 
   static {
     setProperty(DISABLE_CHECKS_PROP, TRUE.toString());
   }
-  private Cursor cursor;
+  private CursorB cursor;
   private final Dbi db;
   private final Env env;
   private Txn tx;
-  final Val roKeyVal;
-  final Val roValVal;
-  final Val rwKeyVal;
+  final ByteBufferValB roKeyVal;
+  final ByteBufferValB roValVal;
+  final ByteBufferValB rwKeyVal;
+  final ByteBufferValB rwValVal;
 
-  LmdbJava(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
-                                                              IOException {
+  LmdbJavaB(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
+                                                               IOException {
     super(key, val, allocateDirect(0), allocateDirect(0));
 
-    this.roKeyVal = new Val(roKey);
-    this.roValVal = new Val(roVal);
-    this.rwKeyVal = new Val(key);
+    this.roKeyVal = new ByteBufferValB(roKey);
+    this.roValVal = new ByteBufferValB(roVal);
+    this.rwKeyVal = new ByteBufferValB(key);
+    this.rwValVal = new ByteBufferValB(val);
 
     if (SHOULD_CHECK) {
       throw new IllegalStateException();
@@ -90,25 +90,29 @@ final class LmdbJava extends AbstractStore {
 
   @Override
   void crc32() throws Exception {
-    try (final Cursor c = db.openCursor(tx)) {
-      if (!c.position(roKeyVal, roValVal, MDB_FIRST)) {
+    try (final CursorB c = db.openCursorB(tx)) {
+      if (!c.get(roKeyVal, roValVal, MDB_FIRST)) {
         throw new IllegalStateException();
       }
 
       do {
-        CRC.update(roKeyVal.getByteBuffer());
-        CRC.update(roValVal.getByteBuffer());
+        roKeyVal.wrap();
+        roValVal.wrap();
+        CRC.update(roKey);
+        CRC.update(roVal);
         roKey.flip();
-      } while (c.position(roKeyVal, roValVal, MDB_NEXT));
+      } while (c.get(roKeyVal, roValVal, MDB_NEXT));
     }
   }
 
   @Override
   void cursorGetFirst() throws Exception {
-    cursor.position(roKeyVal, roValVal, MDB_FIRST);
+    cursor.get(roKeyVal, roValVal, MDB_FIRST);
     // key and value checked as in theory first row might have different key
-    final long k = roKeyVal.getByteBuffer().getLong();
-    final long v = roValVal.getByteBuffer().getLong();
+    roKeyVal.wrap();
+    roValVal.wrap();
+    final long k = roKey.getLong();
+    final long v = roVal.getLong();
 
     if (k != BasicOpsBenchmark.KEY || v != BasicOpsBenchmark.VAL) {
       throw new IllegalStateException("k:" + k + " v:" + v);
@@ -123,12 +127,12 @@ final class LmdbJava extends AbstractStore {
   @Override
   void get() throws Exception {
     cursor.get(rwKeyVal, roValVal, CursorOp.MDB_SET_KEY);
-    roVal = roValVal.getByteBuffer();
+    roValVal.wrap();
   }
 
   @Override
   void put() throws Exception {
-    cursor.put(key, val);
+    cursor.put(rwKeyVal, rwValVal);
   }
 
   @Override
@@ -138,23 +142,23 @@ final class LmdbJava extends AbstractStore {
   @Override
   void startWritePhase() throws Exception {
     tx = new Txn(env);
-    cursor = db.openCursor(tx);
+    cursor = db.openCursorB(tx);
   }
   
   @Override
   long sumData() throws Exception {
     long result = 0;
-    try (final Cursor c = db.openCursor(tx)) {
-      if (!c.position(roKeyVal, roValVal, MDB_FIRST)) {
+    try (final CursorB c = db.openCursorB(tx)) {
+      if (!c.get(roKeyVal, roValVal, MDB_FIRST)) {
         throw new IllegalStateException();
       }
 
       do {
-        result += roKeyVal.getSize();
-        result += roValVal.getSize();
-      } while (c.position(roKeyVal, roValVal, MDB_NEXT));
+        result += roKeyVal.size();
+        result += roValVal.size();
+      } while (c.get(roKeyVal, roValVal, MDB_NEXT));
     }
     return result;
   }
-  
+
 }

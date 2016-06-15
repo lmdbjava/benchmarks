@@ -17,7 +17,6 @@ package org.lmdbjava.bench;
 
 import java.io.File;
 
-import static java.io.File.createTempFile;
 
 import java.io.IOException;
 
@@ -45,6 +44,8 @@ import static org.lmdbjava.EnvFlags.MDB_NOSUBDIR;
 
 import org.lmdbjava.LmdbException;
 import org.lmdbjava.Txn;
+import org.lmdbjava.Val;
+import static java.io.File.createTempFile;
 
 final class LmdbJava extends AbstractStore {
 
@@ -58,10 +59,15 @@ final class LmdbJava extends AbstractStore {
   private final Dbi db;
   private final Env env;
   private Txn tx;
+  final Val roKeyVal;
+  final Val roValVal;
 
   LmdbJava(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
                                                               IOException {
     super(key, val, allocateDirect(0), allocateDirect(0));
+
+    this.roKeyVal = new Val(roKey);
+    this.roValVal = new Val(roVal);
 
     if (SHOULD_CHECK) {
       throw new IllegalStateException();
@@ -82,24 +88,24 @@ final class LmdbJava extends AbstractStore {
   @Override
   void crc32() throws Exception {
     try (final Cursor c = db.openCursor(tx)) {
-      if (!c.position(keyVal, valVal, MDB_FIRST)) {
+      if (!c.position(roKeyVal, roValVal, MDB_FIRST)) {
         throw new IllegalStateException();
       }
 
       do {
-        CRC.update(roKey);
-        CRC.update(roVal);
+        CRC.update(roKeyVal.getByteBuffer());
+        CRC.update(roValVal.getByteBuffer());
         roKey.flip();
-      } while (c.position(keyVal, valVal, MDB_NEXT));
+      } while (c.position(roKeyVal, roValVal, MDB_NEXT));
     }
   }
 
   @Override
   void cursorGetFirst() throws Exception {
-    cursor.position(keyVal, valVal, MDB_FIRST);
+    cursor.position(roKeyVal, roValVal, MDB_FIRST);
     // key and value checked as in theory first row might have different key
-    final long k = keyVal.getByteBuffer().getLong();
-    final long v = valVal.getByteBuffer().getLong();
+    final long k = roKeyVal.getByteBuffer().getLong();
+    final long v = roValVal.getByteBuffer().getLong();
 
     if (k != BasicOpsBenchmark.KEY || v != BasicOpsBenchmark.VAL) {
       throw new IllegalStateException("k:" + k + " v:" + v);

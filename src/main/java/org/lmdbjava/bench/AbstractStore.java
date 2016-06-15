@@ -16,7 +16,6 @@
 package org.lmdbjava.bench;
 
 import org.lmdbjava.LmdbException;
-import org.lmdbjava.Val;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -46,29 +45,25 @@ abstract class AbstractStore {
    * The field used by the benchmark to set a value.
    */
   final ByteBuffer val;
-  
+
   /**
    * The field used by the benchmark to read a retrieved key.
    */
   final ByteBuffer roKey;
-  
+
   /**
    * The field used by the benchmark to read a retrieved value.
    */
   final ByteBuffer roVal;
 
-  final Val keyVal;
-  final Val valVal;
-
-  protected AbstractStore(final ByteBuffer key, final ByteBuffer val, final ByteBuffer roKey, final ByteBuffer roVal) {
+  protected AbstractStore(final ByteBuffer key, final ByteBuffer val,
+                          final ByteBuffer roKey, final ByteBuffer roVal) {
     requireNonNull(key);
     requireNonNull(val);
     this.key = key;
     this.val = val;
     this.roKey = roKey;
     this.roVal = roVal;
-    this.keyVal = new Val(key);
-    this.valVal = new Val(val);
   }
 
   /**
@@ -114,9 +109,8 @@ abstract class AbstractStore {
    */
   abstract void startWritePhase() throws Exception;
 
-
   static AbstractStore create(String name, int keySize, int valSize)
-    throws IOException, LmdbException {
+      throws IOException, LmdbException {
     final ByteBuffer key = allocateDirect(keySize).order(BIG_ENDIAN);
     final ByteBuffer val = allocateDirect(valSize);
     if (name.equals("lmdbjni")) {

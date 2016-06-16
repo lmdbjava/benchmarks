@@ -82,6 +82,7 @@ public class DbBench {
   @State(Benchmark)
   public static class Reader {
 
+    File tmp;
     Dbi db;
     Env env;
     int[] keys;
@@ -136,8 +137,7 @@ public class DbBench {
         }
       }
 
-      final File tmp = createTempFile("bench", ".db");
-      tmp.deleteOnExit();
+      tmp = createTempFile("bench", ".db");
       env = new Env();
       env.setMapSize(num * size * 128L);
       env.setMaxDbs(1);
@@ -164,6 +164,7 @@ public class DbBench {
     @TearDown(Level.Iteration)
     public void teardown() {
       env.close();
+      tmp.delete();
     }
   }
 }

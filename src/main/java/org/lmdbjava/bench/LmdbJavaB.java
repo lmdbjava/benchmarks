@@ -41,10 +41,11 @@ import static org.lmdbjava.EnvFlags.MDB_NOSUBDIR;
 
 import org.lmdbjava.LmdbException;
 import org.lmdbjava.Txn;
-import static java.io.File.createTempFile;
-import org.lmdbjava.ByteBufferValB;
+import static org.lmdbjava.ByteBufferVals.forBuffer;
 import org.lmdbjava.CursorB;
 import org.lmdbjava.CursorOp;
+import static java.io.File.createTempFile;
+import org.lmdbjava.ValB;
 
 final class LmdbJavaB extends AbstractStore {
 
@@ -58,19 +59,19 @@ final class LmdbJavaB extends AbstractStore {
   private final Dbi db;
   private final Env env;
   private Txn tx;
-  final ByteBufferValB roKeyVal;
-  final ByteBufferValB roValVal;
-  final ByteBufferValB rwKeyVal;
-  final ByteBufferValB rwValVal;
+  final ValB roKeyVal;
+  final ValB roValVal;
+  final ValB rwKeyVal;
+  final ValB rwValVal;
 
   LmdbJavaB(final ByteBuffer key, final ByteBuffer val) throws LmdbException,
                                                                IOException {
     super(key, val, allocateDirect(0), allocateDirect(0));
 
-    this.roKeyVal = new ByteBufferValB(roKey);
-    this.roValVal = new ByteBufferValB(roVal);
-    this.rwKeyVal = new ByteBufferValB(key);
-    this.rwValVal = new ByteBufferValB(val);
+    this.roKeyVal = forBuffer(roKey, false);
+    this.roValVal = forBuffer(roVal, false);
+    this.rwKeyVal = forBuffer(key, false);
+    this.rwValVal = forBuffer(val, false);
 
     if (SHOULD_CHECK) {
       throw new IllegalStateException();
@@ -96,8 +97,8 @@ final class LmdbJavaB extends AbstractStore {
       }
 
       do {
-        roKeyVal.wrap();
-        roValVal.wrap();
+        roKeyVal.refresh();
+        roValVal.refresh();
         CRC.update(roKey);
         CRC.update(roVal);
         roKey.flip();
@@ -109,8 +110,8 @@ final class LmdbJavaB extends AbstractStore {
   void cursorGetFirst() throws Exception {
     cursor.get(roKeyVal, roValVal, MDB_FIRST);
     // key and value checked as in theory first row might have different key
-    roKeyVal.wrap();
-    roValVal.wrap();
+    roKeyVal.refresh();
+    roValVal.refresh();
     final long k = roKey.getLong();
     final long v = roVal.getLong();
 
@@ -127,7 +128,7 @@ final class LmdbJavaB extends AbstractStore {
   @Override
   void get() throws Exception {
     cursor.get(rwKeyVal, roValVal, CursorOp.MDB_SET_KEY);
-    roValVal.wrap();
+    roValVal.refresh();
   }
 
   @Override

@@ -34,6 +34,11 @@
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>org.agrona</groupId>
+      <artifactId>Agrona</artifactId>
+      <version>0.5</version>
+    </dependency>
+    <dependency>
       <groupId>org.deephacks.lmdbjni</groupId>
       <artifactId>lmdbjni-linux64</artifactId>
       <version>0.4.6</version>

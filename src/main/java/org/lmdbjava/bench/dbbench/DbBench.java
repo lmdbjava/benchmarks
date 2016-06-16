@@ -16,7 +16,6 @@
 package org.lmdbjava.bench.dbbench;
 
 import java.io.File;
-import static java.io.File.createTempFile;
 import static java.nio.ByteBuffer.allocateDirect;
 import java.security.SecureRandom;
 import java.util.Random;
@@ -29,7 +28,6 @@ import static org.lmdbjava.CursorOp.MDB_SET_KEY;
 import org.lmdbjava.Dbi;
 import static org.lmdbjava.DbiFlags.MDB_CREATE;
 import org.lmdbjava.Env;
-import static org.lmdbjava.EnvFlags.MDB_NOSUBDIR;
 import org.lmdbjava.MutableDirectBufferVal;
 import static org.lmdbjava.MutableDirectBufferVal.forMdb;
 
@@ -137,12 +135,14 @@ public class DbBench {
         }
       }
 
-      tmp = createTempFile("bench", ".db");
+      final String tmpParent =  System.getProperty("java.io.tmpdir");
+      tmp = new File(tmpParent, "jmh-bench-" + RND.nextInt());
+      tmp.mkdirs();
       env = new Env();
       env.setMapSize(num * size * 128L);
       env.setMaxDbs(1);
       env.setMaxReaders(1);
-      env.open(tmp, POSIX_MODE, MDB_NOSUBDIR);
+      env.open(tmp, POSIX_MODE);
 
       try (final Txn tx = new Txn(env)) {
         db = new Dbi(tx, "db", MDB_CREATE);
@@ -164,6 +164,9 @@ public class DbBench {
     @TearDown(Level.Iteration)
     public void teardown() {
       env.close();
+      for (final File f : tmp.listFiles()) {
+        f.delete();
+      }
       tmp.delete();
     }
   }

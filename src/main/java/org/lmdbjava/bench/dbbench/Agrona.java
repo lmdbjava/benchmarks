@@ -54,10 +54,10 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class AgronaDbBench {
+public class Agrona {
 
   @Benchmark
-  public void readKeys(final ReaderAgrona r, final Blackhole bh) throws
+  public void readKey(final ReaderAgrona r, final Blackhole bh) throws
       Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
          final CursorB c = r.db.openCursorB(tx)) {
@@ -75,7 +75,7 @@ public class AgronaDbBench {
   }
 
   @Benchmark
-  public void readReverse(final ReaderAgrona r, final Blackhole bh) throws
+  public void readRev(final ReaderAgrona r, final Blackhole bh) throws
       Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
          final CursorB c = r.db.openCursorB(tx)) {
@@ -87,7 +87,7 @@ public class AgronaDbBench {
   }
 
   @Benchmark
-  public void readSequential(final ReaderAgrona r, final Blackhole bh) throws
+  public void readSeq(final ReaderAgrona r, final Blackhole bh) throws
       Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
          final CursorB c = r.db.openCursorB(tx)) {

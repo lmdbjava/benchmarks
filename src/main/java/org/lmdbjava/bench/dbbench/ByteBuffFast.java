@@ -20,7 +20,9 @@ import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import org.lmdbjava.Cursor;
+import org.lmdbjava.ByteBufferVal;
+import static org.lmdbjava.ByteBufferVals.forBuffer;
+import org.lmdbjava.CursorB;
 import static org.lmdbjava.CursorOp.MDB_FIRST;
 import static org.lmdbjava.CursorOp.MDB_LAST;
 import static org.lmdbjava.CursorOp.MDB_NEXT;
@@ -46,20 +48,19 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
-import org.lmdbjava.Val;
 
 @OutputTimeUnit(MILLISECONDS)
 @Fork(1)
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class CursorDbBench {
+public class ByteBuffFast {
 
   @Benchmark
-  public void readKeys(final ReaderCursor r, final Blackhole bh) throws
+  public void readKey(final ReaderByteBuffer r, final Blackhole bh) throws
       Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final Cursor c = r.db.openCursor(tx)) {
+         final CursorB c = r.db.openCursorB(tx)) {
       for (final int key : r.keys) {
         r.wkb.clear();
         if (r.intKey) {
@@ -69,39 +70,39 @@ public class CursorDbBench {
           r.wkb.put(str, 0, str.length).flip();
         }
         bh.consume(c.get(r.wkv, r.rkv, MDB_SET_KEY));
-        bh.consume(r.rkv.getSize()); // force native memory lookup
+        bh.consume(r.rkv.size()); // force native memory lookup
         // no need to re-wrap, as we never change buffer (auto-reset:off)
       }
     }
   }
 
   @Benchmark
-  public void readReverse(final ReaderCursor r, final Blackhole bh) throws
+  public void readRev(final ReaderByteBuffer r, final Blackhole bh) throws
       Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final Cursor c = r.db.openCursor(tx)) {
+         final CursorB c = r.db.openCursorB(tx)) {
       bh.consume(c.get(r.rkv, r.rkv, MDB_LAST));
       while (c.get(r.rkv, r.rkv, MDB_PREV)) {
-        bh.consume(r.rkv.getSize()); // force native memory lookup
+        bh.consume(r.rkv.size()); // force native memory lookup
       }
     }
   }
 
   @Benchmark
-  public void readSequential(final ReaderCursor r, final Blackhole bh)
+  public void readSeq(final ReaderByteBuffer r, final Blackhole bh)
       throws
       Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final Cursor c = r.db.openCursor(tx)) {
+         final CursorB c = r.db.openCursorB(tx)) {
       bh.consume(c.get(r.rkv, r.rkv, MDB_FIRST));
       while (c.get(r.rkv, r.rkv, MDB_NEXT)) {
-        bh.consume(r.rkv.getSize()); // force native memory lookup
+        bh.consume(r.rkv.size()); // force native memory lookup
       }
     }
   }
 
   @Benchmark
-  public void write(final WriterCursor w, final Blackhole bh) throws
+  public void write(final WriterByteBuffer w, final Blackhole bh) throws
       Exception {
     w.write();
   }
@@ -117,7 +118,7 @@ public class CursorDbBench {
     /**
      * Read-only key value. This is the value that wraps {@link #rkb}.
      */
-    Val rkv;
+    ByteBufferVal rkv;
 
     /**
      * Read-only value buffer. This is the buffer used by {@link #rvv}.
@@ -127,7 +128,7 @@ public class CursorDbBench {
     /**
      * Read-only value value. This is the value that wraps {@link #rvb}.
      */
-    Val rvv;
+    ByteBufferVal rvv;
 
     /**
      * Writable key buffer. This is the buffer used by {@link #wkv}.
@@ -137,7 +138,7 @@ public class CursorDbBench {
     /**
      * Writable key value. This is the value that wraps {@link #wkb}.
      */
-    Val wkv;
+    ByteBufferVal wkv;
 
     /**
      * Writable value buffer. This is the buffer used by {@link #wvv}.
@@ -147,7 +148,7 @@ public class CursorDbBench {
     /**
      * Writable value value. This is the value that wraps {@link #wvb}.
      */
-    Val wvv;
+    ByteBufferVal wvv;
 
     @Override
     public void setup(final boolean metaSync, final boolean sync) throws
@@ -158,15 +159,15 @@ public class CursorDbBench {
       final int keySize = intKey ? BYTES : STRING_KEY_LENGTH;
       wkb = allocateDirect(keySize).order(LITTLE_ENDIAN);
       wvb = allocateDirect(valSize).order(LITTLE_ENDIAN);
-      rkv = new Val(rkb);
-      rvv = new Val(rvb);
-      wkv = new Val(wkb);
-      wvv = new Val(wvb);
+      rkv = forBuffer(rkb, false);
+      rvv = forBuffer(rvb, false);
+      wkv = forBuffer(wkb, false);
+      wvv = forBuffer(wvb, false);
     }
 
     void write() throws Exception {
       try (final Txn tx = new Txn(env);) {
-        try (final Cursor c = db.openCursor(tx);) {
+        try (final CursorB c = db.openCursorB(tx);) {
           final PutFlags flags = sequential ? MDB_APPEND : null;
           final int rndByteMax = RND_MB.length - valSize;
           int rndByteOffset = 0;
@@ -188,7 +189,7 @@ public class CursorDbBench {
             if (rndByteOffset >= rndByteMax) {
               rndByteOffset = 0;
             }
-            c.put(wkb, wvb, flags);
+            c.put(wkv, wvv, flags);
           }
         }
         tx.commit();
@@ -198,7 +199,7 @@ public class CursorDbBench {
   }
 
   @State(Benchmark)
-  public static class ReaderCursor extends LmdbJavaAgrona {
+  public static class ReaderByteBuffer extends LmdbJavaAgrona {
 
     @Setup(Trial)
     public void setup() throws Exception {
@@ -214,7 +215,7 @@ public class CursorDbBench {
   }
 
   @State(Benchmark)
-  public static class WriterCursor extends LmdbJavaAgrona {
+  public static class WriterByteBuffer extends LmdbJavaAgrona {
 
     /**
      * Whether {@link EnvFlags#MDB_NOMETASYNC} is used.

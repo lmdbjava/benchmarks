@@ -53,7 +53,7 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class ByteBuffFast {
+public class ByteBuffCursorB {
 
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {
@@ -160,18 +160,17 @@ public class ByteBuffFast {
      */
     ByteBufferVal wvv;
 
-    @Override
-    public void setup(final boolean metaSync, final boolean sync) throws
-        Exception {
+    public void setup(final boolean metaSync, final boolean sync,
+                      final boolean forceSafe) throws Exception {
       super.setup(metaSync, sync);
       rkb = allocateDirect(0).order(LITTLE_ENDIAN);
       rvb = allocateDirect(0).order(LITTLE_ENDIAN);
       wkb = allocateDirect(keySize).order(LITTLE_ENDIAN);
       wvb = allocateDirect(valSize).order(LITTLE_ENDIAN);
-      rkv = forBuffer(rkb, false);
-      rvv = forBuffer(rvb, false);
-      wkv = forBuffer(wkb, false);
-      wvv = forBuffer(wvb, false);
+      rkv = forBuffer(rkb, false, forceSafe);
+      rvv = forBuffer(rvb, false, forceSafe);
+      wkv = forBuffer(wkb, false, forceSafe);
+      wvv = forBuffer(wvb, false, forceSafe);
     }
 
     void write() throws Exception {
@@ -210,10 +209,16 @@ public class ByteBuffFast {
   @State(Benchmark)
   public static class Reader extends LmdbJava {
 
+    /**
+     * Whether the byte buffer accessor is safe or not
+     */
+    @Param({"false", "true"})
+    boolean forceSafe;
+
     @Setup(Trial)
     @Override
     public void setup() throws Exception {
-      super.setup(false, false);
+      super.setup(false, false, forceSafe);
       super.write();
     }
 
@@ -242,7 +247,7 @@ public class ByteBuffFast {
     @Setup(Invocation)
     @Override
     public void setup() throws Exception {
-      super.setup(metaSync, sync);
+      super.setup(metaSync, sync, false);
     }
 
     @TearDown(Invocation)

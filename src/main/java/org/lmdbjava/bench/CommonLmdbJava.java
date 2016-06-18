@@ -104,7 +104,7 @@ public class CommonLmdbJava extends Common {
   }
 
   @Override
-  public void teardown() {
+  public void teardown() throws Exception {
     env.close();
     super.teardown();
   }

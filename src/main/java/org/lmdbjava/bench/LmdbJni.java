@@ -181,7 +181,7 @@ public class LmdbJni {
     }
 
     @Override
-    public void teardown() {
+    public void teardown() throws Exception {
       env.close();
       super.teardown();
     }
@@ -199,12 +199,12 @@ public class LmdbJni {
             }
             if (valRandom) {
               wvb.putBytes(0, RND_MB, rndByteOffset, valSize);
+              rndByteOffset += valSize;
+              if (rndByteOffset >= rndByteMax) {
+                rndByteOffset = 0;
+              }
             } else {
               wvb.putInt(0, key);
-            }
-            rndByteOffset += valSize;
-            if (rndByteOffset >= rndByteMax) {
-              rndByteOffset = 0;
             }
             c.keyWrite(wkb);
             c.valWrite(wvb);
@@ -232,7 +232,7 @@ public class LmdbJni {
 
     @TearDown(Trial)
     @Override
-    public void teardown() {
+    public void teardown() throws Exception {
       super.teardown();
     }
   }
@@ -260,7 +260,7 @@ public class LmdbJni {
 
     @TearDown(Invocation)
     @Override
-    public void teardown() {
+    public void teardown() throws Exception {
       super.teardown();
     }
   }

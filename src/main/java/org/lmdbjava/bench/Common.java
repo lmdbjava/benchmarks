@@ -125,7 +125,7 @@ public class Common {
     tmp.mkdirs();
   }
 
-  public void teardown() {
+  public void teardown() throws Exception {
     for (final File f : tmp.listFiles()) {
       f.delete();
     }

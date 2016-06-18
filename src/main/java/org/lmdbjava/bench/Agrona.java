@@ -209,12 +209,12 @@ public class Agrona {
             }
             if (valRandom) {
               wvb.putBytes(0, RND_MB, rndByteOffset, valSize);
+              rndByteOffset += valSize;
+              if (rndByteOffset >= rndByteMax) {
+                rndByteOffset = 0;
+              }
             } else {
               wvb.putInt(0, key);
-            }
-            rndByteOffset += valSize;
-            if (rndByteOffset >= rndByteMax) {
-              rndByteOffset = 0;
             }
             c.put(wkv, wvv, flags);
           }
@@ -237,7 +237,7 @@ public class Agrona {
 
     @TearDown(Trial)
     @Override
-    public void teardown() {
+    public void teardown() throws Exception {
       super.teardown();
     }
   }
@@ -265,7 +265,7 @@ public class Agrona {
 
     @TearDown(Invocation)
     @Override
-    public void teardown() {
+    public void teardown() throws Exception {
       super.teardown();
     }
   }

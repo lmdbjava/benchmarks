@@ -190,12 +190,12 @@ public class ByteBuffCursorB {
             }
             if (valRandom) {
               wvb.put(RND_MB, rndByteOffset, valSize).flip();
+              rndByteOffset += valSize;
+              if (rndByteOffset >= rndByteMax) {
+                rndByteOffset = 0;
+              }
             } else {
               wvb.putInt(0, key).flip();
-            }
-            rndByteOffset += valSize;
-            if (rndByteOffset >= rndByteMax) {
-              rndByteOffset = 0;
             }
             c.put(wkv, wvv, flags);
           }
@@ -224,7 +224,7 @@ public class ByteBuffCursorB {
 
     @TearDown(Trial)
     @Override
-    public void teardown() {
+    public void teardown() throws Exception {
       super.teardown();
     }
   }
@@ -252,7 +252,7 @@ public class ByteBuffCursorB {
 
     @TearDown(Invocation)
     @Override
-    public void teardown() {
+    public void teardown() throws Exception {
       super.teardown();
     }
   }

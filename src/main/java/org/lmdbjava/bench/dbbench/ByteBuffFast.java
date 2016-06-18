@@ -15,7 +15,6 @@
  */
 package org.lmdbjava.bench.dbbench;
 
-import static java.lang.Integer.BYTES;
 import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
@@ -57,8 +56,23 @@ import org.openjdk.jmh.infra.Blackhole;
 public class ByteBuffFast {
 
   @Benchmark
-  public void readKey(final ReaderByteBuffer r, final Blackhole bh) throws
-      Exception {
+  public void readCrc(final Reader r, final Blackhole bh) throws Exception {
+    r.crc.reset();
+    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
+         final CursorB c = r.db.openCursorB(tx)) {
+      bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
+      do {
+        r.rkv.refresh();
+        r.rvv.refresh();
+        r.crc.update(r.rkb);
+        r.crc.update(r.rvb);
+      } while (c.get(r.rkv, r.rvv, MDB_NEXT));
+    }
+    bh.consume(r.crc.getValue());
+  }
+
+  @Benchmark
+  public void readKey(final Reader r, final Blackhole bh) throws Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
          final CursorB c = r.db.openCursorB(tx)) {
       for (final int key : r.keys) {
@@ -69,46 +83,42 @@ public class ByteBuffFast {
           final byte[] str = r.padKey(key).getBytes();
           r.wkb.put(str, 0, str.length).flip();
         }
-        bh.consume(c.get(r.wkv, r.rkv, MDB_SET_KEY));
-        bh.consume(r.rkv.size()); // force native memory lookup
+        bh.consume(c.get(r.wkv, r.rvv, MDB_SET_KEY));
+        bh.consume(r.rvv.size()); // force native memory lookup
         // no need to re-wrap, as we never change buffer (auto-reset:off)
       }
     }
   }
 
   @Benchmark
-  public void readRev(final ReaderByteBuffer r, final Blackhole bh) throws
-      Exception {
+  public void readRev(final Reader r, final Blackhole bh) throws Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
          final CursorB c = r.db.openCursorB(tx)) {
-      bh.consume(c.get(r.rkv, r.rkv, MDB_LAST));
-      while (c.get(r.rkv, r.rkv, MDB_PREV)) {
-        bh.consume(r.rkv.size()); // force native memory lookup
-      }
+      bh.consume(c.get(r.rkv, r.rvv, MDB_LAST));
+      do {
+        bh.consume(r.rvv.size()); // force native memory lookup
+      } while (c.get(r.rkv, r.rvv, MDB_PREV));
     }
   }
 
   @Benchmark
-  public void readSeq(final ReaderByteBuffer r, final Blackhole bh)
-      throws
-      Exception {
+  public void readSeq(final Reader r, final Blackhole bh) throws Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
          final CursorB c = r.db.openCursorB(tx)) {
-      bh.consume(c.get(r.rkv, r.rkv, MDB_FIRST));
-      while (c.get(r.rkv, r.rkv, MDB_NEXT)) {
-        bh.consume(r.rkv.size()); // force native memory lookup
-      }
+      bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
+      do {
+        bh.consume(r.rvv.size()); // force native memory lookup
+      } while (c.get(r.rkv, r.rvv, MDB_NEXT));
     }
   }
 
   @Benchmark
-  public void write(final WriterByteBuffer w, final Blackhole bh) throws
-      Exception {
+  public void write(final Writer w, final Blackhole bh) throws Exception {
     w.write();
   }
 
   @State(Benchmark)
-  public static class LmdbJavaAgrona extends Common {
+  public static class LmdbJava extends CommonLmdbJava {
 
     /**
      * Read-only key buffer. This is the buffer used by {@link #rkv}.
@@ -156,7 +166,6 @@ public class ByteBuffFast {
       super.setup(metaSync, sync);
       rkb = allocateDirect(0).order(LITTLE_ENDIAN);
       rvb = allocateDirect(0).order(LITTLE_ENDIAN);
-      final int keySize = intKey ? BYTES : STRING_KEY_LENGTH;
       wkb = allocateDirect(keySize).order(LITTLE_ENDIAN);
       wvb = allocateDirect(valSize).order(LITTLE_ENDIAN);
       rkv = forBuffer(rkb, false);
@@ -199,9 +208,10 @@ public class ByteBuffFast {
   }
 
   @State(Benchmark)
-  public static class ReaderByteBuffer extends LmdbJavaAgrona {
+  public static class Reader extends LmdbJava {
 
     @Setup(Trial)
+    @Override
     public void setup() throws Exception {
       super.setup(false, false);
       super.write();
@@ -215,7 +225,7 @@ public class ByteBuffFast {
   }
 
   @State(Benchmark)
-  public static class WriterByteBuffer extends LmdbJavaAgrona {
+  public static class Writer extends LmdbJava {
 
     /**
      * Whether {@link EnvFlags#MDB_NOMETASYNC} is used.
@@ -230,6 +240,7 @@ public class ByteBuffFast {
     boolean sync;
 
     @Setup(Invocation)
+    @Override
     public void setup() throws Exception {
       super.setup(metaSync, sync);
     }

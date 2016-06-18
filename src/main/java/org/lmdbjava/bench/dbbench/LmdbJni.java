@@ -19,22 +19,19 @@ import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import org.agrona.MutableDirectBuffer;
-import org.agrona.concurrent.UnsafeBuffer;
-import static org.agrona.concurrent.UnsafeBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
-import org.lmdbjava.CursorB;
-import static org.lmdbjava.CursorOp.MDB_FIRST;
-import static org.lmdbjava.CursorOp.MDB_LAST;
-import static org.lmdbjava.CursorOp.MDB_NEXT;
-import static org.lmdbjava.CursorOp.MDB_PREV;
-import static org.lmdbjava.CursorOp.MDB_SET_KEY;
+import org.fusesource.lmdbjni.BufferCursor;
+import org.fusesource.lmdbjni.Database;
+import org.fusesource.lmdbjni.DirectBuffer;
+import static org.fusesource.lmdbjni.DirectBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
+import org.fusesource.lmdbjni.Env;
+import org.fusesource.lmdbjni.Transaction;
+import org.lmdbjava.DbiFlags;
 import org.lmdbjava.EnvFlags;
-import org.lmdbjava.MutableDirectBufferVal;
-import static org.lmdbjava.MutableDirectBufferVal.forMdb;
-import org.lmdbjava.PutFlags;
-import static org.lmdbjava.PutFlags.MDB_APPEND;
-import org.lmdbjava.Txn;
-import static org.lmdbjava.TxnFlags.MDB_RDONLY;
+import static org.lmdbjava.MaskedFlag.mask;
+import static org.lmdbjava.bench.dbbench.CommonLmdbJava.POSIX_MODE;
+import static org.lmdbjava.bench.dbbench.CommonLmdbJava.dbiFlags;
+import static org.lmdbjava.bench.dbbench.CommonLmdbJava.envFlags;
+import static org.lmdbjava.bench.dbbench.CommonLmdbJava.mapSize;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -56,62 +53,63 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class Agrona {
+public class LmdbJni {
 
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {
     r.crc.reset();
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final CursorB c = r.db.openCursorB(tx)) {
-      bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
+    try (final Transaction tx = r.env.createReadTransaction();
+         final BufferCursor c = r.db.bufferCursor(tx)) {
+      bh.consume(c.first());
       do {
-        r.rkv.refresh();
-        r.rvv.refresh();
-        r.rkb.getBytes(0, r.keyBytes, 0, r.keySize);
-        r.rvb.getBytes(0, r.valBytes, 0, r.valSize);
+        c.keyBuffer().getBytes(0, r.keyBytes, 0, r.keySize);
+        c.valBuffer().getBytes(0, r.valBytes, 0, r.valSize);
         r.crc.update(r.keyBytes);
         r.crc.update(r.valBytes);
-      } while (c.get(r.rkv, r.rvv, MDB_NEXT));
+      } while (c.next());
     }
     bh.consume(r.crc.getValue());
   }
 
   @Benchmark
   public void readKey(final Reader r, final Blackhole bh) throws Exception {
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final CursorB c = r.db.openCursorB(tx)) {
+    try (final Transaction tx = r.env.createReadTransaction();
+         final BufferCursor c = r.db.bufferCursor(tx)) {
       for (final int key : r.keys) {
         if (r.intKey) {
           r.wkb.putInt(0, key);
         } else {
           r.wkb.putStringWithoutLengthUtf8(0, r.padKey(key));
         }
-        bh.consume(c.get(r.wkv, r.rvv, MDB_SET_KEY));
-        bh.consume(r.rvv.size()); // force native memory lookup
-        // no need to re-wrap, as we never change buffer (auto-reset:off)
+        c.keyWrite(r.wkb);
+        bh.consume(c.seekKey());
+        bh.consume(c.keyBuffer());
+        bh.consume(c.valBuffer());
       }
     }
   }
 
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final CursorB c = r.db.openCursorB(tx)) {
-      bh.consume(c.get(r.rkv, r.rvv, MDB_LAST));
+    try (final Transaction tx = r.env.createReadTransaction();
+         final BufferCursor c = r.db.bufferCursor(tx)) {
+      bh.consume(c.last());
       do {
-        bh.consume(r.rvv.size()); // force native memory lookup
-      } while (c.get(r.rkv, r.rvv, MDB_PREV));
+        bh.consume(c.keyBuffer());
+        bh.consume(c.valBuffer());
+      } while (c.prev());
     }
   }
 
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) throws Exception {
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final CursorB c = r.db.openCursorB(tx)) {
-      bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
+    try (final Transaction tx = r.env.createReadTransaction();
+         final BufferCursor c = r.db.bufferCursor(tx)) {
+      bh.consume(c.first());
       do {
-        bh.consume(r.rvv.size()); // force native memory lookup        
-      } while (c.get(r.rkv, r.rvv, MDB_NEXT));
+        bh.consume(c.keyBuffer());
+        bh.consume(c.valBuffer());
+      } while (c.next());
     }
   }
 
@@ -120,85 +118,77 @@ public class Agrona {
     w.write();
   }
 
-  @State(Benchmark)
-  public static class LmdbJava extends CommonLmdbJava {
+  @State(value = Benchmark)
+  public static class CommonLmdbJni extends Common {
 
     static {
       setProperty(DISABLE_BOUNDS_CHECKS_PROP_NAME, TRUE.toString());
     }
 
+    Database db;
+    Env env;
+
     /**
-     * CRC scratch space (required as memory-mapped Agrona can't return a byte[]
-     * or ByteBuffer).
+     * CRC scratch space (required as memory-mapped DirectBuffer can't return a
+     * byte[] or ByteBuffer).
      */
     byte[] keyBytes;
 
     /**
-     * Read-only key buffer. This is the buffer used by {@link #rkv}.
-     */
-    MutableDirectBuffer rkb;
-
-    /**
-     * Read-only key value. This is the value that wraps {@link #rkb}.
-     */
-    MutableDirectBufferVal rkv;
-
-    /**
-     * Read-only value buffer. This is the buffer used by {@link #rvv}.
-     */
-    MutableDirectBuffer rvb;
-
-    /**
-     * Read-only value value. This is the value that wraps {@link #rvb}.
-     */
-    MutableDirectBufferVal rvv;
-
-    /**
-     * CRC scratch space (required as memory-mapped Agrona can't return a byte[]
-     * or ByteBuffer).
+     * CRC scratch space (required as memory-mapped DirectBuffer can't return a
+     * byte[] or ByteBuffer).
      */
     byte[] valBytes;
 
     /**
-     * Writable key buffer. This is the buffer used by {@link #wkv}.
+     * Writable key buffer.
      */
-    MutableDirectBuffer wkb;
+    DirectBuffer wkb;
 
     /**
-     * Writable key value. This is the value that wraps {@link #wkb}.
+     * Whether {@link EnvFlags#MDB_WRITEMAP} is used.
      */
-    MutableDirectBufferVal wkv;
+    @Param({"true"})
+    boolean writeMap;
 
     /**
-     * Writable value buffer. This is the buffer used by {@link #wvv}.
+     * Writable value buffer.
      */
-    MutableDirectBuffer wvb;
+    DirectBuffer wvb;
 
-    /**
-     * Writable value value. This is the value that wraps {@link #wvb}.
-     */
-    MutableDirectBufferVal wvv;
-
-    @Override
     public void setup(final boolean metaSync, final boolean sync) throws
         Exception {
-      super.setup(metaSync, sync);
-      rkb = new UnsafeBuffer(allocateDirect(0));
-      rvb = new UnsafeBuffer(allocateDirect(0));
-      wkb = new UnsafeBuffer(allocateDirect(keySize));
-      wvb = new UnsafeBuffer(allocateDirect(valSize));
-      rkv = forMdb(rkb, false);
-      rvv = forMdb(rvb, false);
-      wkv = forMdb(wkb, false);
-      wvv = forMdb(wvb, false);
+      super.setup();
+      wkb = new DirectBuffer(allocateDirect(keySize));
+      wvb = new DirectBuffer(allocateDirect(valSize));
       keyBytes = new byte[keySize];
       valBytes = new byte[valSize];
+
+      final EnvFlags[] envFlags = envFlags(writeMap, metaSync, sync);
+
+      env = new Env();
+      env.setMapSize(mapSize(num, valSize));
+      env.setMaxDbs(1);
+      env.setMaxReaders(1);
+      env.open(tmp.getAbsolutePath(), mask(envFlags), POSIX_MODE);
+
+      try (final Transaction tx = env.createWriteTransaction()) {
+        final DbiFlags[] flags = dbiFlags(intKey);
+        db = env.openDatabase(tx, "db", mask(flags));
+        tx.commit();
+      }
+
+    }
+
+    @Override
+    public void teardown() {
+      env.close();
+      super.teardown();
     }
 
     void write() throws Exception {
-      try (final Txn tx = new Txn(env);) {
-        try (final CursorB c = db.openCursorB(tx);) {
-          final PutFlags flags = sequential ? MDB_APPEND : null;
+      try (final Transaction tx = env.createWriteTransaction()) {
+        try (final BufferCursor c = db.bufferCursor(tx);) {
           final int rndByteMax = RND_MB.length - valSize;
           int rndByteOffset = 0;
           for (final int key : keys) {
@@ -216,17 +206,22 @@ public class Agrona {
             if (rndByteOffset >= rndByteMax) {
               rndByteOffset = 0;
             }
-            c.put(wkv, wvv, flags);
+            c.keyWrite(wkb);
+            c.valWrite(wvb);
+            if (sequential) {
+              c.append();
+            } else {
+              c.overwrite();
+            }
           }
         }
         tx.commit();
       }
     }
-
   }
 
   @State(Benchmark)
-  public static class Reader extends LmdbJava {
+  public static class Reader extends CommonLmdbJni {
 
     @Setup(Trial)
     @Override
@@ -243,7 +238,7 @@ public class Agrona {
   }
 
   @State(Benchmark)
-  public static class Writer extends LmdbJava {
+  public static class Writer extends CommonLmdbJni {
 
     /**
      * Whether {@link EnvFlags#MDB_NOMETASYNC} is used.

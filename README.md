@@ -10,7 +10,7 @@ of open source embedded key-value stores available for use from Java.
 
 1. Install `liblmdb` for your platform (eg Arch Linux: `pacman -S lmdb`)
 2. Clone this repository and `mvn clean package`
-3. Run the benchmark with `java -jar target/benchmarks.jar`
+3. Run the benchmark with `java -jar target/benchmarks.jar -foe true`
 
 ## Support
 

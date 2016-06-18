@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lmdbjava.bench.dbbench;
+package org.lmdbjava.bench;
 
 import java.io.File;
 import static java.lang.Integer.BYTES;

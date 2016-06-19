@@ -68,6 +68,8 @@
       <artifactId>chronicle-map</artifactId>
       <version>3.8.0</version>
     </dependency>
+    <!-- Koyoto Cabinet not benchmarked as required .so not in JAR or AUR -->
+    <!-- Berkley DB Java Edition not benchmarked due to Affero license -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

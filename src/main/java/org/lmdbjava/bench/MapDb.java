@@ -96,7 +96,7 @@ public class MapDb {
   }
 
   @State(value = Benchmark)
-  public static class CommonLevelDb extends Common {
+  public static class CommonMapDb extends Common {
 
     DB db;
     BTreeMap<byte[], byte[]> map;
@@ -157,7 +157,7 @@ public class MapDb {
   }
 
   @State(Benchmark)
-  public static class Reader extends CommonLevelDb {
+  public static class Reader extends CommonMapDb {
 
     @Setup(Trial)
     @Override
@@ -174,7 +174,7 @@ public class MapDb {
   }
 
   @State(Benchmark)
-  public static class Writer extends CommonLevelDb {
+  public static class Writer extends CommonMapDb {
 
     @Setup(Invocation)
     @Override

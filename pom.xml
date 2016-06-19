@@ -58,7 +58,11 @@
       <artifactId>h2-mvstore</artifactId>
       <version>1.4.192</version>
     </dependency>
-    <!-- https://github.com/fusesource/rocksdbjni - no update > 2.5 yrs) -->
+    <dependency>
+      <groupId>org.rocksdb</groupId>
+      <artifactId>rocksdbjni</artifactId>
+      <version>4.5.1</version>
+    </dependency>
     <!-- https://github.com/OpenHFT/Chronicle-Map - no sorted keys -->
     <dependency>
       <groupId>junit</groupId>

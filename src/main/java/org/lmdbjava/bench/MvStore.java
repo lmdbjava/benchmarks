@@ -17,15 +17,13 @@ package org.lmdbjava.bench;
 
 import java.io.File;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static java.util.Arrays.copyOf;
 import java.util.Iterator;
-import java.util.Map.Entry;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
-import org.mapdb.BTreeMap;
-import org.mapdb.DB;
-import static org.mapdb.DBMaker.fileDB;
-import static org.mapdb.Serializer.BYTE_ARRAY;
+import org.h2.mvstore.MVMap;
+import org.h2.mvstore.MVStore;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -46,16 +44,17 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class MapDb {
+public class MvStore {
 
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {
     r.crc.reset();
-    Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
-    while (iterator.hasNext()) {
-      final Entry<byte[], byte[]> entry = iterator.next();
-      r.crc.update(entry.getKey());
-      r.crc.update(entry.getValue());
+    Iterator<byte[]> iter = r.map.keyIterator(null);
+    while (iter.hasNext()) {
+      final byte[] k = iter.next();
+      final byte[] v = r.map.get(k);
+      r.crc.update(k);
+      r.crc.update(v);
     }
     bh.consume(r.crc.getValue());
   }
@@ -68,25 +67,24 @@ public class MapDb {
       } else {
         r.wkb.putStringWithoutLengthUtf8(0, r.padKey(key));
       }
-      bh.consume(r.map.get(r.wkb.byteArray()));
+      bh.consume(r.map.get(copyOf(r.wkb.byteArray(), r.keySize)));
     }
   }
 
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
-    Iterator<Entry<byte[], byte[]>> iterator = r.map.descendingEntryIterator();
-    while (iterator.hasNext()) {
-      final Entry<byte[], byte[]> entry = iterator.next();
-      bh.consume(entry.getValue());
+    for (long i = r.map.sizeAsLong() - 1; i >= 0; i--) {
+      byte[] k = r.map.getKey(i);
+      bh.consume(r.map.get(k));
     }
   }
 
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) throws Exception {
-    Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
-    while (iterator.hasNext()) {
-      final Entry<byte[], byte[]> entry = iterator.next();
-      bh.consume(entry.getValue());
+    Iterator<byte[]> iter = r.map.keyIterator(null);
+    while (iter.hasNext()) {
+      final byte[] k = iter.next();
+      bh.consume(r.map.get(k));
     }
   }
 
@@ -96,18 +94,18 @@ public class MapDb {
   }
 
   @State(value = Benchmark)
-  public static class CommonLevelDb extends Common {
+  public static class CommonMvStore extends Common {
 
-    DB db;
-    BTreeMap<byte[], byte[]> map;
+    MVMap<byte[], byte[]> map;
+    MVStore s;
 
     /**
-     * Writable key buffer. Backed by a plain byte[] for LevelDB API ease.
+     * Writable key buffer. Backed by a plain byte[] for MvStore API ease.
      */
     MutableDirectBuffer wkb;
 
     /**
-     * Writable value buffer. Backed by a plain byte[] for LevelDB API ease.
+     * Writable value buffer. Backed by a plain byte[] for MvStore API ease.
      */
     MutableDirectBuffer wvb;
 
@@ -116,20 +114,16 @@ public class MapDb {
       super.setup();
       wkb = new UnsafeBuffer(new byte[keySize]);
       wvb = new UnsafeBuffer(new byte[valSize]);
-      db = fileDB(new File(tmp, "map.db"))
-          .fileMmapEnable()
-          .concurrencyDisable()
-          .allocateStartSize(num * valSize * 128L)
-          .make();
-      map = db.treeMap("ba2ba")
-          .keySerializer(BYTE_ARRAY)
-          .valueSerializer(BYTE_ARRAY)
-          .createOrOpen();
+      s = new MVStore.Builder()
+          .fileName(new File(tmp, "mvstore.db").getAbsolutePath())
+          .autoCommitDisabled()
+          .open();
+      map = s.openMap("ba2ba");
     }
 
     @Override
     public void teardown() throws Exception {
-      db.close();
+      s.close();
       super.teardown();
     }
 
@@ -151,13 +145,16 @@ public class MapDb {
         } else {
           wvb.putInt(0, key);
         }
-        map.put(wkb.byteArray(), wvb.byteArray());
+        // MvStore requires this copy, otherwise it never stores > 1 entry
+        map.put(copyOf(wkb.byteArray(), keySize),
+                copyOf(wvb.byteArray(), valSize));
       }
+      s.commit();
     }
   }
 
   @State(Benchmark)
-  public static class Reader extends CommonLevelDb {
+  public static class Reader extends CommonMvStore {
 
     @Setup(Trial)
     @Override
@@ -174,7 +171,7 @@ public class MapDb {
   }
 
   @State(Benchmark)
-  public static class Writer extends CommonLevelDb {
+  public static class Writer extends CommonMvStore {
 
     @Setup(Invocation)
     @Override

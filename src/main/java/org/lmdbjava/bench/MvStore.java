@@ -102,12 +102,12 @@ public class MapDb {
     BTreeMap<byte[], byte[]> map;
 
     /**
-     * Writable key buffer. Backed by a plain byte[] for MapDb API ease.
+     * Writable key buffer. Backed by a plain byte[] for LevelDB API ease.
      */
     MutableDirectBuffer wkb;
 
     /**
-     * Writable value buffer. Backed by a plain byte[] for MapDb API ease.
+     * Writable value buffer. Backed by a plain byte[] for LevelDB API ease.
      */
     MutableDirectBuffer wvb;
 

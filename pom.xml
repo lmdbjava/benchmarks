@@ -63,7 +63,11 @@
       <artifactId>rocksdbjni</artifactId>
       <version>4.5.1</version>
     </dependency>
-    <!-- https://github.com/OpenHFT/Chronicle-Map - no sorted keys -->
+    <dependency>
+      <groupId>net.openhft</groupId>
+      <artifactId>chronicle-map</artifactId>
+      <version>3.8.0</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

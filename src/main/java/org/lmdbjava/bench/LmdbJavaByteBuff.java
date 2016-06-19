@@ -21,7 +21,7 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import org.lmdbjava.ByteBufferVal;
 import static org.lmdbjava.ByteBufferVals.forBuffer;
-import org.lmdbjava.CursorB;
+import org.lmdbjava.Cursor;
 import static org.lmdbjava.CursorOp.MDB_FIRST;
 import static org.lmdbjava.CursorOp.MDB_LAST;
 import static org.lmdbjava.CursorOp.MDB_NEXT;
@@ -53,13 +53,13 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class ByteBuffCursorB {
+public class LmdbJavaByteBuff {
 
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {
     r.crc.reset();
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final CursorB c = r.db.openCursorB(tx)) {
+         final Cursor c = r.db.openCursor(tx)) {
       bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
       do {
         r.rkv.refresh();
@@ -74,7 +74,7 @@ public class ByteBuffCursorB {
   @Benchmark
   public void readKey(final Reader r, final Blackhole bh) throws Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final CursorB c = r.db.openCursorB(tx)) {
+         final Cursor c = r.db.openCursor(tx)) {
       for (final int key : r.keys) {
         r.wkb.clear();
         if (r.intKey) {
@@ -93,7 +93,7 @@ public class ByteBuffCursorB {
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final CursorB c = r.db.openCursorB(tx)) {
+         final Cursor c = r.db.openCursor(tx)) {
       bh.consume(c.get(r.rkv, r.rvv, MDB_LAST));
       do {
         bh.consume(r.rvv.size()); // force native memory lookup
@@ -104,7 +104,7 @@ public class ByteBuffCursorB {
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) throws Exception {
     try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final CursorB c = r.db.openCursorB(tx)) {
+         final Cursor c = r.db.openCursor(tx)) {
       bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
       do {
         bh.consume(r.rvv.size()); // force native memory lookup
@@ -175,7 +175,7 @@ public class ByteBuffCursorB {
 
     void write() throws Exception {
       try (final Txn tx = new Txn(env);) {
-        try (final CursorB c = db.openCursorB(tx);) {
+        try (final Cursor c = db.openCursor(tx);) {
           final PutFlags flags = sequential ? MDB_APPEND : null;
           final int rndByteMax = RND_MB.length - valSize;
           int rndByteOffset = 0;

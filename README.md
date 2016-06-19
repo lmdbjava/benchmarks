@@ -19,7 +19,8 @@ of open source, embedded, memory-mapped, key-value stores available from Java:
 
 The benchmark itself is adapted from LMDB's
 [db_bench_mdb.cc](http://lmdb.tech/bench/microbench/db_bench_mdb.cc), which in
-turn is adapted from LevelDB's benchmark. 
+turn is adapted from
+[LevelDB's benchmark](https://github.com/google/leveldb/blob/master/db/db_bench.cc).
 
 The benchmark includes:
 

@@ -49,7 +49,7 @@ You can append ``-h`` to the ``java -jar`` line for JMH help. For example, use:
 
   * ``-wi 0`` to run zero warm-ups (not recommended)
   * ``-i 1`` to run one iteration only (not recommended)
-  * ``-f 1`` to run one fork only (not recommended)
+  * ``-f 3`` to run three forks for smaller error ranges (recommended)
   * ``-p num=100,1000`` to test maps with only 100 and 1000 elements
   * ``-p intKey=true`` to test with only integer-based keys
   * ``-lp`` to list all available parameters

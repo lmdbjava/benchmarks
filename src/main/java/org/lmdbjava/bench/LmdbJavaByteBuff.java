@@ -20,7 +20,7 @@ import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import org.lmdbjava.ByteBufferVal;
-import static org.lmdbjava.ByteBufferVals.forBuffer;
+import static org.lmdbjava.ByteBufferVal.forBuffer;
 import org.lmdbjava.Cursor;
 import static org.lmdbjava.CursorOp.MDB_FIRST;
 import static org.lmdbjava.CursorOp.MDB_LAST;

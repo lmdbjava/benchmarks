@@ -17,6 +17,7 @@ package org.lmdbjava.bench;
 
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -90,6 +91,19 @@ public class RocksDb {
       bh.consume(iterator.value());
       iterator.next();
     }
+  }
+
+  @Benchmark
+  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+    long result = 0;
+    final RocksIterator iterator = r.db.newIterator();
+    iterator.seekToFirst();
+    while (iterator.isValid()) {
+      result += xx_r39().hashBytes(iterator.key());
+      result += xx_r39().hashBytes(iterator.value());
+      iterator.next();
+    }
+    bh.consume(result);
   }
 
   @Benchmark

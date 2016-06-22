@@ -20,6 +20,7 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import org.mapdb.BTreeMap;
@@ -88,6 +89,18 @@ public class MapDb {
       final Entry<byte[], byte[]> entry = iterator.next();
       bh.consume(entry.getValue());
     }
+  }
+
+  @Benchmark
+  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+    long result = 0;
+    Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
+    while (iterator.hasNext()) {
+      final Entry<byte[], byte[]> entry = iterator.next();
+      result += xx_r39().hashBytes(entry.getKey());
+      result += xx_r39().hashBytes(entry.getValue());
+    }
+    bh.consume(result);
   }
 
   @Benchmark

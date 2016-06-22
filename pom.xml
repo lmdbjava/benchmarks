@@ -39,6 +39,11 @@
       <version>0.5.1</version>
     </dependency>
     <dependency>
+      <groupId>net.openhft</groupId>
+      <artifactId>zero-allocation-hashing</artifactId>
+      <version>0.6</version>
+    </dependency>
+    <dependency>
       <groupId>org.deephacks.lmdbjni</groupId>
       <artifactId>lmdbjni-linux64</artifactId>
       <version>0.4.6</version>

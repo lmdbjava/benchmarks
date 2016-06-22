@@ -19,6 +19,7 @@ import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.fusesource.lmdbjni.BufferCursor;
 import org.fusesource.lmdbjni.Database;
 import org.fusesource.lmdbjni.DirectBuffer;
@@ -111,6 +112,20 @@ public class LmdbJni {
         bh.consume(c.valBuffer());
       } while (c.next());
     }
+  }
+
+  @Benchmark
+  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+    long result = 0;
+    try (final Transaction tx = r.env.createReadTransaction();
+         final BufferCursor c = r.db.bufferCursor(tx)) {
+      bh.consume(c.first());
+      do {
+        result += xx_r39().hashMemory(c.keyBuffer().addressOffset(), r.keySize);
+        result += xx_r39().hashMemory(c.valBuffer().addressOffset(), r.valSize);
+      } while (c.next());
+    }
+    bh.consume(result);
   }
 
   @Benchmark

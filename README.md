@@ -28,7 +28,10 @@ The benchmark includes:
 * Reading all data via each key
 * Reading all data via a reverse iterator
 * Reading all data via a forward iterator
-* Reading all data via a forward iterator and computing a CRC32
+* Reading all data via a forward iterator and computing a CRC32 (via JDK API)
+* Reading all data via a forward iterator and computing a XXH64
+  (via [extremely fast](https://github.com/benalexau/hash-bench)
+  [Zero-Allocation-Hashing](https://github.com/OpenHFT/Zero-Allocation-Hashing))
 
 Byte arrays (`byte[]`) are always used for the keys and values, avoiding any
 serialization library overhead. For those libraries that support compression,

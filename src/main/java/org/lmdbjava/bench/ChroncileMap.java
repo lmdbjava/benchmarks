@@ -44,7 +44,7 @@ import org.openjdk.jmh.infra.Blackhole;
 @BenchmarkMode(SampleTime)
 public class ChroncileMap {
 
-  // Chroncile Map does not provide ordered key access, so no CRC/rev/prev test
+  // Chroncile Map does not provide ordered keys, so no CRC/XXH64/rev/prev test
   @Benchmark
   public void readKey(final Reader r, final Blackhole bh) throws Exception {
     for (final int key : r.keys) {

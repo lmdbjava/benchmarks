@@ -18,6 +18,7 @@ package org.lmdbjava.bench;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import java.util.Map.Entry;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import static org.fusesource.leveldbjni.JniDBFactory.factory;
@@ -93,6 +94,19 @@ public class LevelDb {
         bh.consume(peeked.getValue());
       }
     }
+  }
+
+  @Benchmark
+  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+    long result = 0;
+    try (final DBIterator iterator = r.db.iterator()) {
+      for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
+        final Entry<byte[], byte[]> peeked = iterator.peekNext();
+        result += xx_r39().hashBytes(peeked.getKey());
+        result += xx_r39().hashBytes(peeked.getValue());
+      }
+    }
+    bh.consume(result);
   }
 
   @Benchmark

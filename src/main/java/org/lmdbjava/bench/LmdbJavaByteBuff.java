@@ -19,6 +19,7 @@ import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.lmdbjava.ByteBufferVal;
 import static org.lmdbjava.ByteBufferVal.forBuffer;
 import org.lmdbjava.Cursor;
@@ -110,6 +111,23 @@ public class LmdbJavaByteBuff {
         bh.consume(r.rvv.size()); // force native memory lookup
       } while (c.get(r.rkv, r.rvv, MDB_NEXT));
     }
+  }
+
+  @Benchmark
+  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+    long result = 0;
+    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
+         final Cursor c = r.db.openCursor(tx)) {
+      bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
+      do {
+        // while it's more Java idiomatic to use r.rkX.refresh() and present
+        // the r.rbX ByteBuffer to xx_r39, using hashMemory is faster as it
+        // avoids the field set costs of refresh() re-pointing the ByteBuffer
+        result += xx_r39().hashMemory(r.rkv.dataAddress(), r.keySize);
+        result += xx_r39().hashMemory(r.rvv.dataAddress(), r.valSize);
+      } while (c.get(r.rkv, r.rvv, MDB_NEXT));
+    }
+    bh.consume(result);
   }
 
   @Benchmark

@@ -20,6 +20,7 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.Arrays.copyOf;
 import java.util.Iterator;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import org.h2.mvstore.MVMap;
@@ -86,6 +87,19 @@ public class MvStore {
       final byte[] k = iter.next();
       bh.consume(r.map.get(k));
     }
+  }
+
+  @Benchmark
+  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+    long result = 0;
+    Iterator<byte[]> iter = r.map.keyIterator(null);
+    while (iter.hasNext()) {
+      final byte[] k = iter.next();
+      final byte[] v = r.map.get(k);
+      result += xx_r39().hashBytes(k);
+      result += xx_r39().hashBytes(v);
+    }
+    bh.consume(result);
   }
 
   @Benchmark

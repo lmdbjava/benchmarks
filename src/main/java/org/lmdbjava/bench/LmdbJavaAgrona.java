@@ -22,16 +22,16 @@ import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.agrona.MutableDirectBuffer;
 import static org.agrona.concurrent.UnsafeBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
 import org.lmdbjava.Cursor;
-import static org.lmdbjava.CursorOp.MDB_FIRST;
-import static org.lmdbjava.CursorOp.MDB_LAST;
-import static org.lmdbjava.CursorOp.MDB_NEXT;
-import static org.lmdbjava.CursorOp.MDB_PREV;
-import static org.lmdbjava.CursorOp.MDB_SET_KEY;
 import static org.lmdbjava.Env.create;
 import org.lmdbjava.EnvFlags;
+import static org.lmdbjava.GetOp.MDB_SET_KEY;
 import static org.lmdbjava.MutableDirectBufferProxy.PROXY_MDB;
 import org.lmdbjava.PutFlags;
 import static org.lmdbjava.PutFlags.MDB_APPEND;
+import static org.lmdbjava.SeekOp.MDB_FIRST;
+import static org.lmdbjava.SeekOp.MDB_LAST;
+import static org.lmdbjava.SeekOp.MDB_NEXT;
+import static org.lmdbjava.SeekOp.MDB_PREV;
 import org.lmdbjava.Txn;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -59,13 +59,13 @@ public class LmdbJavaAgrona {
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {
     r.crc.reset();
-    bh.consume(r.c.get(null, MDB_FIRST));
+    bh.consume(r.c.seek(MDB_FIRST));
     do {
       r.txn.key().getBytes(0, r.keyBytes, 0, r.keySize);
       r.txn.val().getBytes(0, r.valBytes, 0, r.valSize);
       r.crc.update(r.keyBytes);
       r.crc.update(r.valBytes);
-    } while (r.c.get(null, MDB_NEXT));
+    } while (r.c.seek(MDB_NEXT));
     bh.consume(r.crc.getValue());
   }
 
@@ -84,28 +84,28 @@ public class LmdbJavaAgrona {
 
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
-    bh.consume(r.c.get(null, MDB_LAST));
+    bh.consume(r.c.seek(MDB_LAST));
     do {
       bh.consume(r.txn.val());
-    } while (r.c.get(null, MDB_PREV));
+    } while (r.c.seek(MDB_PREV));
   }
 
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) throws Exception {
-    bh.consume(r.c.get(null, MDB_FIRST));
+    bh.consume(r.c.seek(MDB_FIRST));
     do {
       bh.consume(r.txn.val());
-    } while (r.c.get(null, MDB_NEXT));
+    } while (r.c.seek(MDB_NEXT));
   }
 
   @Benchmark
   public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
     long result = 0;
-    bh.consume(r.c.get(null, MDB_FIRST));
+    bh.consume(r.c.seek(MDB_FIRST));
     do {
       result += xx_r39().hashMemory(r.txn.key().addressOffset(), r.keySize);
       result += xx_r39().hashMemory(r.txn.val().addressOffset(), r.valSize);
-    } while (r.c.get(null, MDB_NEXT));
+    } while (r.c.seek(MDB_NEXT));
     bh.consume(result);
   }
 

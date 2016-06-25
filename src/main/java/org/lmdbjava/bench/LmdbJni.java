@@ -59,67 +59,57 @@ public class LmdbJni {
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {
     r.crc.reset();
-    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
-      bh.consume(c.first());
-      do {
-        c.keyBuffer().getBytes(0, r.keyBytes, 0, r.keySize);
-        c.valBuffer().getBytes(0, r.valBytes, 0, r.valSize);
-        r.crc.update(r.keyBytes);
-        r.crc.update(r.valBytes);
-      } while (c.next());
-    }
+    bh.consume(r.c.first());
+    do {
+      r.c.keyBuffer().getBytes(0, r.keyBytes, 0, r.keySize);
+      r.c.valBuffer().getBytes(0, r.valBytes, 0, r.valSize);
+      r.crc.update(r.keyBytes);
+      r.crc.update(r.valBytes);
+    } while (r.c.next());
     bh.consume(r.crc.getValue());
   }
 
   @Benchmark
   public void readKey(final Reader r, final Blackhole bh) throws Exception {
-    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
-      for (final int key : r.keys) {
-        if (r.intKey) {
-          r.wkb.putInt(0, key);
-        } else {
-          r.wkb.putStringWithoutLengthUtf8(0, r.padKey(key));
-        }
-        c.keyWrite(r.wkb);
-        bh.consume(c.seekKey());
-        bh.consume(c.keyBuffer());
-        bh.consume(c.valBuffer());
+    for (final int key : r.keys) {
+      if (r.intKey) {
+        r.wkb.putInt(0, key);
+      } else {
+        r.wkb.putStringWithoutLengthUtf8(0, r.padKey(key));
       }
+      r.c.keyWrite(r.wkb);
+      bh.consume(r.c.seekKey());
+      bh.consume(r.c.keyBuffer());
+      bh.consume(r.c.valBuffer());
     }
   }
 
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
-    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
-      bh.consume(c.last());
-      do {
-        bh.consume(c.keyBuffer());
-        bh.consume(c.valBuffer());
-      } while (c.prev());
-    }
+    bh.consume(r.c.last());
+    do {
+      bh.consume(r.c.keyBuffer());
+      bh.consume(r.c.valBuffer());
+    } while (r.c.prev());
   }
 
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) throws Exception {
-    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
-      bh.consume(c.first());
-      do {
-        bh.consume(c.keyBuffer());
-        bh.consume(c.valBuffer());
-      } while (c.next());
-    }
+    bh.consume(r.c.first());
+    do {
+      bh.consume(r.c.keyBuffer());
+      bh.consume(r.c.valBuffer());
+    } while (r.c.next());
   }
 
   @Benchmark
   public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
     long result = 0;
-    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
-      bh.consume(c.first());
-      do {
-        result += xx_r39().hashMemory(c.keyBuffer().addressOffset(), r.keySize);
-        result += xx_r39().hashMemory(c.valBuffer().addressOffset(), r.valSize);
-      } while (c.next());
-    }
+    bh.consume(r.c.first());
+    do {
+      result += xx_r39().hashMemory(r.c.keyBuffer().addressOffset(), r.keySize);
+      result += xx_r39().hashMemory(r.c.valBuffer().addressOffset(), r.valSize);
+    } while (r.c.next());
     bh.consume(result);
   }
 
@@ -139,20 +129,17 @@ public class LmdbJni {
     Env env;
 
     /**
-     * CRC scratch space (required as memory-mapped DirectBuffer can't return a
-     * byte[] or ByteBuffer).
+     * CRC scratch (memory-mapped MDB can't return a byte[] or ByteBuffer).
      */
     byte[] keyBytes;
-    Transaction tx;
 
     /**
-     * CRC scratch space (required as memory-mapped DirectBuffer can't return a
-     * byte[] or ByteBuffer).
+     * CRC scratch (memory-mapped MDB can't return a byte[] or ByteBuffer).
      */
     byte[] valBytes;
 
     /**
-     * Writable key buffer.
+     * CRC scratch (memory-mapped MDB can't return a byte[] or ByteBuffer).
      */
     DirectBuffer wkb;
 
@@ -180,7 +167,7 @@ public class LmdbJni {
       env = new Env();
       env.setMapSize(mapSize(num, valSize));
       env.setMaxDbs(1);
-      env.setMaxReaders(1);
+      env.setMaxReaders(2);
       env.open(tmp.getAbsolutePath(), mask(envFlags), POSIX_MODE);
 
       try (final Transaction tx = env.createWriteTransaction()) {
@@ -188,8 +175,6 @@ public class LmdbJni {
         db = env.openDatabase(tx, "db", mask(flags));
         tx.commit();
       }
-
-      tx = env.createReadTransaction();
     }
 
     @Override
@@ -235,18 +220,23 @@ public class LmdbJni {
   @State(Benchmark)
   public static class Reader extends CommonLmdbJni {
 
+    BufferCursor c;
+    Transaction tx;
+
     @Setup(Trial)
     @Override
     public void setup() throws Exception {
       super.setup(false, false);
       super.write();
-      tx.reset(); // freshen TX to see new data
-      tx.renew();
+      tx = env.createReadTransaction();
+      c = db.bufferCursor(tx);
     }
 
     @TearDown(Trial)
     @Override
     public void teardown() throws Exception {
+      c.close();
+      tx.abort();
       super.teardown();
     }
   }

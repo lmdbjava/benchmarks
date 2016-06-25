@@ -17,9 +17,11 @@ package org.lmdbjava.bench;
 
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
+import static java.nio.ByteBuffer.allocateDirect;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.agrona.MutableDirectBuffer;
+import org.agrona.concurrent.UnsafeBuffer;
 import static org.agrona.concurrent.UnsafeBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
 import org.lmdbjava.Cursor;
 import static org.lmdbjava.Env.create;
@@ -78,6 +80,7 @@ public class LmdbJavaAgrona {
         r.rwKey.putStringWithoutLengthUtf8(0, r.padKey(key));
       }
       bh.consume(r.c.get(r.rwKey, MDB_SET_KEY));
+      bh.consume(r.txn.key());
       bh.consume(r.txn.val());
     }
   }
@@ -86,6 +89,7 @@ public class LmdbJavaAgrona {
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
     bh.consume(r.c.seek(MDB_LAST));
     do {
+      bh.consume(r.txn.key());
       bh.consume(r.txn.val());
     } while (r.c.seek(MDB_PREV));
   }
@@ -126,6 +130,8 @@ public class LmdbJavaAgrona {
      */
     byte[] keyBytes;
 
+    MutableDirectBuffer rwKey;
+    MutableDirectBuffer rwVal;
     /**
      * CRC scratch (memory-mapped MDB can't return a byte[] or ByteBuffer).
      */
@@ -137,6 +143,8 @@ public class LmdbJavaAgrona {
       super.setup(metaSync, sync);
       keyBytes = new byte[keySize];
       valBytes = new byte[valSize];
+      rwKey = new UnsafeBuffer(allocateDirect(keySize));
+      rwVal = new UnsafeBuffer(allocateDirect(valSize));
     }
 
     void write() throws Exception {
@@ -172,20 +180,24 @@ public class LmdbJavaAgrona {
   @State(Benchmark)
   public static class Reader extends LmdbJava {
 
+    Cursor<MutableDirectBuffer> c;
+    Txn<MutableDirectBuffer> txn;
+
     @Setup(Trial)
     @Override
     public void setup() throws Exception {
       env = create(PROXY_MDB);
       super.setup(false, false);
       super.write();
-      txn.reset(); // freshen TX + cursor to see new data
-      txn.renew();
-      c.renew(txn);
+      txn = env.txnRead();
+      c = db.openCursor(txn);
     }
 
     @TearDown(Trial)
     @Override
     public void teardown() throws Exception {
+      c.close();
+      txn.abort();
       super.teardown();
     }
   }

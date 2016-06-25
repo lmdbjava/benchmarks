@@ -16,6 +16,7 @@
 package org.lmdbjava.bench;
 
 import java.nio.ByteBuffer;
+import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
@@ -116,6 +117,17 @@ public class LmdbJavaByteBuff {
   @State(Benchmark)
   public static class LmdbJava extends CommonLmdbJava<ByteBuffer> {
 
+    ByteBuffer rwKey;
+    ByteBuffer rwVal;
+
+    @Override
+    public void setup(final boolean metaSync, final boolean sync) throws
+        Exception {
+      super.setup(metaSync, sync);
+      rwKey = allocateDirect(keySize).order(LITTLE_ENDIAN);
+      rwVal = allocateDirect(valSize);
+    }
+
     void write() throws Exception {
       try (final Txn<ByteBuffer> tx = env.txnWrite();) {
         try (final Cursor<ByteBuffer> c = db.openCursor(tx);) {
@@ -152,28 +164,31 @@ public class LmdbJavaByteBuff {
   @State(Benchmark)
   public static class Reader extends LmdbJava {
 
+    Cursor<ByteBuffer> c;
+
     /**
      * Whether the byte buffer accessor is safe or not
      */
     @Param({"false", "true"})
     boolean forceSafe;
 
+    Txn<ByteBuffer> txn;
+
     @Setup(Trial)
     @Override
     public void setup() throws Exception {
       env = create(forceSafe ? PROXY_SAFE : PROXY_OPTIMAL);
       super.setup(false, false);
-      txn.key().order(LITTLE_ENDIAN);
-      rwKey.order(LITTLE_ENDIAN);
       super.write();
-      txn.reset(); // freshen TX + cursor to see new data
-      txn.renew();
-      c.renew(txn);
+      txn = env.txnRead();
+      c = db.openCursor(txn);
     }
 
     @TearDown(Trial)
     @Override
     public void teardown() throws Exception {
+      c.close();
+      txn.abort();
       super.teardown();
     }
   }
@@ -198,8 +213,6 @@ public class LmdbJavaByteBuff {
     public void setup() throws Exception {
       env = create(PROXY_OPTIMAL);
       super.setup(metaSync, sync);
-      txn.key().order(LITTLE_ENDIAN);
-      rwKey.order(LITTLE_ENDIAN);
     }
 
     @TearDown(Invocation)

@@ -19,7 +19,6 @@ import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
 import java.util.HashSet;
 import java.util.Set;
-import org.lmdbjava.Cursor;
 import org.lmdbjava.Dbi;
 import org.lmdbjava.DbiFlags;
 import static org.lmdbjava.DbiFlags.MDB_CREATE;
@@ -30,7 +29,6 @@ import org.lmdbjava.EnvFlags;
 import static org.lmdbjava.EnvFlags.MDB_NOMETASYNC;
 import static org.lmdbjava.EnvFlags.MDB_NOSYNC;
 import static org.lmdbjava.EnvFlags.MDB_WRITEMAP;
-import org.lmdbjava.Txn;
 import org.openjdk.jmh.annotations.Param;
 import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.State;
@@ -79,13 +77,9 @@ public class CommonLmdbJava<T> extends Common {
   static final long mapSize(final int num, final int valSize) {
     return num * valSize * 128L;
   }
-  Cursor<T> c;
 
   Dbi<T> db;
   Env<T> env;
-  T rwKey;
-  T rwVal;
-  Txn<T> txn;
 
   /**
    * Whether {@link EnvFlags#MDB_WRITEMAP} is used.
@@ -99,16 +93,11 @@ public class CommonLmdbJava<T> extends Common {
 
     env.setMapSize(mapSize(num, valSize));
     env.setMaxDbs(1);
-    env.setMaxReaders(1);
+    env.setMaxReaders(2);
     env.open(tmp, POSIX_MODE, envFlags);
 
     final DbiFlags[] flags = dbiFlags(intKey);
     db = env.openDbi("db", flags);
-
-    txn = env.txnRead();
-    rwKey = txn.allocate(keySize);
-    rwVal = txn.allocate(valSize);
-    c = db.openCursor(txn);
   }
 
   @Override

@@ -59,8 +59,7 @@ public class LmdbJni {
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {
     r.crc.reset();
-    try (final Transaction tx = r.env.createReadTransaction();
-         final BufferCursor c = r.db.bufferCursor(tx)) {
+    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
       bh.consume(c.first());
       do {
         c.keyBuffer().getBytes(0, r.keyBytes, 0, r.keySize);
@@ -74,8 +73,7 @@ public class LmdbJni {
 
   @Benchmark
   public void readKey(final Reader r, final Blackhole bh) throws Exception {
-    try (final Transaction tx = r.env.createReadTransaction();
-         final BufferCursor c = r.db.bufferCursor(tx)) {
+    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
       for (final int key : r.keys) {
         if (r.intKey) {
           r.wkb.putInt(0, key);
@@ -92,8 +90,7 @@ public class LmdbJni {
 
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
-    try (final Transaction tx = r.env.createReadTransaction();
-         final BufferCursor c = r.db.bufferCursor(tx)) {
+    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
       bh.consume(c.last());
       do {
         bh.consume(c.keyBuffer());
@@ -104,8 +101,7 @@ public class LmdbJni {
 
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) throws Exception {
-    try (final Transaction tx = r.env.createReadTransaction();
-         final BufferCursor c = r.db.bufferCursor(tx)) {
+    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
       bh.consume(c.first());
       do {
         bh.consume(c.keyBuffer());
@@ -117,8 +113,7 @@ public class LmdbJni {
   @Benchmark
   public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
     long result = 0;
-    try (final Transaction tx = r.env.createReadTransaction();
-         final BufferCursor c = r.db.bufferCursor(tx)) {
+    try (final BufferCursor c = r.db.bufferCursor(r.tx)) {
       bh.consume(c.first());
       do {
         result += xx_r39().hashMemory(c.keyBuffer().addressOffset(), r.keySize);
@@ -148,6 +143,7 @@ public class LmdbJni {
      * byte[] or ByteBuffer).
      */
     byte[] keyBytes;
+    Transaction tx;
 
     /**
      * CRC scratch space (required as memory-mapped DirectBuffer can't return a
@@ -193,6 +189,7 @@ public class LmdbJni {
         tx.commit();
       }
 
+      tx = env.createReadTransaction();
     }
 
     @Override
@@ -243,6 +240,8 @@ public class LmdbJni {
     public void setup() throws Exception {
       super.setup(false, false);
       super.write();
+      tx.reset(); // freshen TX to see new data
+      tx.renew();
     }
 
     @TearDown(Trial)

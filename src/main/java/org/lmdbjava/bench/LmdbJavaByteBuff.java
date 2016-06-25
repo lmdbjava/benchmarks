@@ -16,23 +16,22 @@
 package org.lmdbjava.bench;
 
 import java.nio.ByteBuffer;
-import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
-import org.lmdbjava.ByteBufferVal;
-import static org.lmdbjava.ByteBufferVal.forBuffer;
+import static org.lmdbjava.ByteBufferProxy.PROXY_OPTIMAL;
+import static org.lmdbjava.ByteBufferProxy.PROXY_SAFE;
 import org.lmdbjava.Cursor;
 import static org.lmdbjava.CursorOp.MDB_FIRST;
 import static org.lmdbjava.CursorOp.MDB_LAST;
 import static org.lmdbjava.CursorOp.MDB_NEXT;
 import static org.lmdbjava.CursorOp.MDB_PREV;
 import static org.lmdbjava.CursorOp.MDB_SET_KEY;
+import static org.lmdbjava.Env.create;
 import org.lmdbjava.EnvFlags;
 import org.lmdbjava.PutFlags;
 import static org.lmdbjava.PutFlags.MDB_APPEND;
 import org.lmdbjava.Txn;
-import static org.lmdbjava.TxnFlags.MDB_RDONLY;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -59,74 +58,53 @@ public class LmdbJavaByteBuff {
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {
     r.crc.reset();
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final Cursor c = r.db.openCursor(tx)) {
-      bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
-      do {
-        r.rkv.refresh();
-        r.rvv.refresh();
-        r.crc.update(r.rkb);
-        r.crc.update(r.rvb);
-      } while (c.get(r.rkv, r.rvv, MDB_NEXT));
-    }
+    bh.consume(r.c.get(null, MDB_FIRST));
+    do {
+      r.crc.update(r.txn.key());
+      r.crc.update(r.txn.val());
+    } while (r.c.get(null, MDB_NEXT));
     bh.consume(r.crc.getValue());
   }
 
   @Benchmark
   public void readKey(final Reader r, final Blackhole bh) throws Exception {
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final Cursor c = r.db.openCursor(tx)) {
-      for (final int key : r.keys) {
-        r.wkb.clear();
-        if (r.intKey) {
-          r.wkb.putInt(0, key).flip();
-        } else {
-          final byte[] str = r.padKey(key).getBytes();
-          r.wkb.put(str, 0, str.length).flip();
-        }
-        bh.consume(c.get(r.wkv, r.rvv, MDB_SET_KEY));
-        bh.consume(r.rvv.size()); // force native memory lookup
-        // no need to re-wrap, as we never change buffer (auto-reset:off)
+    for (final int key : r.keys) {
+      r.rwKey.clear();
+      if (r.intKey) {
+        r.rwKey.putInt(0, key).flip();
+      } else {
+        final byte[] str = r.padKey(key).getBytes();
+        r.rwKey.put(str, 0, str.length).flip();
       }
+      bh.consume(r.c.get(r.rwKey, MDB_SET_KEY));
+      bh.consume(r.txn.val());
     }
   }
 
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final Cursor c = r.db.openCursor(tx)) {
-      bh.consume(c.get(r.rkv, r.rvv, MDB_LAST));
-      do {
-        bh.consume(r.rvv.size()); // force native memory lookup
-      } while (c.get(r.rkv, r.rvv, MDB_PREV));
-    }
+    bh.consume(r.c.get(null, MDB_LAST));
+    do {
+      bh.consume(r.txn.val());
+    } while (r.c.get(null, MDB_PREV));
   }
 
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) throws Exception {
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final Cursor c = r.db.openCursor(tx)) {
-      bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
-      do {
-        bh.consume(r.rvv.size()); // force native memory lookup
-      } while (c.get(r.rkv, r.rvv, MDB_NEXT));
-    }
+    bh.consume(r.c.get(null, MDB_FIRST));
+    do {
+      bh.consume(r.txn.val());
+    } while (r.c.get(null, MDB_NEXT));
   }
 
   @Benchmark
   public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
     long result = 0;
-    try (final Txn tx = new Txn(r.env, MDB_RDONLY);
-         final Cursor c = r.db.openCursor(tx)) {
-      bh.consume(c.get(r.rkv, r.rvv, MDB_FIRST));
-      do {
-        // while it's more Java idiomatic to use r.rkX.refresh() and present
-        // the r.rbX ByteBuffer to xx_r39, using hashMemory is faster as it
-        // avoids the field set costs of refresh() re-pointing the ByteBuffer
-        result += xx_r39().hashMemory(r.rkv.dataAddress(), r.keySize);
-        result += xx_r39().hashMemory(r.rvv.dataAddress(), r.valSize);
-      } while (c.get(r.rkv, r.rvv, MDB_NEXT));
-    }
+    bh.consume(r.c.get(null, MDB_FIRST));
+    do {
+      result += xx_r39().hashBytes(r.txn.key());
+      result += xx_r39().hashBytes(r.txn.val());
+    } while (r.c.get(null, MDB_NEXT));
     bh.consume(result);
   }
 
@@ -136,86 +114,33 @@ public class LmdbJavaByteBuff {
   }
 
   @State(Benchmark)
-  public static class LmdbJava extends CommonLmdbJava {
-
-    /**
-     * Read-only key buffer. This is the buffer used by {@link #rkv}.
-     */
-    ByteBuffer rkb;
-
-    /**
-     * Read-only key value. This is the value that wraps {@link #rkb}.
-     */
-    ByteBufferVal rkv;
-
-    /**
-     * Read-only value buffer. This is the buffer used by {@link #rvv}.
-     */
-    ByteBuffer rvb;
-
-    /**
-     * Read-only value value. This is the value that wraps {@link #rvb}.
-     */
-    ByteBufferVal rvv;
-
-    /**
-     * Writable key buffer. This is the buffer used by {@link #wkv}.
-     */
-    ByteBuffer wkb;
-
-    /**
-     * Writable key value. This is the value that wraps {@link #wkb}.
-     */
-    ByteBufferVal wkv;
-
-    /**
-     * Writable value buffer. This is the buffer used by {@link #wvv}.
-     */
-    ByteBuffer wvb;
-
-    /**
-     * Writable value value. This is the value that wraps {@link #wvb}.
-     */
-    ByteBufferVal wvv;
-
-    public void setup(final boolean metaSync, final boolean sync,
-                      final boolean forceSafe) throws Exception {
-      super.setup(metaSync, sync);
-      rkb = allocateDirect(0).order(LITTLE_ENDIAN);
-      rvb = allocateDirect(0).order(LITTLE_ENDIAN);
-      wkb = allocateDirect(keySize).order(LITTLE_ENDIAN);
-      wvb = allocateDirect(valSize).order(LITTLE_ENDIAN);
-      rkv = forBuffer(rkb, false, forceSafe);
-      rvv = forBuffer(rvb, false, forceSafe);
-      wkv = forBuffer(wkb, false, forceSafe);
-      wvv = forBuffer(wvb, false, forceSafe);
-    }
+  public static class LmdbJava extends CommonLmdbJava<ByteBuffer> {
 
     void write() throws Exception {
-      try (final Txn tx = new Txn(env);) {
-        try (final Cursor c = db.openCursor(tx);) {
+      try (final Txn<ByteBuffer> tx = env.txnWrite();) {
+        try (final Cursor<ByteBuffer> c = db.openCursor(tx);) {
           final PutFlags flags = sequential ? MDB_APPEND : null;
           final int rndByteMax = RND_MB.length - valSize;
           int rndByteOffset = 0;
           for (final int key : keys) {
-            wkb.clear();
-            wvb.clear();
+            rwKey.clear();
+            rwVal.clear();
             if (intKey) {
-              wkb.putInt(0, key).flip();
+              rwKey.putInt(0, key).flip();
             } else {
               final byte[] str = padKey(key).getBytes();
-              wkb.put(str, 0, str.length).flip();
+              rwKey.put(str, 0, str.length).flip();
             }
             if (valRandom) {
-              wvb.put(RND_MB, rndByteOffset, valSize).flip();
+              rwVal.put(RND_MB, rndByteOffset, valSize).flip();
               rndByteOffset += valSize;
               if (rndByteOffset >= rndByteMax) {
                 rndByteOffset = 0;
               }
             } else {
-              wvb.putInt(0, key).flip();
+              rwVal.putInt(0, key).flip();
             }
-            c.put(wkv, wvv, flags);
+            c.put(rwKey, rwVal, flags);
           }
         }
         tx.commit();
@@ -236,8 +161,14 @@ public class LmdbJavaByteBuff {
     @Setup(Trial)
     @Override
     public void setup() throws Exception {
-      super.setup(false, false, forceSafe);
+      env = create(forceSafe ? PROXY_SAFE : PROXY_OPTIMAL);
+      super.setup(false, false);
+      txn.key().order(LITTLE_ENDIAN);
+      rwKey.order(LITTLE_ENDIAN);
       super.write();
+      txn.reset(); // freshen TX + cursor to see new data
+      txn.renew();
+      c.renew(txn);
     }
 
     @TearDown(Trial)
@@ -265,7 +196,10 @@ public class LmdbJavaByteBuff {
     @Setup(Invocation)
     @Override
     public void setup() throws Exception {
-      super.setup(metaSync, sync, false);
+      env = create(PROXY_OPTIMAL);
+      super.setup(metaSync, sync);
+      txn.key().order(LITTLE_ENDIAN);
+      rwKey.order(LITTLE_ENDIAN);
     }
 
     @TearDown(Invocation)

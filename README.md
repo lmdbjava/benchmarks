@@ -48,30 +48,23 @@ every tuning option every library exposes, but pull requests are most welcome.
 2. Clone this repository and `mvn clean package`
 3. Run the benchmark with `java -jar target/benchmarks.jar`
 
+The benchmark offers many parameters, but to reduce execution time they default
+to a fast, mechanically-sympathetic workload (ie integer keys, sequential IO)
+that should fit in RAM. A default execution takes around 15 minutes on
+server-grade hardware (ie 2 x Intel Xeon E5-2667 v3 CPUs, 512 GB RAM etc).
+
 You can append ``-h`` to the ``java -jar`` line for JMH help. For example, use:
 
-  * ``-wi 0`` to run zero warm-ups (not recommended)
-  * ``-i 1`` to run one iteration only (not recommended)
-  * ``-f 3`` to run three forks for smaller error ranges (recommended)
-  * ``-p num=100,1000`` to test maps with only 100 and 1000 elements
-  * ``-p intKey=true`` to test with only integer-based keys
-  * ``-lp`` to list all available parameters
-  * ``-rf csv`` to emit CSV output
   * ``-foe true`` to stop on any error (recommended)
+  * ``-rf csv`` to emit a CSV results file (recommended)
+  * ``-f 3`` to run three forks for smaller error ranges (recommended)
+  * ``-lp`` to list all available parameters
+  * ``-p intKey=true,false`` to test both integer and string-based keys
 
-Collectively the various parameters (available from `-lp`) allow you to create
-workloads of different iteration counts (`num`), key sizes and layout (`intKey`),
-value sizes (`valSize`), mechanical sympathy (`sequential`, `valRandom`) and
-library feature fine-tuning (eg `forceSafe`, `writeMap` etc).
-
-If you're mainly interested in a quick run that compares the mechanically
-sympathetic performance of the libraries, the following is suggested:
-
-    java -jar target/benchmarks.jar -p intKey=true \
-                                    -p sequential=true \
-                                    -p valRandom=false \
-                                    -p forceSafe=false \
-                                    -foe true -rf csv
+The parameters (available from `-lp`) allow you to create workloads of different
+iteration counts (`num`), key sizes and layout (`intKey`), value sizes
+(`valSize`), mechanical sympathy (`sequential`, `valRandom`) and feature tuning
+(eg `forceSafe`, `writeMap` etc).
 
 Keep an eye on your temporary file system's `jmh-bench-*` directory. This will
 reveal the key-value on-disk size. You can change the `num` and/or `valSize`
@@ -87,9 +80,6 @@ if you have any questions.
 
 Contributions are welcome! Please see the LmdbJava project's
 [Contributing Guidelines](https://github.com/lmdbjava/lmdbjava/blob/master/CONTRIBUTING.md).
-We have tried to be consistent and reasonable in the use of third-party
-libraries, but we do not claim to be experts in them. Any enhancements which
-better use those libraries are particularly welcome.
 
 ## License
 

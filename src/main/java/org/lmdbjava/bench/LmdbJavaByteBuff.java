@@ -169,7 +169,7 @@ public class LmdbJavaByteBuff {
     /**
      * Whether the byte buffer accessor is safe or not
      */
-    @Param({"false", "true"})
+    @Param({"false"})
     boolean forceSafe;
 
     Txn<ByteBuffer> txn;

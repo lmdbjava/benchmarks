@@ -52,7 +52,7 @@ public class Common {
    * (taking 4 bytes) or as zero-padded 16 byte strings. Storing keys as
    * integers offers a major performance gain.
    */
-  @Param({"false", "true"})
+  @Param({"true"})
   boolean intKey;
 
   /**
@@ -78,7 +78,7 @@ public class Common {
    * and the keys will instead be inserted (and read back via "readKeys") in a
    * random order.
    */
-  @Param({"true", "false"})
+  @Param({"true"})
   boolean sequential;
 
   File tmp;

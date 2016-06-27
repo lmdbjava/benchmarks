@@ -18,6 +18,7 @@ package org.lmdbjava.bench;
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
 import static java.nio.ByteBuffer.allocateDirect;
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.agrona.MutableDirectBuffer;
@@ -141,7 +142,7 @@ public class LmdbJavaAgrona {
       super.setup(metaSync, sync);
       keyBytes = new byte[keySize];
       valBytes = new byte[valSize];
-      rwKey = new UnsafeBuffer(allocateDirect(keySize));
+      rwKey = new UnsafeBuffer(allocateDirect(keySize).order(LITTLE_ENDIAN));
       rwVal = new UnsafeBuffer(allocateDirect(valSize));
     }
 

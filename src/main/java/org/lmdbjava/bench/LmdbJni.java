@@ -79,7 +79,6 @@ public class LmdbJni {
       }
       r.c.keyWrite(r.wkb);
       bh.consume(r.c.seekKey());
-      bh.consume(r.c.keyBuffer());
       bh.consume(r.c.valBuffer());
     }
   }
@@ -88,7 +87,6 @@ public class LmdbJni {
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
     bh.consume(r.c.last());
     do {
-      bh.consume(r.c.keyBuffer());
       bh.consume(r.c.valBuffer());
     } while (r.c.prev());
   }
@@ -97,7 +95,6 @@ public class LmdbJni {
   public void readSeq(final Reader r, final Blackhole bh) throws Exception {
     bh.consume(r.c.first());
     do {
-      bh.consume(r.c.keyBuffer());
       bh.consume(r.c.valBuffer());
     } while (r.c.next());
   }

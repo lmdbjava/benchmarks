@@ -80,7 +80,6 @@ public class LmdbJavaAgrona {
         r.rwKey.putStringWithoutLengthUtf8(0, r.padKey(key));
       }
       bh.consume(r.c.get(r.rwKey, MDB_SET_KEY));
-      bh.consume(r.txn.key());
       bh.consume(r.txn.val());
     }
   }
@@ -89,7 +88,6 @@ public class LmdbJavaAgrona {
   public void readRev(final Reader r, final Blackhole bh) throws Exception {
     bh.consume(r.c.seek(MDB_LAST));
     do {
-      bh.consume(r.txn.key());
       bh.consume(r.txn.val());
     } while (r.c.seek(MDB_PREV));
   }

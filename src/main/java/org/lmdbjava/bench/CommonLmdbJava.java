@@ -32,6 +32,7 @@ import static org.lmdbjava.EnvFlags.MDB_WRITEMAP;
 import org.openjdk.jmh.annotations.Param;
 import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.infra.BenchmarkParams;
 
 /**
  * Additional {@link State} members used by LmdbJava benchmarks.
@@ -87,8 +88,9 @@ public class CommonLmdbJava<T> extends Common {
   @Param({"true"})
   boolean writeMap;
 
-  public void setup(final boolean metaSync, final boolean sync) throws Exception {
-    super.setup();
+  public void setup(final BenchmarkParams b, final boolean metaSync,
+                    final boolean sync) throws Exception {
+    super.setup(b);
     final EnvFlags[] envFlags = envFlags(writeMap, metaSync, sync);
 
     env.setMapSize(mapSize(num, valSize));

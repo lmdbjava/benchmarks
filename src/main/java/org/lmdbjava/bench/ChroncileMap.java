@@ -35,6 +35,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.Blackhole;
 
 @OutputTimeUnit(MILLISECONDS)
@@ -78,8 +79,8 @@ public class ChroncileMap {
     MutableDirectBuffer wvb;
 
     @Override
-    public void setup() throws Exception {
-      super.setup();
+    public void setup(BenchmarkParams b) throws Exception {
+      super.setup(b);
       wkb = new UnsafeBuffer(new byte[keySize]);
       wvb = new UnsafeBuffer(new byte[valSize]);
 
@@ -124,8 +125,8 @@ public class ChroncileMap {
 
     @Setup(Trial)
     @Override
-    public void setup() throws Exception {
-      super.setup();
+    public void setup(BenchmarkParams b) throws Exception {
+      super.setup(b);
       super.write();
     }
 
@@ -141,8 +142,8 @@ public class ChroncileMap {
 
     @Setup(Invocation)
     @Override
-    public void setup() throws Exception {
-      super.setup();
+    public void setup(BenchmarkParams b) throws Exception {
+      super.setup(b);
     }
 
     @TearDown(Invocation)

@@ -50,6 +50,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.Blackhole;
 
 @OutputTimeUnit(MILLISECONDS)
@@ -137,9 +138,10 @@ public class LmdbJavaAgrona {
     byte[] valBytes;
 
     @Override
-    public void setup(final boolean metaSync, final boolean sync) throws
+    public void setup(BenchmarkParams b, final boolean metaSync,
+                      final boolean sync) throws
         Exception {
-      super.setup(metaSync, sync);
+      super.setup(b, metaSync, sync);
       keyBytes = new byte[keySize];
       valBytes = new byte[valSize];
       rwKey = new UnsafeBuffer(allocateDirect(keySize).order(LITTLE_ENDIAN));
@@ -184,9 +186,9 @@ public class LmdbJavaAgrona {
 
     @Setup(Trial)
     @Override
-    public void setup() throws Exception {
+    public void setup(BenchmarkParams b) throws Exception {
       env = create(PROXY_MDB);
-      super.setup(false, false);
+      super.setup(b, false, false);
       super.write();
       txn = env.txnRead();
       c = db.openCursor(txn);
@@ -218,9 +220,9 @@ public class LmdbJavaAgrona {
 
     @Setup(Invocation)
     @Override
-    public void setup() throws Exception {
+    public void setup(BenchmarkParams b) throws Exception {
       env = create(PROXY_MDB);
-      super.setup(metaSync, sync);
+      super.setup(b, metaSync, sync);
     }
 
     @TearDown(Invocation)

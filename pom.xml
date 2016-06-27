@@ -29,6 +29,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.github.jnr</groupId>
+      <artifactId>jnr-posix</artifactId>
+      <version>3.0.29</version>
+    </dependency>
+    <dependency>
       <groupId>org.lmdbjava</groupId>
       <artifactId>lmdbjava</artifactId>
       <version>0.0.1-SNAPSHOT</version>

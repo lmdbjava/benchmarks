@@ -47,6 +47,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.Blackhole;
 
 @OutputTimeUnit(MILLISECONDS)
@@ -151,9 +152,10 @@ public class LmdbJni {
      */
     DirectBuffer wvb;
 
-    public void setup(final boolean metaSync, final boolean sync) throws
+    public void setup(BenchmarkParams b, final boolean metaSync,
+                      final boolean sync) throws
         Exception {
-      super.setup();
+      super.setup(b);
       wkb = new DirectBuffer(allocateDirect(keySize));
       wvb = new DirectBuffer(allocateDirect(valSize));
       keyBytes = new byte[keySize];
@@ -222,8 +224,8 @@ public class LmdbJni {
 
     @Setup(Trial)
     @Override
-    public void setup() throws Exception {
-      super.setup(false, false);
+    public void setup(BenchmarkParams b) throws Exception {
+      super.setup(b, false, false);
       super.write();
       tx = env.createReadTransaction();
       c = db.bufferCursor(tx);
@@ -255,8 +257,8 @@ public class LmdbJni {
 
     @Setup(Invocation)
     @Override
-    public void setup() throws Exception {
-      super.setup(metaSync, sync);
+    public void setup(BenchmarkParams b) throws Exception {
+      super.setup(b, metaSync, sync);
     }
 
     @TearDown(Invocation)

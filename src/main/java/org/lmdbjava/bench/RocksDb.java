@@ -33,6 +33,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.Blackhole;
 import static org.rocksdb.CompressionType.NO_COMPRESSION;
 import org.rocksdb.Options;
@@ -127,8 +128,8 @@ public class RocksDb {
     MutableDirectBuffer wvb;
 
     @Override
-    public void setup() throws Exception {
-      super.setup();
+    public void setup(BenchmarkParams b) throws Exception {
+      super.setup(b);
       wkb = new UnsafeBuffer(new byte[keySize]);
       wvb = new UnsafeBuffer(new byte[valSize]);
       loadLibrary();
@@ -174,8 +175,8 @@ public class RocksDb {
 
     @Setup(Trial)
     @Override
-    public void setup() throws Exception {
-      super.setup();
+    public void setup(BenchmarkParams b) throws Exception {
+      super.setup(b);
       super.write();
     }
 
@@ -191,8 +192,8 @@ public class RocksDb {
 
     @Setup(Invocation)
     @Override
-    public void setup() throws Exception {
-      super.setup();
+    public void setup(BenchmarkParams b) throws Exception {
+      super.setup(b);
     }
 
     @TearDown(Invocation)

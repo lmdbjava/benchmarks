@@ -47,6 +47,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.Blackhole;
 
 @OutputTimeUnit(MILLISECONDS)
@@ -121,9 +122,10 @@ public class LmdbJavaByteBuff {
     ByteBuffer rwVal;
 
     @Override
-    public void setup(final boolean metaSync, final boolean sync) throws
+    public void setup(BenchmarkParams b, final boolean metaSync,
+                      final boolean sync) throws
         Exception {
-      super.setup(metaSync, sync);
+      super.setup(b, metaSync, sync);
       rwKey = allocateDirect(keySize).order(LITTLE_ENDIAN);
       rwVal = allocateDirect(valSize);
     }
@@ -176,9 +178,9 @@ public class LmdbJavaByteBuff {
 
     @Setup(Trial)
     @Override
-    public void setup() throws Exception {
+    public void setup(BenchmarkParams b) throws Exception {
       env = create(forceSafe ? PROXY_SAFE : PROXY_OPTIMAL);
-      super.setup(false, false);
+      super.setup(b, false, false);
       super.write();
       txn = env.txnRead();
       c = db.openCursor(txn);
@@ -210,9 +212,9 @@ public class LmdbJavaByteBuff {
 
     @Setup(Invocation)
     @Override
-    public void setup() throws Exception {
+    public void setup(BenchmarkParams b) throws Exception {
       env = create(PROXY_OPTIMAL);
-      super.setup(metaSync, sync);
+      super.setup(b, metaSync, sync);
     }
 
     @TearDown(Invocation)

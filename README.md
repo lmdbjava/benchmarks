@@ -66,10 +66,11 @@ iteration counts (`num`), key sizes and layout (`intKey`), value sizes
 (`valSize`), mechanical sympathy (`sequential`, `valRandom`) and feature tuning
 (eg `forceSafe`, `writeMap` etc).
 
-Keep an eye on your temporary file system's `jmh-bench-*` directory. This will
-reveal the key-value on-disk size. You can change the `num` and/or `valSize`
-parameters if you'd like different on-disk sizes. If you wish to test with an
-another file system, just use `-Djava.io.tmpdir=/somewhere/you/like`.
+``System.out`` will display the actual on-disk usage of each implementation as
+``"Bytes" \t longVal \t benchId`` lines. This is not the "apparent" size (given
+sparse files are typical), but the actual on-disk space used. The underlying
+storage location defaults to the temporary file system. To force an alternate
+location, invoke Java with `-Djava.io.tmpdir=/somewhere/you/like`.
 
 ## Support
 

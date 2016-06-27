@@ -20,13 +20,18 @@ import static java.lang.Integer.BYTES;
 import static java.lang.Integer.MIN_VALUE;
 import static java.lang.String.format;
 import static java.lang.System.getProperty;
+import static java.lang.System.out;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.zip.CRC32;
+import jnr.posix.FileStat;
+import jnr.posix.POSIX;
+import static jnr.posix.POSIXFactory.getPOSIX;
 import org.agrona.collections.IntHashSet;
 import org.openjdk.jmh.annotations.Param;
 import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.infra.BenchmarkParams;
 
 /**
  * Common JMH {@link State} superclass for all DB benchmark states.
@@ -37,9 +42,12 @@ import org.openjdk.jmh.annotations.State;
 @State(Benchmark)
 public class Common {
 
+  private static final POSIX POSIX = getPOSIX();
+
   private static final Random RND = new SecureRandom();
   static final byte[] RND_MB = new byte[1_048_576];
   static final int STRING_KEY_LENGTH = 16;
+  static final int S_BLKSIZE = 512; // from sys/stat.h
 
   static {
     RND.nextBytes(RND_MB);
@@ -97,7 +105,7 @@ public class Common {
   @Param({"100"})
   int valSize;
 
-  public void setup() throws Exception {
+  public void setup(BenchmarkParams b) throws Exception {
     keySize = intKey ? BYTES : STRING_KEY_LENGTH;
     crc = new CRC32();
     final IntHashSet set = new IntHashSet(num, MIN_VALUE);
@@ -121,11 +129,30 @@ public class Common {
     }
 
     final String tmpParent = getProperty("java.io.tmpdir");
-    tmp = new File(tmpParent, "jmh-bench-" + RND.nextInt());
+    tmp = new File(tmpParent, b.id());
+    if (tmp.exists()) {
+      for (final File f : tmp.listFiles()) {
+        f.delete();
+      }
+      tmp.delete();
+    }
     tmp.mkdirs();
   }
 
+  @SuppressWarnings("UseOfSystemOutOrSystemErr")
   public void teardown() throws Exception {
+    if (tmp.getName().contains(".readKey-")) {
+      // we only output for key, as all impls offer it and it should be fixed
+      long bytes = 0;
+      for (final File f : tmp.listFiles()) {
+        if (f.isDirectory()) {
+          throw new UnsupportedOperationException("impl created directory");
+        }
+        final FileStat stat = POSIX.stat(f.getAbsolutePath());
+        bytes += (stat.blocks() * S_BLKSIZE);
+      }
+      out.println("\nBytes\t" + bytes + "\t" + tmp.getName());
+    }
     for (final File f : tmp.listFiles()) {
       f.delete();
     }

@@ -96,7 +96,7 @@ public class Common {
    * If true, the random bytes are obtained sequentially from a 1 MB random byte
    * buffer.
    */
-  @Param({"true"})
+  @Param({"false"})
   boolean valRandom;
 
   /**

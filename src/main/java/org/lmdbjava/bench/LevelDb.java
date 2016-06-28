@@ -150,10 +150,14 @@ public class LevelDb {
     }
 
     void write() throws Exception {
+      final int batchSize = 1_000; // db_bench.cc write batch size
+
+      int count = 0;
       try (final WriteBatch batch = db.createWriteBatch()) {
         final int rndByteMax = RND_MB.length - valSize;
         int rndByteOffset = 0;
         for (final int key : keys) {
+          count++;
           if (intKey) {
             wkb.putInt(0, key, LITTLE_ENDIAN);
           } else {
@@ -169,8 +173,10 @@ public class LevelDb {
             wvb.putInt(0, key);
           }
           batch.put(wkb.byteArray(), wvb.byteArray());
+          if (count % batchSize == 0) {
+            db.write(batch);
+          }
         }
-        db.write(batch);
       }
     }
   }

@@ -24,6 +24,7 @@ import static net.openhft.hashing.LongHashFunction.xx_r39;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import static org.agrona.concurrent.UnsafeBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
+import static org.lmdbjava.CopyFlags.MDB_CP_COMPACT;
 import org.lmdbjava.Cursor;
 import static org.lmdbjava.Env.create;
 import org.lmdbjava.EnvFlags;
@@ -190,6 +191,8 @@ public class LmdbJavaAgrona {
       env = create(PROXY_MDB);
       super.setup(b, false, false);
       super.write();
+      env.copy(compact, MDB_CP_COMPACT);
+      reportSpaceUsed(compact);
       txn = env.txnRead();
       c = db.openCursor(txn);
     }

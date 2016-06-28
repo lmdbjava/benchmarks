@@ -16,6 +16,7 @@
 package org.lmdbjava.bench;
 
 import java.io.File;
+import java.io.IOException;
 import static java.lang.Integer.BYTES;
 import static java.lang.Integer.MIN_VALUE;
 import static java.lang.String.format;
@@ -52,6 +53,8 @@ public class Common {
   static {
     RND.nextBytes(RND_MB);
   }
+
+  File compact;
 
   CRC32 crc;
 
@@ -128,35 +131,48 @@ public class Common {
       }
     }
 
-    final String tmpParent = getProperty("java.io.tmpdir");
-    tmp = new File(tmpParent, b.id());
-    if (tmp.exists()) {
-      for (final File f : tmp.listFiles()) {
-        f.delete();
-      }
-      tmp.delete();
+    tmp = create(b, "");
+    compact = create(b, "-compacted");
+  }
+
+  public void teardown() throws Exception {
+    // we only output for key, as all impls offer it and it should be fixed
+    if (tmp.getName().contains(".readKey-")) {
+      reportSpaceUsed(tmp);
     }
-    tmp.mkdirs();
+    rmdir(tmp);
+    rmdir(compact);
+  }
+
+  private File create(BenchmarkParams b, String suffix) throws Exception {
+    final String tmpParent = getProperty("java.io.tmpdir");
+    final File f = new File(tmpParent, b.id() + suffix);
+    rmdir(f);
+    f.mkdirs();
+    return f;
+  }
+
+  private void rmdir(File file) throws IOException {
+    if (!file.exists()) {
+      return;
+    }
+    for (final File f : file.listFiles()) {
+      f.delete();
+    }
+    file.delete();
   }
 
   @SuppressWarnings("UseOfSystemOutOrSystemErr")
-  public void teardown() throws Exception {
-    if (tmp.getName().contains(".readKey-")) {
-      // we only output for key, as all impls offer it and it should be fixed
-      long bytes = 0;
-      for (final File f : tmp.listFiles()) {
-        if (f.isDirectory()) {
-          throw new UnsupportedOperationException("impl created directory");
-        }
-        final FileStat stat = POSIX.stat(f.getAbsolutePath());
-        bytes += (stat.blocks() * S_BLKSIZE);
+  protected void reportSpaceUsed(final File dir) {
+    long bytes = 0;
+    for (final File f : dir.listFiles()) {
+      if (f.isDirectory()) {
+        throw new UnsupportedOperationException("impl created directory");
       }
-      out.println("\nBytes\t" + bytes + "\t" + tmp.getName());
+      final FileStat stat = POSIX.stat(f.getAbsolutePath());
+      bytes += (stat.blocks() * S_BLKSIZE);
     }
-    for (final File f : tmp.listFiles()) {
-      f.delete();
-    }
-    tmp.delete();
+    out.println("\nBytes\t" + bytes + "\t" + dir.getName());
   }
 
   final String padKey(int key) {

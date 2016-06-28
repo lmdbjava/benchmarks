@@ -21,13 +21,13 @@ import static java.lang.Integer.MIN_VALUE;
 import static java.lang.String.format;
 import static java.lang.System.getProperty;
 import static java.lang.System.out;
-import java.security.SecureRandom;
-import java.util.Random;
 import java.util.zip.CRC32;
 import jnr.posix.FileStat;
 import jnr.posix.POSIX;
 import static jnr.posix.POSIXFactory.getPOSIX;
 import org.agrona.collections.IntHashSet;
+import org.apache.commons.math3.random.BitsStreamGenerator;
+import org.apache.commons.math3.random.MersenneTwister;
 import org.openjdk.jmh.annotations.Param;
 import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.State;
@@ -44,7 +44,7 @@ public class Common {
 
   private static final POSIX POSIX = getPOSIX();
 
-  private static final Random RND = new SecureRandom();
+  private static final BitsStreamGenerator RND = new MersenneTwister();
   static final byte[] RND_MB = new byte[1_048_576];
   static final int STRING_KEY_LENGTH = 16;
   static final int S_BLKSIZE = 512; // from sys/stat.h

@@ -55,7 +55,7 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class LmdbJavaByteBuff {
+public class LmdbJavaByteBuffer {
 
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {

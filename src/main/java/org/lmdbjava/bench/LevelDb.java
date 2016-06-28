@@ -152,10 +152,10 @@ public class LevelDb {
     void write() throws Exception {
       final int batchSize = 1_000; // db_bench.cc write batch size
 
-      int count = 0;
       try (final WriteBatch batch = db.createWriteBatch()) {
         final int rndByteMax = RND_MB.length - valSize;
         int rndByteOffset = 0;
+        int count = 0;
         for (final int key : keys) {
           count++;
           if (intKey) {

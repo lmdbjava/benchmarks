@@ -76,7 +76,7 @@ public class CommonLmdbJava<T> extends Common {
   }
 
   static final long mapSize(final int num, final int valSize) {
-    return ((long) num) * ((long) valSize) * 32L / 10L;
+    return num * ((long) valSize) * 32L / 10L;
   }
 
   Dbi<T> db;

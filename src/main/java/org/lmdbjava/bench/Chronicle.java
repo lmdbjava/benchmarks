@@ -43,7 +43,7 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class ChroncileMap {
+public class Chronicle {
 
   // Chroncile Map does not provide ordered keys, so no CRC/XXH64/rev/prev test
   @Benchmark

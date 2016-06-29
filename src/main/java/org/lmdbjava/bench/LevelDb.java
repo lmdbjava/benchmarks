@@ -37,6 +37,7 @@ import static org.openjdk.jmh.annotations.Level.Trial;
 import org.openjdk.jmh.annotations.Measurement;
 import static org.openjdk.jmh.annotations.Mode.SampleTime;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Param;
 import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -112,7 +113,7 @@ public class LevelDb {
 
   @Benchmark
   public void write(final Writer w, final Blackhole bh) throws Exception {
-    w.write();
+    w.write(w.batchSize);
   }
 
   @State(value = Benchmark)
@@ -149,33 +150,31 @@ public class LevelDb {
       super.teardown();
     }
 
-    void write() throws Exception {
-      final int batchSize = 1_000; // db_bench.cc write batch size
-
-      try (final WriteBatch batch = db.createWriteBatch()) {
-        final int rndByteMax = RND_MB.length - valSize;
-        int rndByteOffset = 0;
-        int count = 0;
-        for (final int key : keys) {
-          count++;
-          if (intKey) {
-            wkb.putInt(0, key, LITTLE_ENDIAN);
-          } else {
-            wkb.putStringWithoutLengthUtf8(0, padKey(key));
+    void write(final int batchSize) throws Exception {
+      final int rndByteMax = RND_MB.length - valSize;
+      int rndByteOffset = 0;
+      WriteBatch batch = db.createWriteBatch();
+      for (int i = 0; i < keys.length; i++) {
+        final int key = keys[i];
+        if (intKey) {
+          wkb.putInt(0, key, LITTLE_ENDIAN);
+        } else {
+          wkb.putStringWithoutLengthUtf8(0, padKey(key));
+        }
+        if (valRandom) {
+          wvb.putBytes(0, RND_MB, rndByteOffset, valSize);
+          rndByteOffset += valSize;
+          if (rndByteOffset >= rndByteMax) {
+            rndByteOffset = 0;
           }
-          if (valRandom) {
-            wvb.putBytes(0, RND_MB, rndByteOffset, valSize);
-            rndByteOffset += valSize;
-            if (rndByteOffset >= rndByteMax) {
-              rndByteOffset = 0;
-            }
-          } else {
-            wvb.putInt(0, key);
-          }
-          batch.put(wkb.byteArray(), wvb.byteArray());
-          if (count % batchSize == 0) {
-            db.write(batch);
-          }
+        } else {
+          wvb.putInt(0, key);
+        }
+        batch.put(wkb.byteArray(), wvb.byteArray());
+        if (i % batchSize == 0) {
+          db.write(batch);
+          batch.close();
+          batch = db.createWriteBatch();
         }
       }
     }
@@ -188,7 +187,7 @@ public class LevelDb {
     @Override
     public void setup(BenchmarkParams b) throws Exception {
       super.setup(b);
-      super.write();
+      super.write(1);
     }
 
     @TearDown(Trial)
@@ -200,6 +199,9 @@ public class LevelDb {
 
   @State(Benchmark)
   public static class Writer extends CommonLevelDb {
+
+    @Param({"1000000"})
+    int batchSize;
 
     @Setup(Invocation)
     @Override

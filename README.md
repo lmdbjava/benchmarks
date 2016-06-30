@@ -3,8 +3,8 @@
 
 # LmdbJava Benchmarks
 
-** Just want the latest results?
-[View them here!](https://github.com/lmdbjava/benchmarks/blob/master/results/20160630/README.md) **
+**Just want the latest results?
+[View them here!](https://github.com/lmdbjava/benchmarks/blob/master/results/20160630/README.md)**
 
 This is a [JMH](http://openjdk.java.net/projects/code-tools/jmh/) benchmark
 of open source, embedded, memory-mapped, key-value stores available from Java:

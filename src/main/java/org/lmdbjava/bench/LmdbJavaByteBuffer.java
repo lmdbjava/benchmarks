@@ -179,7 +179,7 @@ public class LmdbJavaByteBuffer {
     @Setup(Trial)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      env = create(forceSafe ? PROXY_SAFE : PROXY_OPTIMAL);
+      bufferProxy = forceSafe ? PROXY_SAFE : PROXY_OPTIMAL;
       super.setup(b, false, false);
       super.write();
       txn = env.txnRead();
@@ -213,7 +213,7 @@ public class LmdbJavaByteBuffer {
     @Setup(Invocation)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      env = create(PROXY_OPTIMAL);
+      bufferProxy = PROXY_OPTIMAL;
       super.setup(b, metaSync, sync);
     }
 

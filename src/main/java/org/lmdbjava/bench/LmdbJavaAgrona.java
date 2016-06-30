@@ -188,7 +188,7 @@ public class LmdbJavaAgrona {
     @Setup(Trial)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      env = create(PROXY_MDB);
+      bufferProxy = PROXY_MDB;
       super.setup(b, false, false);
       super.write();
       env.copy(compact, MDB_CP_COMPACT);
@@ -224,7 +224,7 @@ public class LmdbJavaAgrona {
     @Setup(Invocation)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      env = create(PROXY_MDB);
+      bufferProxy = PROXY_MDB;
       super.setup(b, metaSync, sync);
     }
 

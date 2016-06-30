@@ -1,7 +1,7 @@
 # "Param: sync","Param: metaSync","Benchmark","Param: forceSafe","Param: ap","Score"
-false false "LmdbJavaAgrona (!wm)"  false 205.300457
-false false "LmdbJavaAgrona (wm)"  true 156.415707
-false false "LmdbJavaByteBuffer (!wm)"  false 199.794506
-false false "LmdbJavaByteBuffer (wm)"  true 166.014253
-false false "LmdbJni (!wm)"  false 206.148822
-false false "LmdbJni (wm)"  true 148.171342
+false false "LMDB BB (!wm)"  false 199.794506
+false false "LMDB BB (wm)"  true 166.014253
+false false "LMDB DB (!wm)"  false 205.300457
+false false "LMDB DB (wm)"  true 156.415707
+false false "LMDB JNI (!wm)"  false 206.148822
+false false "LMDB JNI (wm)"  true 148.171342

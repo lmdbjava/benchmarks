@@ -1,18 +1,18 @@
 # 1             2     3          4          5       6                    7          8             9                    10             11                 12                13             14              15                 16             17,,
 "readKey.Chronicle" true 22208.132964
-"readKey.LevelDb" true 175465.658998
-"readKey.LmdbJavaAgrona" true 2215.255937
-"readKey.LmdbJavaByteBuffer" true 2258.627523
-"readKey.LmdbJni" true 2150.475549
-"readKey.MapDb" true 182014.685930
-"readSeq.LevelDb" true 48481.371028
-"readSeq.LmdbJavaAgrona" true 1784.578719
-"readSeq.LmdbJavaByteBuffer" true 1458.428858
-"readSeq.LmdbJni" true 1061.651228
-"readSeq.MapDb" true 6135.661883
+"readKey.LevelDB" true 175465.658998
+"readKey.LMDB BB" true 2258.627523
+"readKey.LMDB DB" true 2215.255937
+"readKey.LMDB JNI" true 2150.475549
+"readKey.MapDB" true 182014.685930
+"readSeq.LevelDB" true 48481.371028
+"readSeq.LMDB BB" true 1458.428858
+"readSeq.LMDB DB" true 1784.578719
+"readSeq.LMDB JNI" true 1061.651228
+"readSeq.MapDB" true 6135.661883
 "write.Chronicle" true 25122.598150
-"write.LevelDb" true 17272.351107
-"write.LmdbJavaAgrona" true 25668.570768
-"write.LmdbJavaByteBuffer" true 25756.504699
-"write.LmdbJni" true 26021.905051
-"write.MapDb" true 604236.726144
+"write.LevelDB" true 17272.351107
+"write.LMDB BB" true 25756.504699
+"write.LMDB DB" true 25668.570768
+"write.LMDB JNI" true 26021.905051
+"write.MapDB" true 604236.726144

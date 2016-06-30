@@ -8,6 +8,26 @@ The test used memory-sized workloads. The test server had 512 GB RAM and 2 x
 Intel Xeon E5-2667 v 3 CPUs. It was running Linux 4.5.4 (x86_64) with Java
 1.8.0_92.
 
+To make the plots smaller, the follow key is used:
+
+* Chroncile: [Chroncile Map](https://github.com/OpenHFT/Chronicle-Map)
+* Int: 32-bit Signed Integer (values always >= 0) with Little Endian Byte Order
+* LevelDB: [LevelDBJNI](https://github.com/fusesource/leveldbjni)
+* LMDB BB: [LmdbJava](https://github.com/lmdbjava/lmdbjava) with a Java-based
+  `ByteBuffer` (via `PROXY_OPTIMAL`)
+* LMDB DB: [LmdbJava](https://github.com/lmdbjava/lmdbjava) with an Agrona-based
+  `DirectBuffer`
+* LMDB JNI: [LMDBJNI](https://github.com/deephacks/lmdbjni) with its included,
+  `Unsafe`-based `DirectBuffer`
+* M: Million
+* MapDB: [MapDB](http://www.mapdb.org/)
+* Ms: Milliseconds
+* MVStore: [MVStore](http://h2database.com/html/mvstore.html)
+* RocksDB: [RocksDB](http://rocksdb.org/)
+* Rnd: Random data access (ie integers ordered via a Mersenne Twister)
+* Seq: Sequential data access (ie ordered integers)
+* Str: 16 byte string containing a zero-padded integer (no length prefix or null terminator)
+
 Raw CSV, TXT and DAT output files from the execution are available in the
 same GitHub directory as this README and images. The scripts used to execute
 the benchmark and generate the output files are also in the results directory.
@@ -20,7 +40,7 @@ These benchmarks all used 1 million sequential integer keys X 100 byte values.
 
 ![img](1-forceSafe-reads.png)
 
-LmdbJava supports several buffer types, including Agrona `MutableDirectBuffer`
+LmdbJava supports several buffer types, including Agrona `DirectBuffer`
 and Java's `ByteBuffer` (BB). The BB can be used in a safe mode or an
 `Unsafe`-based mode. The latter is the default. The above graph illustrates a
 consistent penalty when forcing safe mode to be used, as would be expected.
@@ -79,8 +99,8 @@ libraries. In all of these benchmarks we are inserting 1 million entries. The
 vertical (y) axis uses a log scale given the major performance differences
 between the fastest and slowest libraries.
 
-In the benchmarks below, Chroncile is only benchmarked for the `readKey` and
-`write` workloads. This is because Chroncile does not provide an ordered key
+In the benchmarks below, Chroncile Map is only benchmarked for the `readKey` and
+`write` workloads. This is because Chroncile Map does not provide an ordered key
 iterator, and such an iterator is required for the remaining benchmark methods.
 
 ![img](4-size-biggest.png)
@@ -137,7 +157,7 @@ scale continues to be used for the vertical (y) axis.
 ![img](5-intKey-seq.png)
 
 Starting with the most optimistic scenario of sequential keys, we see LMDB
-out-perform the alternatives in all cases except writes. Chroncile's write
+out-perform the alternatives in all cases except writes. Chroncile Map's write
 performance is good, but it should be remembered that it is not maintaining an
 index suitable for ordered key iteration.
 

@@ -71,7 +71,7 @@ sequential integer keys X 2,025 byte values.
 
 As shown, LevelDB write latency is lowest when the batch size is as large as
 possible. For the remaining benchmarks, the same batch size will be used as the
-number of entries (ie 1 million).
+number of entries (ie 1 or 10 million).
 
 ## Test 4: 1 Million X 100 Byte Values
 Now that appropriate settings have been verified, this is the first test of all
@@ -108,15 +108,17 @@ perform better than any alternative, including for writes.
 ![img](4-intKey-rnd.png)
 
 Next up we farewell mechanical sympathy and apply some random workloads. Here
-we write the keys our in random order, and we read them back (the `readKey`
+we write the keys out in random order, and we read them back (the `readKey`
 benchmark) in that same random order. The remaining operations are all cursors
-over the sequential keys. The graphs show LMDB is consistently faster for all
-operations, with the one exception being writes (where LevelDB is much faster).
+over sequentially-ordered keys. The graphs show LMDB is consistently faster for
+all operations, with the one exception being writes (where LevelDB is much
+faster).
 
-![img](4-stgKey-seq.png)
+![img](4-strKey-seq.png)
 
 This benchmark is the same as the previous, except with our zero-padded string
-keys. There are no surprises; we see the same results as reported above.
+keys. There are no surprises; we see the same results as reported immediately
+above.
 
 ## Test 5: 10 Million X 2,025 Byte Values
 In our final test we burden the implementations with a more aggressive in-memory
@@ -130,7 +132,7 @@ It was hoped all implementations above could be tested. However:
 
 Given test 4 showed the integer and string keys perform effectively the same,
 to reduce execution time this test only included the integer keys. A logarithmic
-scale continues to be used for the horizontal (y) axis.
+scale continues to be used for the vertical (y) axis.
 
 ![img](5-intKey-seq.png)
 
@@ -141,11 +143,11 @@ index suitable for ordered key iteration.
 
 ![img](5-intKey-rnd.png)
 
-Finally, with random access patterns we the same pattern as all our other
+Finally, with random access patterns we see the same pattern as all our other
 benchmarks: LMDB is the fastest for everything except reads.
 
 ## Conclusion
-For read-heavy workloads, LmdbJava offers the lowest latency solution available
-on Java today. Its two main trade-offs are larger memory mapped files and slower
-writes. While LevelDB provides superior write performance, this outcome is
-heavily dependent on large batch sizes.
+For read-heavy workloads, LmdbJava offers the lowest latency open source
+embedded key-value store available on Java today. Its two main trade-offs are
+larger memory mapped files and slower writes. While LevelDB provides superior
+write performance, this outcome is heavily dependent on large batch sizes.

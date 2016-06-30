@@ -1,0 +1,62 @@
+# JMH 1.12 (released 89 days ago)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 10 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.write
+# Parameters: (batchSize = 10000, intKey = true, num = 1000000, sequential = true, valRandom = false, valSize = 2025)
+
+# Run progress: 0.00% complete, ETA 00:00:00
+# Fork: 1 of 1
+Iteration   1: 21759.958 ms/op
+
+
+
+# JMH 1.12 (released 89 days ago)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 10 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.write
+# Parameters: (batchSize = 100000, intKey = true, num = 1000000, sequential = true, valRandom = false, valSize = 2025)
+
+# Run progress: 33.33% complete, ETA 00:00:45
+# Fork: 1 of 1
+Iteration   1: 6921.592 ms/op
+
+
+
+# JMH 1.12 (released 89 days ago)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 10 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 1000000, sequential = true, valRandom = false, valSize = 2025)
+
+# Run progress: 66.67% complete, ETA 00:00:15
+# Fork: 1 of 1
+Iteration   1: 1616.650 ms/op
+
+
+
+# Run complete. Total time: 00:00:32
+
+Benchmark      (batchSize)  (intKey)    (num)  (sequential)  (valRandom)  (valSize)  Mode  Cnt      Score   Error  Units
+LevelDb.write        10000      true  1000000          true        false       2025    ss       21759.958          ms/op
+LevelDb.write       100000      true  1000000          true        false       2025    ss        6921.592          ms/op
+LevelDb.write      1000000      true  1000000          true        false       2025    ss        1616.650          ms/op
+
+Benchmark result is saved to out-3.csv

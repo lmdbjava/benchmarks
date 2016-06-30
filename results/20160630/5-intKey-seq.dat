@@ -1,0 +1,18 @@
+# 1             2     3          4          5       6                    7          8             9                    10             11                 12                13             14              15                 16             17,,
+"readKey.Chronicle" true 22208.132964
+"readKey.LevelDb" true 175465.658998
+"readKey.LmdbJavaAgrona" true 2215.255937
+"readKey.LmdbJavaByteBuffer" true 2258.627523
+"readKey.LmdbJni" true 2150.475549
+"readKey.MapDb" true 182014.685930
+"readSeq.LevelDb" true 48481.371028
+"readSeq.LmdbJavaAgrona" true 1784.578719
+"readSeq.LmdbJavaByteBuffer" true 1458.428858
+"readSeq.LmdbJni" true 1061.651228
+"readSeq.MapDb" true 6135.661883
+"write.Chronicle" true 25122.598150
+"write.LevelDb" true 17272.351107
+"write.LmdbJavaAgrona" true 25668.570768
+"write.LmdbJavaByteBuffer" true 25756.504699
+"write.LmdbJni" true 26021.905051
+"write.MapDb" true 604236.726144

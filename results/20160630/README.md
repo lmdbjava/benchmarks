@@ -9,7 +9,7 @@ Intel Xeon E5-2667 v 3 CPUs. It was running Linux 4.5.4 (x86_64) with Java
 1.8.0_92.
 
 Raw CSV, TXT and DAT output files from the execution are available in the
-same GitHub directory as this README and images. The scripts uses to execute
+same GitHub directory as this README and images. The scripts used to execute
 the benchmark and generate the output files are also in the results directory.
 
 ## Test 1: LMDB Implementation Settings
@@ -144,7 +144,7 @@ index suitable for ordered key iteration.
 ![img](5-intKey-rnd.png)
 
 Finally, with random access patterns we see the same pattern as all our other
-benchmarks: LMDB is the fastest for everything except reads.
+benchmarks: LMDB is the fastest for everything except writes.
 
 ## Conclusion
 For read-heavy workloads, LmdbJava offers the lowest latency open source

@@ -10,7 +10,7 @@ Intel Xeon E5-2667 v 3 CPUs. It was running Linux 4.5.4 (x86_64) with Java
 
 To make the graphs and discussion smaller, the follow terms are used:
 
-* Chroncile: [Chroncile Map](https://github.com/OpenHFT/Chronicle-Map)
+* Chronicle: [Chronicle Map](https://github.com/OpenHFT/Chronicle-Map)
 * Int: 32-bit signed integer (using the implementation's default byte ordering)
 * LevelDB: [LevelDBJNI](https://github.com/fusesource/leveldbjni)
 * LMDB BB: [LmdbJava](https://github.com/lmdbjava/lmdbjava) with a Java-based
@@ -117,8 +117,8 @@ implementations. In all of these benchmarks we are inserting 1 million entries.
 The vertical (y) axis uses a log scale given the major performance differences
 between the fastest and slowest implementations.
 
-In the benchmarks below, Chroncile Map is only benchmarked for the `readKey` and
-`write` workloads. This is because Chroncile Map does not provide an ordered key
+In the benchmarks below, Chronicle Map is only benchmarked for the `readKey` and
+`write` workloads. This is because Chronicle Map does not provide an ordered key
 iterator, and such an iterator is required for the remaining benchmark methods.
 
 ### Storage Use
@@ -217,7 +217,7 @@ or 20,290,000,000 bytes. The actual byte values and respective overheads are:
 ![img](5-intKey-seq.png)
 
 Starting with the most optimistic scenario of sequential keys, we see LMDB
-out-perform the alternatives in all cases except writes. Chroncile Map's write
+out-perform the alternatives in all cases except writes. Chronicle Map's write
 performance is good, but it should be remembered that it is not maintaining an
 index suitable for ordered key iteration. As the logarithmically-scaled graphs
 make it difficult to see the significant differences between each
@@ -283,15 +283,15 @@ differences can be seen in tabular form below:
 |           | LMDB JNI       |  149345 | X 8.62     |
 |           | MapDB          |  588966 | X 33.98    |
 
-These tables also illustrate that LevelDB, Chroncile Map and MapDB write speeds
+These tables also illustrate that LevelDB, Chronicle Map and MapDB write speeds
 are around the same across both random and sequential patterns. However LMDB
 completes the random write workload around 5.7 times more slowly than with the
 sequential test. For `readSeq` we see very similar performance between random and
-sequential patterns. For `readKey` we see Chroncile Map perform around the same
+sequential patterns. For `readKey` we see Chronicle Map perform around the same
 speed, as you would expect given it uses hash-based keys. LMDB handles random key
 gets around five times more slowly than sequential gets. MapDB and LevelDB are
 around 1.5 times slower for random key gets. The bottom line is sequential
-access patterns are always much faster (with the exception of Chroncile Map,
+access patterns are always much faster (with the exception of Chronicle Map,
 which operates consistently regardless of access pattern).
 
 ## Conclusion

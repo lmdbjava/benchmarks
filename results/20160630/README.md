@@ -223,25 +223,31 @@ index suitable for ordered key iteration.
 
 In terms of actual numbers:
 
-| Benchmark          | Ms/Op  | Difference |
-| ------------------ | -----: | ---------: |
-| readKey.Chronicle  |  22208 | X 10       |
-| readKey.LevelDB    | 175465 | X 81       |
-| readKey.LMDB BB    |   2258 | Fastest    |
-| readKey.LMDB DB    |   2215 | Fastest    |
-| readKey.LMDB JNI   |   2150 | Fastest    |
-| readKey.MapDB      | 182014 | X 171      |
-| readSeq.LevelDB    |  48481 | X 45       |
-| readSeq.LMDB BB    |   1458 | Fastest    |
-| readSeq.LMDB DB    |   1784 | Fastest    |
-| readSeq.LMDB JNI   |   1061 | Fastest    |
-| readSeq.MapDB      |   6135 | X 6        |
-| write.Chronicle    |  25122 | X 1.45     |
-| write.LevelDB      |  17272 | Fastest    |
-| write.LMDB BB      |  25756 | X 1.49     |
-| write.LMDB DB      |  25668 | X 1.48     |
-| write.LMDB JNI     |  26021 | X 1.50     |
-| write.MapDB        | 604236 | X 35       |
+| Benchmark | Implementation | Ms/Op  | Difference |
+|---------- | -------------- | -----: | ---------: |
+| readKey   | LMDB JNI       |   2150 | Fastest    |
+|           | LMDB DB        |   2215 | Fastest    |
+|           | LMDB BB        |   2258 | Fastest    |
+|           | Chronicle      |  22208 | X 10       |
+|           | LevelDB        | 175465 | X 81       |
+|           | MapDB          | 182014 | X 171      |
+
+| Benchmark | Implementation | Ms/Op  | Difference |
+|---------- | -------------- | ------:| ---------: |
+| readSeq   | LMDB JNI       |   1061 | Fastest    |
+|           | LMDB BB        |   1458 | Fastest    |
+|           | LMDB DB        |   1784 | Fastest    |
+|           | MapDB          |   6135 | X 6        |
+|           | LevelDB        |  48481 | X 45       |
+
+| Benchmark | Implementation | Ms/Op  | Difference |
+|---------- | -------------- | ------:| ---------: |
+| write     | LevelDB        |  17272 | Fastest    |
+|           | Chronicle      |  25122 | X 1.45     |
+|           | LMDB DB        |  25668 | X 1.48     |
+|           | LMDB BB        |  25756 | X 1.49     |
+|           | LMDB JNI       |  26021 | X 1.50     |
+|           | MapDB          | 604236 | X 35       |
 
 ### 19 GB Random Access
 
@@ -251,25 +257,31 @@ Finally, with random access patterns we see the same pattern as all our other
 benchmarks: LMDB is the fastest for everything except writes. In terms of
 actual numbers:
 
-| Benchmark          | Ms/Op   | Difference |
-| ------------------ | ------: | ---------: |
-| readKey.Chronicle  |   22091 | X 2        |
-| readKey.LevelDB    |  278030 | X 27       |
-| readKey.LMDB BB    |   10330 | Fastest    |
-| readKey.LMDB DB    |   10041 | Fastest    |
-| readKey.LMDB JNI   |   10657 | Fastest    |
-| readKey.MapDB      |  260614 | X 26       |
-| readSeq.LevelDB    |   47919 | X 27       |
-| readSeq.LMDB BB    |    1815 | Fastest    |
-| readSeq.LMDB DB    |    2464 | Fastest    |
-| readSeq.LMDB JNI   |    1952 | Fastest    |
-| readSeq.MapDB      |    6618 | X 3.6      |
-| write.Chronicle    |   24753 | X 1.42     |
-| write.LevelDB      |   17331 | Fastest    |
-| write.LMDB BB      |  147939 | X 8.54     |
-| write.LMDB DB      |  148238 | X 8.56     |
-| write.LMDB JNI     |  149345 | X 8.62     |
-| write.MapDB        |  588966 | X 33.98    |
+| Benchmark | Implementation | Ms/Op   | Difference |
+|---------- | -------------- | ------: | ---------: |
+| readKey   | LMDB DB        |   10041 | Fastest    |
+|           | LMDB BB        |   10330 | Fastest    |
+|           | LMDB JNI       |   10657 | Fastest    |
+|           | Chronicle      |   22091 | X 2        |
+|           | MapDB          |  260614 | X 26       |
+|           | LevelDB        |  278030 | X 27       |
+
+| Benchmark | Implementation | Ms/Op   | Difference |
+|---------- | -------------- | ------: | ---------: |
+| readSeq   | LMDB BB        |    1815 | Fastest    |
+|           | LMDB JNI       |    1952 | Fastest    |
+|           | LMDB DB        |    2464 | Fastest    |
+|           | MapDB          |    6618 | X 3.6      |
+|           | LevelDB        |   47919 | X 27       |
+
+| Benchmark | Implementation | Ms/Op   | Difference |
+|---------- | -------------- | ------: | ---------: |
+| write     | LevelDB        |   17331 | Fastest    |
+|           | Chronicle      |   24753 | X 1.42     |
+|           | LMDB BB        |  147939 | X 8.54     |
+|           | LMDB DB        |  148238 | X 8.56     |
+|           | LMDB JNI       |  149345 | X 8.62     |
+|           | MapDB          |  588966 | X 33.98    |
 
 ## Conclusion
 LmdbJava offers an excellent option for read-heavy workloads. The fastest
@@ -291,7 +303,7 @@ modern compression libraries recommended for Java users are:
 
 The qualitative dimensions of each library should also be considered. For
 example, consider recovery time from dirty shutdown (eg process/OS/server crash),
-ACID transaction guarantees, inter-process usage flexibility, runtime monitoring 
+ACID transaction guarantees, inter-process usage flexibility, runtime monitoring
 requirements, hot backup support and ongoing configuration effort. In these
 situations LMDB delivers a very strong solution. For more information, see the
 [LMDB Feature Comparison Chart](https://symas.com/products/lightning-memory-mapped-database/feature-comparison/).

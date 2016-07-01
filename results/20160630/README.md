@@ -48,6 +48,8 @@ several key LmdbJava and LMDB settings were benchmarked.
 
 These benchmarks all used 1 million sequential integer keys X 100 byte values.
 
+### Force Safe
+
 ![img](1-forceSafe-reads.png)
 
 LmdbJava supports several buffer types, including Agrona `DirectBuffer`
@@ -56,17 +58,23 @@ and Java's `ByteBuffer` (BB). The BB can be used in a safe mode or an
 consistent penalty when forcing safe mode to be used, as would be expected.
 `Unsafe` BB is therefore used for LmdbJava in the remainder of the benchmark.
 
+### Sync
+
 ![img](1-sync-writes.png)
 
 The above graph shows the impact of the LMDB Env `MDB_NOSYNC` flag. As expected,
 requiring a sync is consistently slower than not requiring it. Forced syncs are
 disabled for the remainder of the benchmark.
 
+### Write Map
+
 ![img](1-writeMap-writes.png)
 
 LMDB also supports a `MDB_WRITEMAP` flag, which enables a writable memory map.
 Enabling the write map (shown as `(wm)` above) results in improved write
 latencies. It remains enabled for the remainder of the benchmark.
+
+### Meta Sync
 
 ![img](1-metaSync-writes.png)
 
@@ -113,11 +121,13 @@ In the benchmarks below, Chroncile Map is only benchmarked for the `readKey` and
 `write` workloads. This is because Chroncile Map does not provide an ordered key
 iterator, and such an iterator is required for the remaining benchmark methods.
 
+### Storage Use
+
 ![img](4-size-biggest.png)
 
 We begin by exploring the resulting disk space consumed by the memory-mapped
-files when keys are inserted in random order. This reflects the actual bytes
-consumed by the directory (as calculated by a POSIX C `stat` call and similar
+files when integer keys are inserted in random order. This reflects the actual
+bytes consumed by the directory (as calculated by a POSIX C `stat` call and
 tools like `du`). It is not simply the "apparent size". The graph shows what we
 saw earlier, namely that LMDB requires more storage than the other libraries.
 
@@ -125,7 +135,7 @@ The actual data without overhead should be 1M X (100 byte value + 4 byte key),
 or 104,000,000 bytes. Here we see the most efficient implementation (MVStore)
 requires 108,933,120 bytes (~5% overhead) and the least efficient implementation
 (LMDB) requires 172,040,192 bytes (~65% overhead). This overhead reflects LMDB's
-[B+ tree[(https://en.wikipedia.org/wiki/B%2B_tree) layout (with associated read
+[B+ tree](https://en.wikipedia.org/wiki/B%2B_tree) layout (with associated read
 latency advantages, as will be reported below) and also its
 [copy-on-write](https://en.wikipedia.org/wiki/Copy-on-write) page allocation
 approach. The latter delivers significant programming model and operational
@@ -134,6 +144,8 @@ storage, journal-free operation, no requirement to carefully tune the setup
 based on data sizes (although value sizing is important, as reported in test 2
 above).
 
+### 99 MB Sequential Access (Integers)
+
 ![img](4-intKey-seq.png)
 
 We start with the most mechanically sympathetic workload. If you have integer
@@ -141,12 +153,16 @@ keys and can insert them in sequential order, the above graphs illustrate the
 type of latencies achievable across the various libraries. LMDB is clearly the
 fastest option, even including writes.
 
+### 110 MB Sequential Access (String)
+
 ![img](4-strKey-seq.png)
 
 Here we simply run the same benchmark as before, but with string keys instead
 of integer keys. Our string keys are the same integers as our last benchmark,
 but this time they are recorded as a zero-padded string. LMDB continues to
 perform better than any alternative, including for writes.
+
+### 99 MB Random Access (Integers)
 
 ![img](4-intKey-rnd.png)
 
@@ -156,6 +172,8 @@ benchmark) in that same random order. The remaining operations are all cursors
 over sequentially-ordered keys. The graphs show LMDB is consistently faster for
 all operations, with the one exception being writes (where LevelDB is much
 faster).
+
+### 110 MB Random Access (Strings)
 
 ![img](4-strKey-seq.png)
 
@@ -177,6 +195,8 @@ Given test 4 showed the integer and string keys perform effectively the same,
 to reduce execution time this test only included the integer keys. A logarithmic
 scale continues to be used for the vertical (y) axis.
 
+### Storage Use
+
 ![img](5-size.png)
 
 As with test 4, we begin by reviewing the actual disk space consumed by the
@@ -194,6 +214,7 @@ or 20,290,000,000 bytes. The actual byte values and respective overheads are:
 | LMDB JNI       | 27,447,676,928 |       35.2 |
 | MapDB          | 20,879,245,312 |       10.2 |
 
+### 19 GB Sequential Access
 
 ![img](5-intKey-seq.png)
 
@@ -223,6 +244,8 @@ In terms of actual numbers (actual LMDB-specific winner within JMH error range):
 | write.LMDB DB      |  25668 | X 1.48     |
 | write.LMDB JNI     |  26021 | X 1.50     |
 | write.MapDB        | 604236 | X 35       |
+
+### 19 GB Random Access
 
 ![img](5-intKey-rnd.png)
 
@@ -261,8 +284,9 @@ Prospective LmdbJava users can achieve optimal storage efficiency by reviewing
 the size of their key + value combination, in a similar manner to test 2. Value
 compression can also be considered, and this may also increase read performance
 for primarily sequential read workloads and/or SSD-hosted random read workloads
-(as CPU decompression is likely faster than the IO subsystem's read throughput).
-Two modern compression libraries recommended for Java users are:
+(as CPU decompression is likely faster than the IO subsystem's read throughput,
+although techniques such as striping can also assist in such situations). Two
+modern compression libraries recommended for Java users are:
 
 * [LZ4-Java](https://github.com/jpountz/lz4-java): for general cases (LZ77)
 * [JavaFastPFOR](https://github.com/lemire/JavaFastPFOR): for integers

@@ -125,11 +125,11 @@ iterator, and such an iterator is required for the remaining benchmark methods.
 
 ![img](4-size-biggest.png)
 
-We begin by exploring the resulting disk space consumed by the memory-mapped
-files when integer keys are inserted in random order. This reflects the actual
-bytes consumed by the directory (as calculated by a POSIX C `stat` call and
-tools like `du`). It is not simply the "apparent size". The graph shows what we
-saw earlier, namely that LMDB requires more storage than the other libraries.
+We begin by exploring the disk space consumed by the memory-mapped files when
+integer keys are inserted in random order. This reflects the actual bytes
+consumed by the directory (as calculated by a POSIX C `stat` call and tools like
+`du`). It is not simply the "apparent size". The graph shows what we saw earlier,
+namely that LMDB requires more storage than the other libraries.
 
 The actual data without overhead should be 1M X (100 byte value + 4 byte key),
 or 104,000,000 bytes. Here we see the most efficient implementation (MVStore)
@@ -170,16 +170,14 @@ Next up we farewell mechanical sympathy and apply some random workloads. Here
 we write the keys out in random order, and we read them back (the `readKey`
 benchmark) in that same random order. The remaining operations are all cursors
 over sequentially-ordered keys. The graphs show LMDB is consistently faster for
-all operations, with the one exception being writes (where LevelDB is much
-faster).
+all operations, with the one exception being writes (where LevelDB is faster).
 
 ### 110 MB Random Access (Strings)
 
 ![img](4-strKey-seq.png)
 
 This benchmark is the same as the previous, except with our zero-padded string
-keys. There are no surprises; we see the same results as reported immediately
-above.
+keys. There are no surprises; we see the similar results as reported above.
 
 ## Test 5: 10 Million X 2,025 Byte Values
 In our final test we burden the implementations with a more aggressive in-memory
@@ -205,7 +203,7 @@ The actual data without overhead should be 10M X (2,025 byte value + 4 byte key)
 or 20,290,000,000 bytes. The actual byte values and respective overheads are:
 
 | Implementation | Bytes          | Overhead % |
-| -------------- | -------------- | ---------- |
+| -------------- | -------------: | ---------: |
 | (as array)     | 20,290,000,000 |        N/A |
 | Chronicle      | 20,576,509,952 |        1.4 |
 | LevelDB        | 20,592,087,040 |        1.4 |
@@ -226,7 +224,7 @@ index suitable for ordered key iteration.
 In terms of actual numbers (actual LMDB-specific winner within JMH error range):
 
 | Benchmark          | Ms/Op  | Difference |
-| ------------------ | ------ | ---------- |
+| ------------------ | -----: | ---------: |
 | readKey.Chronicle  |  22208 | X 10       |
 | readKey.LevelDB    | 175465 | X 81       |
 | readKey.LMDB BB    |   2258 | Fastest    |
@@ -254,7 +252,7 @@ benchmarks: LMDB is the fastest for everything except writes. In terms of
 actual numbers:
 
 | Benchmark          | Ms/Op   | Difference |
-| ------------------ | ------- | ---------- |
+| ------------------ | ------: | ---------: |
 | readKey.Chronicle  |   22091 | X 2        |
 | readKey.LevelDB    |  278030 | X 27       |
 | readKey.LMDB BB    |   10330 | Fastest    |

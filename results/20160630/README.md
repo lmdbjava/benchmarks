@@ -8,10 +8,10 @@ The test used memory-sized workloads. The test server had 512 GB RAM and 2 x
 Intel Xeon E5-2667 v 3 CPUs. It was running Linux 4.5.4 (x86_64) with Java
 1.8.0_92.
 
-To make the plots smaller, the follow key is used:
+To make the graphs and discussion smaller, the follow terms are used:
 
 * Chroncile: [Chroncile Map](https://github.com/OpenHFT/Chronicle-Map)
-* Int: 32-bit Signed Integer (values always >= 0) with Little Endian Byte Order
+* Int: 32-bit signed integer (using the implementation's default byte ordering)
 * LevelDB: [LevelDBJNI](https://github.com/fusesource/leveldbjni)
 * LMDB BB: [LmdbJava](https://github.com/lmdbjava/lmdbjava) with a Java-based
   `ByteBuffer` (via `PROXY_OPTIMAL`)
@@ -23,10 +23,20 @@ To make the plots smaller, the follow key is used:
 * MapDB: [MapDB](http://www.mapdb.org/)
 * Ms: Milliseconds
 * MVStore: [MVStore](http://h2database.com/html/mvstore.html)
+* readCrc: Iterate over ordered entries, computing a CRC32 of all keys and values
+* readSeq: Iterate over ordered entries, consuming each value into the black hole
+* readRev: Same as readSeq, except operating in reverse order over the entries
+* readXxh64: Same as readCrc, except computing an XXH64 via
+  [Zero-Allocation-Hashing](https://github.com/OpenHFT/Zero-Allocation-Hashing)
+  (ZAH XXH64 is currently the fastest JVM hasher, as separately benchmarked via
+  [Hash-Bench](https://github.com/benalexau/hash-bench))
 * RocksDB: [RocksDB](http://rocksdb.org/)
 * Rnd: Random data access (ie integers ordered via a Mersenne Twister)
-* Seq: Sequential data access (ie ordered integers)
-* Str: 16 byte string containing a zero-padded integer (no length prefix or null terminator)
+* Seq: Sequential data access (ie ordered integers from 0 to 1M/10M)
+* Str: 16 byte string containing a zero-padded integer (no length prefix or null
+  terminator)
+* write: Write the 1M/10M entries out in an implementation-optimal manner (eg
+  via a single transaction or batch mode if supported)
 
 Raw CSV, TXT and DAT output files from the execution are available in the
 same GitHub directory as this README and images. The scripts used to execute
@@ -34,7 +44,7 @@ the benchmark and generate the output files are also in the results directory.
 
 ## Test 1: LMDB Implementation Settings
 To ensure appropriate LMDB defaults are used for the remainder of the benchmark,
-several key LMDB settings were benchmarked.
+several key LmdbJava and LMDB settings were benchmarked.
 
 These benchmarks all used 1 million sequential integer keys X 100 byte values.
 
@@ -106,10 +116,23 @@ iterator, and such an iterator is required for the remaining benchmark methods.
 ![img](4-size-biggest.png)
 
 We begin by exploring the resulting disk space consumed by the memory-mapped
-files when keys are inserted in random order. This is the true bytes consumed by
-the directory (as calculated by a POSIX C `stat` call and similar tools like
-`du`), and is not simply the "apparent size". The graph shows what we saw
-earlier, namely that LMDB requires more storage than the other libraries.
+files when keys are inserted in random order. This reflects the actual bytes
+consumed by the directory (as calculated by a POSIX C `stat` call and similar
+tools like `du`). It is not simply the "apparent size". The graph shows what we
+saw earlier, namely that LMDB requires more storage than the other libraries.
+
+The actual data without overhead should be 1M X (100 byte value + 4 byte key),
+or 104,000,000 bytes. Here we see the most efficient implementation (MVStore)
+requires 108,933,120 bytes (~5% overhead) and the least efficient implementation
+(LMDB) requires 172,040,192 bytes (~65% overhead). This overhead reflects LMDB's
+[B+ tree[(https://en.wikipedia.org/wiki/B%2B_tree) layout (with associated read
+latency advantages, as will be reported below) and also its
+[copy-on-write](https://en.wikipedia.org/wiki/Copy-on-write) page allocation
+approach. The latter delivers significant programming model and operational
+benefits such as fully ACID transactions, zero copy buffer use, single file
+storage, journal-free operation, no requirement to carefully tune the setup
+based on data sizes (although value sizing is important, as reported in test 2
+above).
 
 ![img](4-intKey-seq.png)
 
@@ -154,6 +177,24 @@ Given test 4 showed the integer and string keys perform effectively the same,
 to reduce execution time this test only included the integer keys. A logarithmic
 scale continues to be used for the vertical (y) axis.
 
+![img](5-size.png)
+
+As with test 4, we begin by reviewing the actual disk space consumed by the
+memory-mapped files. The above graph shows the larger, random ordered use case.
+The actual data without overhead should be 10M X (2,025 byte value + 4 byte key)
+or 20,290,000,000 bytes. The actual byte values and respective overheads are:
+
+| Implementation | Bytes          | Overhead % |
+| -------------- | -------------- | ---------- |
+| (as array)     | 20,290,000,000 |        N/A |
+| Chronicle      | 20,576,509,952 |        1.4 |
+| LevelDB        | 20,592,087,040 |        1.4 |
+| LMDB DB        | 27,449,520,128 |       35.2 |
+| LMDB BB        | 27,438,403,584 |       35.2 |
+| LMDB JNI       | 27,447,676,928 |       35.2 |
+| MapDB          | 20,879,245,312 |       10.2 |
+
+
 ![img](5-intKey-seq.png)
 
 Starting with the most optimistic scenario of sequential keys, we see LMDB
@@ -161,13 +202,67 @@ out-perform the alternatives in all cases except writes. Chroncile Map's write
 performance is good, but it should be remembered that it is not maintaining an
 index suitable for ordered key iteration.
 
+In terms of actual numbers (actual LMDB-specific winner within JMH error range):
+
+| Benchmark          | Ms/Op  | Difference |
+| ------------------ | ------ | ---------- |
+| readKey.Chronicle  |  22208 | X 10       |
+| readKey.LevelDB    | 175465 | X 81       |
+| readKey.LMDB BB    |   2258 | Fastest    |
+| readKey.LMDB DB    |   2215 | Fastest    |
+| readKey.LMDB JNI   |   2150 | Fastest    |
+| readKey.MapDB      | 182014 | X 171      |
+| readSeq.LevelDB    |  48481 | X 45       |
+| readSeq.LMDB BB    |   1458 | Fastest    |
+| readSeq.LMDB DB    |   1784 | Fastest    |
+| readSeq.LMDB JNI   |   1061 | Fastest    |
+| readSeq.MapDB      |   6135 | X 6        |
+| write.Chronicle    |  25122 | X 1.45     |
+| write.LevelDB      |  17272 | Fastest    |
+| write.LMDB BB      |  25756 | X 1.49     |
+| write.LMDB DB      |  25668 | X 1.48     |
+| write.LMDB JNI     |  26021 | X 1.50     |
+| write.MapDB        | 604236 | X 35       |
+
 ![img](5-intKey-rnd.png)
 
 Finally, with random access patterns we see the same pattern as all our other
-benchmarks: LMDB is the fastest for everything except writes.
+benchmarks: LMDB is the fastest for everything except writes. In terms of
+actual numbers:
+
+| Benchmark          | Ms/Op   | Difference |
+| ------------------ | ------- | ---------- |
+| readKey.Chronicle  |   22091 | X 2        |
+| readKey.LevelDB    |  278030 | X 27       |
+| readKey.LMDB BB    |   10330 | Fastest    |
+| readKey.LMDB DB    |   10041 | Fastest    |
+| readKey.LMDB JNI   |   10657 | Fastest    |
+| readKey.MapDB      |  260614 | X 26       |
+| readSeq.LevelDB    |   47919 | X 27       |
+| readSeq.LMDB BB    |    1815 | Fastest    |
+| readSeq.LMDB DB    |    2464 | Fastest    |
+| readSeq.LMDB JNI   |    1952 | Fastest    |
+| readSeq.MapDB      |    6618 | X 3.6      |
+| write.Chronicle    |   24753 | X 1.42     |
+| write.LevelDB      |   17331 | Fastest    |
+| write.LMDB BB      |  147939 | X 8.54     |
+| write.LMDB DB      |  148238 | X 8.56     |
+| write.LMDB JNI     |  149345 | X 8.62     |
+| write.MapDB        |  588966 | X 33.98    |
 
 ## Conclusion
-For read-heavy workloads, LmdbJava offers the lowest latency open source
-embedded key-value store available on Java today. Its two main trade-offs are
-larger memory mapped files and slower writes. While LevelDB provides superior
-write performance, this outcome is heavily dependent on large batch sizes.
+LmdbJava offers an excellent option for read-heavy workloads. The fastest
+broadly-equivalent alternative is LevelDB, which is 27 to 81 times slower for
+read workloads. On the other hand, LevelDB is more space efficient disk (1.4%
+overhead versus 35.2% overhead) and offers superior write performance (with
+LmdbJava being ~1.5 to 8.5 times slower).
+
+Prospective LmdbJava users can achieve optimal storage efficiency by reviewing
+the size of their key + value combination, in a similar manner to test 2. Value
+compression can also be considered, and this may also increase read performance
+for primarily sequential read workloads and/or SSD-hosted random read workloads
+(as CPU decompression is likely faster than the IO subsystem's read throughput).
+Two modern compression libraries recommended for Java users are:
+
+* [LZ4-Java](https://github.com/jpountz/lz4-java): for general cases (LZ77)
+* [JavaFastPFOR](https://github.com/lemire/JavaFastPFOR): for integers

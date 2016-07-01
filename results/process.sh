@@ -145,11 +145,10 @@ plot_4 4-strKey-seq "Str" "Seq" "100"
 plot_4 4-intKey-rnd "Int" "Rnd" "100"
 plot_4 4-strKey-rnd "Str" "Rnd" "100"
 
-grep 'intKey-true-num-1000000-sequential-false' out-4.tsv | grep -v "compacted" | sed -r 's/Bytes\t([0-9]+)\torg.lmdbjava.bench.([a-z|A-Z]+).*/\2 \1/g' > 4-size.dat
+grep 'intKey-true-num-1000000-sequential-false' out-4.tsv | grep -v "compacted" | sed -r 's/Bytes\t([0-9]+)\torg.lmdbjava.bench.([ |a-z|A-Z]+).*/"\2" \1/g' > 4-size.dat
 sort -t ' ' -k 1 -k 2n 4-size.dat | awk '!(NR%3)' | sort -t , -k 2n > 4-size-biggest.dat
 rm 4-size.dat
 gplot.pl -type png -title "Library Disk Use 1M Rnd X 100 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '2:xtic(1)' -outfile 4-size-biggest.png 4-size-biggest.dat
-
 
 # out-5.csv: bm (1), score (5), sequential (13)
 layout 5 'seq' '$1 $13 $5'
@@ -158,3 +157,6 @@ grep '#\|" false' 5-seq.dat > 5-intKey-rnd.dat
 rm 5-seq.dat
 plot_5 5-intKey-seq "Int" "Seq" "2048"
 plot_5 5-intKey-rnd "Int" "Rnd" "2048"
+
+grep 'intKey-true-num-10000000-sequential-false' out-5.tsv | grep -v "compacted" | sed -r 's/Bytes\t([0-9]+)\torg.lmdbjava.bench.([ |a-z|A-Z]+).*/"\2" \1/g' > 5-size.dat
+gplot.pl -type png -title "Library Disk Use 10M Rnd X 2,025 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '2:xtic(1)' -outfile 5-size.png 5-size.dat

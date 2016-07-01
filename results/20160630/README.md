@@ -174,7 +174,7 @@ all operations, with the one exception being writes (where LevelDB is faster).
 
 ### 110 MB Random Access (Strings)
 
-![img](4-strKey-seq.png)
+![img](4-strKey-rnd.png)
 
 This benchmark is the same as the previous, except with our zero-padded string
 keys. There are no surprises; we see the similar results as reported above.

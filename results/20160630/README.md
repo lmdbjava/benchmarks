@@ -140,9 +140,9 @@ latency advantages, as will be reported below) and also its
 [copy-on-write](https://en.wikipedia.org/wiki/Copy-on-write) page allocation
 approach. The latter delivers significant programming model and operational
 benefits such as fully ACID transactions, zero copy buffer use, single file
-storage, journal-free operation, no requirement to carefully tune the setup
-based on data sizes (although value sizing is important, as reported in test 2
-above).
+storage, journal-free operation, no requirement to carefully tune the runtime
+configuration based on data sizes (although value sizing decisions made at
+development time are important, as reported in test 2 above).
 
 ### 99 MB Sequential Access (Integers)
 
@@ -288,3 +288,10 @@ modern compression libraries recommended for Java users are:
 
 * [LZ4-Java](https://github.com/jpountz/lz4-java): for general cases (LZ77)
 * [JavaFastPFOR](https://github.com/lemire/JavaFastPFOR): for integers
+
+The qualitative dimensions of each library should also be considered. For
+example, consider recovery time from dirty shutdown (eg process/OS/server crash),
+ACID transaction guarantees, inter-process usage flexibility, runtime monitoring 
+requirements, hot backup support and ongoing configuration effort. In these
+situations LMDB delivers a very strong solution. For more information, see the
+[LMDB Feature Comparison Chart](https://symas.com/products/lightning-memory-mapped-database/feature-comparison/).

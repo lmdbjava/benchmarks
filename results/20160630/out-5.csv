@@ -1,0 +1,36 @@
+1             2     3          4          5       6                    7          8             9                    10             11                 12                13             14              15                 16             17
+"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit","Param: batchSize","Param: forceSafe","Param: intKey","Param: metaSync","Param: num","Param: sequential","Param: sync","Param: valRandom","Param: valSize","Param: writeMap"
+"org.lmdbjava.bench.Chronicle.readKey","ss",1,1,22208.132964,NaN,"ms/op",,,true,,10000000,true,,false,2025,
+"org.lmdbjava.bench.Chronicle.readKey","ss",1,1,22091.849714,NaN,"ms/op",,,true,,10000000,false,,false,2025,
+"org.lmdbjava.bench.Chronicle.write","ss",1,1,25122.598150,NaN,"ms/op",,,true,,10000000,true,,false,2025,
+"org.lmdbjava.bench.Chronicle.write","ss",1,1,24753.293547,NaN,"ms/op",,,true,,10000000,false,,false,2025,
+"org.lmdbjava.bench.LevelDb.readKey","ss",1,1,175465.658998,NaN,"ms/op",,,true,,10000000,true,,false,2025,
+"org.lmdbjava.bench.LevelDb.readKey","ss",1,1,278030.532060,NaN,"ms/op",,,true,,10000000,false,,false,2025,
+"org.lmdbjava.bench.LevelDb.readSeq","ss",1,1,48481.371028,NaN,"ms/op",,,true,,10000000,true,,false,2025,
+"org.lmdbjava.bench.LevelDb.readSeq","ss",1,1,47919.234487,NaN,"ms/op",,,true,,10000000,false,,false,2025,
+"org.lmdbjava.bench.LevelDb.write","ss",1,1,17272.351107,NaN,"ms/op",10000000,,true,,10000000,true,,false,2025,
+"org.lmdbjava.bench.LevelDb.write","ss",1,1,17331.546197,NaN,"ms/op",10000000,,true,,10000000,false,,false,2025,
+"org.lmdbjava.bench.LmdbJavaAgrona.readKey","ss",1,1,2215.255937,NaN,"ms/op",,,true,,10000000,true,,false,2025,true
+"org.lmdbjava.bench.LmdbJavaAgrona.readKey","ss",1,1,10041.527591,NaN,"ms/op",,,true,,10000000,false,,false,2025,true
+"org.lmdbjava.bench.LmdbJavaAgrona.readSeq","ss",1,1,1784.578719,NaN,"ms/op",,,true,,10000000,true,,false,2025,true
+"org.lmdbjava.bench.LmdbJavaAgrona.readSeq","ss",1,1,2464.246197,NaN,"ms/op",,,true,,10000000,false,,false,2025,true
+"org.lmdbjava.bench.LmdbJavaAgrona.write","ss",1,1,25668.570768,NaN,"ms/op",,,true,false,10000000,true,false,false,2025,true
+"org.lmdbjava.bench.LmdbJavaAgrona.write","ss",1,1,148238.565455,NaN,"ms/op",,,true,false,10000000,false,false,false,2025,true
+"org.lmdbjava.bench.LmdbJavaByteBuffer.readKey","ss",1,1,2258.627523,NaN,"ms/op",,false,true,,10000000,true,,false,2025,true
+"org.lmdbjava.bench.LmdbJavaByteBuffer.readKey","ss",1,1,10330.545244,NaN,"ms/op",,false,true,,10000000,false,,false,2025,true
+"org.lmdbjava.bench.LmdbJavaByteBuffer.readSeq","ss",1,1,1458.428858,NaN,"ms/op",,false,true,,10000000,true,,false,2025,true
+"org.lmdbjava.bench.LmdbJavaByteBuffer.readSeq","ss",1,1,1815.732419,NaN,"ms/op",,false,true,,10000000,false,,false,2025,true
+"org.lmdbjava.bench.LmdbJavaByteBuffer.write","ss",1,1,25756.504699,NaN,"ms/op",,,true,false,10000000,true,false,false,2025,true
+"org.lmdbjava.bench.LmdbJavaByteBuffer.write","ss",1,1,147939.917964,NaN,"ms/op",,,true,false,10000000,false,false,false,2025,true
+"org.lmdbjava.bench.LmdbJni.readKey","ss",1,1,2150.475549,NaN,"ms/op",,,true,,10000000,true,,false,2025,true
+"org.lmdbjava.bench.LmdbJni.readKey","ss",1,1,10657.417177,NaN,"ms/op",,,true,,10000000,false,,false,2025,true
+"org.lmdbjava.bench.LmdbJni.readSeq","ss",1,1,1061.651228,NaN,"ms/op",,,true,,10000000,true,,false,2025,true
+"org.lmdbjava.bench.LmdbJni.readSeq","ss",1,1,1952.566035,NaN,"ms/op",,,true,,10000000,false,,false,2025,true
+"org.lmdbjava.bench.LmdbJni.write","ss",1,1,26021.905051,NaN,"ms/op",,,true,false,10000000,true,false,false,2025,true
+"org.lmdbjava.bench.LmdbJni.write","ss",1,1,149345.016964,NaN,"ms/op",,,true,false,10000000,false,false,false,2025,true
+"org.lmdbjava.bench.MapDb.readKey","ss",1,1,182014.685930,NaN,"ms/op",,,true,,10000000,true,,false,2025,
+"org.lmdbjava.bench.MapDb.readKey","ss",1,1,260614.695787,NaN,"ms/op",,,true,,10000000,false,,false,2025,
+"org.lmdbjava.bench.MapDb.readSeq","ss",1,1,6135.661883,NaN,"ms/op",,,true,,10000000,true,,false,2025,
+"org.lmdbjava.bench.MapDb.readSeq","ss",1,1,6618.117928,NaN,"ms/op",,,true,,10000000,false,,false,2025,
+"org.lmdbjava.bench.MapDb.write","ss",1,1,604236.726144,NaN,"ms/op",,,true,,10000000,true,,false,2025,
+"org.lmdbjava.bench.MapDb.write","ss",1,1,588966.314429,NaN,"ms/op",,,true,,10000000,false,,false,2025,

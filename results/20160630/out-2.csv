@@ -1,0 +1,19 @@
+"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit","Param: intKey","Param: num","Param: sequential","Param: valRandom","Param: valSize","Param: writeMap"
+"org.lmdbjava.bench.LevelDb.readKey","ss",1,1,9325.411621,NaN,"ms/op",true,1000000,true,false,2020,
+"org.lmdbjava.bench.LevelDb.readKey","ss",1,1,8274.088398,NaN,"ms/op",true,1000000,true,false,2025,
+"org.lmdbjava.bench.LevelDb.readKey","ss",1,1,7718.048453,NaN,"ms/op",true,1000000,true,false,2030,
+"org.lmdbjava.bench.LevelDb.readKey","ss",1,1,11846.364909,NaN,"ms/op",true,1000000,false,false,2020,
+"org.lmdbjava.bench.LevelDb.readKey","ss",1,1,11534.645164,NaN,"ms/op",true,1000000,false,false,2025,
+"org.lmdbjava.bench.LevelDb.readKey","ss",1,1,12305.560061,NaN,"ms/op",true,1000000,false,false,2030,
+"org.lmdbjava.bench.LmdbJavaAgrona.readKey","ss",1,1,263.531104,NaN,"ms/op",true,1000000,true,false,2020,true
+"org.lmdbjava.bench.LmdbJavaAgrona.readKey","ss",1,1,254.938147,NaN,"ms/op",true,1000000,true,false,2025,true
+"org.lmdbjava.bench.LmdbJavaAgrona.readKey","ss",1,1,142.141006,NaN,"ms/op",true,1000000,true,false,2030,true
+"org.lmdbjava.bench.LmdbJavaAgrona.readKey","ss",1,1,723.034280,NaN,"ms/op",true,1000000,false,false,2020,true
+"org.lmdbjava.bench.LmdbJavaAgrona.readKey","ss",1,1,824.639648,NaN,"ms/op",true,1000000,false,false,2025,true
+"org.lmdbjava.bench.LmdbJavaAgrona.readKey","ss",1,1,605.163306,NaN,"ms/op",true,1000000,false,false,2030,true
+"org.lmdbjava.bench.RocksDb.readKey","ss",1,1,12722.492550,NaN,"ms/op",true,1000000,true,false,2020,
+"org.lmdbjava.bench.RocksDb.readKey","ss",1,1,11724.176420,NaN,"ms/op",true,1000000,true,false,2025,
+"org.lmdbjava.bench.RocksDb.readKey","ss",1,1,13754.486083,NaN,"ms/op",true,1000000,true,false,2030,
+"org.lmdbjava.bench.RocksDb.readKey","ss",1,1,16343.776122,NaN,"ms/op",true,1000000,false,false,2020,
+"org.lmdbjava.bench.RocksDb.readKey","ss",1,1,17454.623633,NaN,"ms/op",true,1000000,false,false,2025,
+"org.lmdbjava.bench.RocksDb.readKey","ss",1,1,17017.105969,NaN,"ms/op",true,1000000,false,false,2030,

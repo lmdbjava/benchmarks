@@ -1,0 +1,4 @@
+"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit","Param: batchSize","Param: intKey","Param: num","Param: sequential","Param: valRandom","Param: valSize"
+"org.lmdbjava.bench.LevelDb.write","ss",1,1,21759.958101,NaN,"ms/op",10000,true,1000000,true,false,2025
+"org.lmdbjava.bench.LevelDb.write","ss",1,1,6921.592018,NaN,"ms/op",100000,true,1000000,true,false,2025
+"org.lmdbjava.bench.LevelDb.write","ss",1,1,1616.649970,NaN,"ms/op",1000000,true,1000000,true,false,2025

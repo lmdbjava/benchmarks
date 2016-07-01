@@ -221,7 +221,7 @@ out-perform the alternatives in all cases except writes. Chroncile Map's write
 performance is good, but it should be remembered that it is not maintaining an
 index suitable for ordered key iteration.
 
-In terms of actual numbers (actual LMDB-specific winner within JMH error range):
+In terms of actual numbers:
 
 | Benchmark          | Ms/Op  | Difference |
 | ------------------ | -----: | ---------: |

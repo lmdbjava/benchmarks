@@ -86,8 +86,8 @@ for the remainder of the benchmark.
 ## Test 2: Determine ~2,000 Byte Value
 Some of the later tests require larger value sizes in order to explore the
 behaviour at higher memory workloads. This second benchmark was therefore
-focused on finding a reasonable ~2,000 byte value. Only the native libraries
-were benchmarked.
+focused on finding a reasonable ~2,000 byte value. Only the native
+implementations were benchmarked.
 
 This benchmark used 1 million non-sequential integer keys X ~2,000 byte values.
 Non-sequential keys were used because these resulted in larger sizes.
@@ -113,9 +113,9 @@ number of entries (ie 1 or 10 million).
 
 ## Test 4: 1 Million X 100 Byte Values
 Now that appropriate settings have been verified, this is the first test of all
-libraries. In all of these benchmarks we are inserting 1 million entries. The
-vertical (y) axis uses a log scale given the major performance differences
-between the fastest and slowest libraries.
+implementations. In all of these benchmarks we are inserting 1 million entries.
+The vertical (y) axis uses a log scale given the major performance differences
+between the fastest and slowest implementations.
 
 In the benchmarks below, Chroncile Map is only benchmarked for the `readKey` and
 `write` workloads. This is because Chroncile Map does not provide an ordered key
@@ -125,11 +125,11 @@ iterator, and such an iterator is required for the remaining benchmark methods.
 
 ![img](4-size-biggest.png)
 
-We begin by exploring the disk space consumed by the memory-mapped files when
-integer keys are inserted in random order. This reflects the actual bytes
-consumed by the directory (as calculated by a POSIX C `stat` call and tools like
-`du`). It is not simply the "apparent size". The graph shows what we saw earlier,
-namely that LMDB requires more storage than the other libraries.
+We begin by reviewing the disk space consumed by each implementation's
+memory-mapped files. This reflects the actual bytes consumed by the directory
+(as calculated by a POSIX C `stat` call and tools like `du`). It is not simply
+the "apparent size". The graph shows what we saw earlier, namely that LMDB
+requires more storage than the other implementations.
 
 The actual data without overhead should be 1M X (100 byte value + 4 byte key),
 or 104,000,000 bytes. Here we see the most efficient implementation (MVStore)
@@ -150,8 +150,8 @@ development time are important, as reported in test 2 above).
 
 We start with the most mechanically sympathetic workload. If you have integer
 keys and can insert them in sequential order, the above graphs illustrate the
-type of latencies achievable across the various libraries. LMDB is clearly the
-fastest option, even including writes.
+type of latencies achievable across the various implementations. LMDB is clearly
+the fastest option, even including writes.
 
 ### 110 MB Sequential Access (String)
 
@@ -177,14 +177,14 @@ all operations, with the one exception being writes (where LevelDB is faster).
 ![img](4-strKey-rnd.png)
 
 This benchmark is the same as the previous, except with our zero-padded string
-keys. There are no surprises; we see the similar results as reported above.
+keys. There are no surprises; we see similar results as previously reported.
 
 ## Test 5: 10 Million X 2,025 Byte Values
 In our final test we burden the implementations with a more aggressive in-memory
 workload to see how they perform. We store 10 million entries with 2,025 byte
-keys, which is roughly 19 GB RAM before library overhead.
+keys, which is roughly 19 GB RAM before implementation overhead.
 
-It was hoped all implementations above could be tested. However:
+It was hoped that all implementations above could be benchmarked. However:
 
 * MvStore crashed with "java.lang.OutOfMemoryError: Capacity: 2147483647"
 * RocksDB crashed with "too many open files" (`lsof` reported > 144,000)
@@ -219,9 +219,9 @@ or 20,290,000,000 bytes. The actual byte values and respective overheads are:
 Starting with the most optimistic scenario of sequential keys, we see LMDB
 out-perform the alternatives in all cases except writes. Chroncile Map's write
 performance is good, but it should be remembered that it is not maintaining an
-index suitable for ordered key iteration.
-
-In terms of actual numbers:
+index suitable for ordered key iteration. As the logarithmically-scaled graphs
+make it difficult to see the significant differences between each
+implementation, the same data is presented as tables below:
 
 | Benchmark | Implementation | Ms/Op  | Difference |
 |---------- | -------------- | -----: | ---------: |
@@ -254,8 +254,8 @@ In terms of actual numbers:
 ![img](5-intKey-rnd.png)
 
 Finally, with random access patterns we see the same pattern as all our other
-benchmarks: LMDB is the fastest for everything except writes. In terms of
-actual numbers:
+benchmarks: LMDB is the fastest for everything except writes. The significant
+differences can be seen in tabular form below:
 
 | Benchmark | Implementation | Ms/Op   | Difference |
 |---------- | -------------- | ------: | ---------: |
@@ -282,6 +282,17 @@ actual numbers:
 |           | LMDB DB        |  148238 | X 8.56     |
 |           | LMDB JNI       |  149345 | X 8.62     |
 |           | MapDB          |  588966 | X 33.98    |
+
+These tables also illustrate that LevelDB, Chroncile Map and MapDB write speeds
+are around the same across both random and sequential patterns. However LMDB
+completes the random write workload around 5.7 times more slowly than with the
+sequential test. For `readSeq` we see very similar performance between random and
+sequential patterns. For `readKey` we see Chroncile Map perform around the same
+speed, as you would expect given it uses hash-based keys. LMDB handles random key
+gets around five times more slowly than sequential gets. MapDB and LevelDB are
+around 1.5 times slower for random key gets. The bottom line is sequential
+access patterns are always much faster (with the exception of Chroncile Map,
+which operates consistently regardless of access pattern).
 
 ## Conclusion
 LmdbJava offers an excellent option for read-heavy workloads. The fastest

@@ -274,7 +274,7 @@ actual numbers:
 ## Conclusion
 LmdbJava offers an excellent option for read-heavy workloads. The fastest
 broadly-equivalent alternative is LevelDB, which is 27 to 81 times slower for
-read workloads. On the other hand, LevelDB is more space efficient disk (1.4%
+read workloads. On the other hand, LevelDB is more storage space efficient (1.4%
 overhead versus 35.2% overhead) and offers superior write performance (with
 LmdbJava being ~1.5 to 8.5 times slower).
 

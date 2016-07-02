@@ -23,7 +23,6 @@ import static net.openhft.hashing.LongHashFunction.xx_r39;
 import static org.lmdbjava.ByteBufferProxy.PROXY_OPTIMAL;
 import static org.lmdbjava.ByteBufferProxy.PROXY_SAFE;
 import org.lmdbjava.Cursor;
-import static org.lmdbjava.Env.create;
 import org.lmdbjava.EnvFlags;
 import static org.lmdbjava.GetOp.MDB_SET_KEY;
 import org.lmdbjava.PutFlags;

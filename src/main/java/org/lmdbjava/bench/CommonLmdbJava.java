@@ -17,23 +17,18 @@ package org.lmdbjava.bench;
 
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
-
 import java.util.HashSet;
 import java.util.Set;
-
 import org.lmdbjava.*;
-
 import static org.lmdbjava.DbiFlags.MDB_CREATE;
 import static org.lmdbjava.DbiFlags.MDB_INTEGERKEY;
 import static org.lmdbjava.Env.DISABLE_CHECKS_PROP;
+import static org.lmdbjava.Env.create;
 import static org.lmdbjava.EnvFlags.MDB_NOMETASYNC;
 import static org.lmdbjava.EnvFlags.MDB_NOSYNC;
 import static org.lmdbjava.EnvFlags.MDB_WRITEMAP;
-
 import org.openjdk.jmh.annotations.Param;
-
 import static org.openjdk.jmh.annotations.Scope.Benchmark;
-
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.BenchmarkParams;
 
@@ -82,9 +77,9 @@ public class CommonLmdbJava<T> extends Common {
     return num * ((long) valSize) * 32L / 10L;
   }
 
+  BufferProxy<T> bufferProxy;
   Dbi<T> db;
   Env<T> env;
-  BufferProxy<T> bufferProxy;
 
   /**
    * Whether {@link EnvFlags#MDB_WRITEMAP} is used.
@@ -96,11 +91,11 @@ public class CommonLmdbJava<T> extends Common {
                     final boolean sync) throws Exception {
     super.setup(b);
     final EnvFlags[] envFlags = envFlags(writeMap, metaSync, sync);
-    env = Env.create(bufferProxy)
-      .setMapSize(mapSize(num, valSize))
-      .setMaxDbs(1)
-      .setMaxReaders(2)
-      .open(tmp, POSIX_MODE, envFlags);
+    env = create(bufferProxy)
+        .setMapSize(mapSize(num, valSize))
+        .setMaxDbs(1)
+        .setMaxReaders(2)
+        .open(tmp, POSIX_MODE, envFlags);
 
     final DbiFlags[] flags = dbiFlags(intKey);
     db = env.openDbi("db", flags);

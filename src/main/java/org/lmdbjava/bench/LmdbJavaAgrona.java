@@ -21,15 +21,15 @@ import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
+import org.agrona.DirectBuffer;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import static org.agrona.concurrent.UnsafeBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
 import static org.lmdbjava.CopyFlags.MDB_CP_COMPACT;
 import org.lmdbjava.Cursor;
-import static org.lmdbjava.Env.create;
+import static org.lmdbjava.DirectBufferProxy.PROXY_DB;
 import org.lmdbjava.EnvFlags;
 import static org.lmdbjava.GetOp.MDB_SET_KEY;
-import static org.lmdbjava.MutableDirectBufferProxy.PROXY_MDB;
 import org.lmdbjava.PutFlags;
 import static org.lmdbjava.PutFlags.MDB_APPEND;
 import static org.lmdbjava.SeekOp.MDB_FIRST;
@@ -120,7 +120,7 @@ public class LmdbJavaAgrona {
   }
 
   @State(Benchmark)
-  public static class LmdbJava extends CommonLmdbJava<MutableDirectBuffer> {
+  public static class LmdbJava extends CommonLmdbJava<DirectBuffer> {
 
     static {
       setProperty(DISABLE_BOUNDS_CHECKS_PROP_NAME, TRUE.toString());
@@ -150,8 +150,8 @@ public class LmdbJavaAgrona {
     }
 
     void write() throws Exception {
-      try (final Txn<MutableDirectBuffer> tx = env.txnWrite()) {
-        try (final Cursor<MutableDirectBuffer> c = db.openCursor(tx);) {
+      try (final Txn<DirectBuffer> tx = env.txnWrite()) {
+        try (final Cursor<DirectBuffer> c = db.openCursor(tx);) {
           final PutFlags flags = sequential ? MDB_APPEND : null;
           final int rndByteMax = RND_MB.length - valSize;
           int rndByteOffset = 0;
@@ -182,13 +182,13 @@ public class LmdbJavaAgrona {
   @State(Benchmark)
   public static class Reader extends LmdbJava {
 
-    Cursor<MutableDirectBuffer> c;
-    Txn<MutableDirectBuffer> txn;
+    Cursor<DirectBuffer> c;
+    Txn<DirectBuffer> txn;
 
     @Setup(Trial)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      bufferProxy = PROXY_MDB;
+      bufferProxy = PROXY_DB;
       super.setup(b, false, false);
       super.write();
       env.copy(compact, MDB_CP_COMPACT);
@@ -224,7 +224,7 @@ public class LmdbJavaAgrona {
     @Setup(Invocation)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      bufferProxy = PROXY_MDB;
+      bufferProxy = PROXY_DB;
       super.setup(b, metaSync, sync);
     }
 

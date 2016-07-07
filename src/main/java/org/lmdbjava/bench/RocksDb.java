@@ -28,6 +28,7 @@ import static org.openjdk.jmh.annotations.Level.Trial;
 import org.openjdk.jmh.annotations.Measurement;
 import static org.openjdk.jmh.annotations.Mode.SampleTime;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Param;
 import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -41,6 +42,8 @@ import org.rocksdb.RocksDB;
 import static org.rocksdb.RocksDB.loadLibrary;
 import static org.rocksdb.RocksDB.open;
 import org.rocksdb.RocksIterator;
+import org.rocksdb.WriteBatch;
+import org.rocksdb.WriteOptions;
 
 @OutputTimeUnit(MILLISECONDS)
 @Fork(1)
@@ -109,7 +112,7 @@ public class RocksDb {
 
   @Benchmark
   public void write(final Writer w, final Blackhole bh) throws Exception {
-    w.write();
+    w.write(w.batchSize);
   }
 
   @State(value = Benchmark)
@@ -147,10 +150,14 @@ public class RocksDb {
       super.teardown();
     }
 
-    void write() throws Exception {
+    void write(final int batchSize) throws Exception {
       final int rndByteMax = RND_MB.length - valSize;
       int rndByteOffset = 0;
-      for (final int key : keys) {
+
+      final WriteBatch batch = new WriteBatch();
+      final WriteOptions opt = new WriteOptions();
+      for (int i = 0; i < keys.length; i++) {
+        final int key = keys[i];
         if (intKey) {
           wkb.putInt(0, key, LITTLE_ENDIAN);
         } else {
@@ -165,7 +172,11 @@ public class RocksDb {
         } else {
           wvb.putInt(0, key);
         }
-        db.put(wkb.byteArray(), wvb.byteArray());
+        batch.put(wkb.byteArray(), wvb.byteArray());
+        if (i % batchSize == 0) {
+          db.write(opt, batch);
+          batch.clear();
+        }
       }
     }
   }
@@ -177,7 +188,7 @@ public class RocksDb {
     @Override
     public void setup(BenchmarkParams b) throws Exception {
       super.setup(b);
-      super.write();
+      super.write(num);
     }
 
     @TearDown(Trial)
@@ -189,6 +200,9 @@ public class RocksDb {
 
   @State(Benchmark)
   public static class Writer extends CommonRocksDb {
+
+    @Param({"1000000"})
+    int batchSize;
 
     @Setup(Invocation)
     @Override

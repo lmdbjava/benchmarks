@@ -14,8 +14,8 @@ java -jar target/benchmarks.jar -rf csv -bm ss -wi 0 -i 1 -to 10m -tu ms -p sequ
 
 # conclusion: optimal if valSize=2025
 
-# Run 3 single shot (no warm up) evaluates LevelDB batch size for 1M entries
-java -jar target/benchmarks.jar -rf csv -bm ss -wi 0 -i 1 -to 10m -tu ms -p valSize=2025 -p batchSize=10000,100000,1000000 -e readCrc -e readKey -e readRev -e readSeq -e readXxh64 -rff out-3.csv LevelDb | tee out-3.txt
+# Run 3 single shot (no warm up) evaluates LevelDB/RocksDB batch size for 1M entries
+java -jar target/benchmarks.jar -rf csv -bm ss -wi 0 -i 1 -to 10m -tu ms -p valSize=2025 -p batchSize=10000,100000,1000000 -e readCrc -e readKey -e readRev -e readSeq -e readXxh64 -rff out-3.csv LevelDb RocksDb | tee out-3.txt
 
 # conclusion: optimal if batchSize=num (1M is default batchSize already)
 
@@ -32,4 +32,3 @@ java -jar target/benchmarks.jar -rf csv -f 3 -wi 3 -i 3 -to 10m -tu ms -p intKey
 
 # Run 5 single shot (no warm up) with 10M x 2025 byte values (~19 GB w/o overhead)
 java -jar target/benchmarks.jar -rf csv -bm ss -wi 0 -i 1 -to 60m -tu ms -p sequential=true,false -p num=10000000 -p batchSize=10000000 -p valSize=2025 -e readCrc -e readRev -e readXxh64 -rff out-5.csv Chronicle LevelDb LmdbJavaAgrona LmdbJavaByteBuffer LmdbJni MapDb | tee out-5.txt
-

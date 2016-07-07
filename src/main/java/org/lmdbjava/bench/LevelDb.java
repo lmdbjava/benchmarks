@@ -187,7 +187,7 @@ public class LevelDb {
     @Override
     public void setup(BenchmarkParams b) throws Exception {
       super.setup(b);
-      super.write(1);
+      super.write(num);
     }
 
     @TearDown(Trial)

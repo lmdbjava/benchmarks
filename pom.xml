@@ -9,6 +9,16 @@
   <prerequisites>
     <maven>3.2.1</maven>
   </prerequisites>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-lmdbjava-maven</id>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/lmdbjava/maven</url>
+    </repository>
+  </repositories>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jmh.version>1.12</jmh.version>
@@ -41,7 +51,7 @@
     <dependency>
       <groupId>org.lmdbjava</groupId>
       <artifactId>lmdbjava</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.agrona</groupId>

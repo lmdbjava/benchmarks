@@ -177,6 +177,8 @@ public class LevelDb {
           batch = db.createWriteBatch();
         }
       }
+      db.write(batch); // possible partial batch
+      batch.close();
     }
   }
 

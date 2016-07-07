@@ -178,6 +178,8 @@ public class RocksDb {
           batch.clear();
         }
       }
+      db.write(opt, batch); // possible partial batch
+      batch.clear();
     }
   }
 

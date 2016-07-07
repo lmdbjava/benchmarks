@@ -54,7 +54,7 @@ public class Chronicle {
       } else {
         r.wkb.putStringWithoutLengthUtf8(0, r.padKey(key));
       }
-      bh.consume(r.map.get(r.wkb.byteArray()));
+      bh.consume(r.map.getUsing(r.wkb.byteArray(), r.wvb.byteArray()));
     }
   }
 
@@ -85,8 +85,8 @@ public class Chronicle {
       wvb = new UnsafeBuffer(new byte[valSize]);
 
       map = of(byte[].class, byte[].class)
-          .averageKey(new byte[keySize])
-          .averageValue(new byte[valSize])
+          .constantKeySizeBySample(new byte[keySize])
+          .constantValueSizeBySample(new byte[valSize])
           .entries(num)
           .createPersistedTo(new File(tmp, "chroncile.map"));
     }

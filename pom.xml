@@ -14,9 +14,9 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-      <id>bintray-lmdbjava-maven</id>
+      <id>central</id>
       <name>bintray</name>
-      <url>http://dl.bintray.com/lmdbjava/maven</url>
+      <url>http://jcenter.bintray.com</url>
     </repository>
   </repositories>
   <properties>

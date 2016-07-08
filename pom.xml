@@ -103,10 +103,10 @@
       <artifactId>chronicle-map</artifactId>
       <version>3.9.0</version>
     </dependency>
-   <dependency>
-        <groupId>org.lwjgl</groupId>
-        <artifactId>lwjgl</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>3.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.lwjgl</groupId>
@@ -121,10 +121,10 @@
       <classifier>natives-osx</classifier>
     </dependency>
     <dependency>
-        <groupId>org.lwjgl</groupId>
-        <artifactId>lwjgl-platform</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
-        <classifier>natives-windows</classifier>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-platform</artifactId>
+      <version>3.0.1-SNAPSHOT</version>
+      <classifier>natives-windows</classifier>
     </dependency>
     <!-- Koyoto Cabinet not benchmarked as required .so not in JAR or AUR -->
     <!-- Berkley DB Java Edition not benchmarked due to Affero license -->

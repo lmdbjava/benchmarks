@@ -246,7 +246,7 @@ public class LmdbLWJGL {
               rndByteOffset = 0;
             }
           } else {
-            rwVal.mv_data(stack.malloc(4).putInt(0, key));
+            rwVal.mv_data(stack.malloc(valSize).putInt(0, key));
           }
 
           E(mdb_cursor_put(c, rwKey, rwVal, flags));

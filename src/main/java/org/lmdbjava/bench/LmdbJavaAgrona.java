@@ -191,8 +191,11 @@ public class LmdbJavaAgrona {
       bufferProxy = PROXY_DB;
       super.setup(b, false, false);
       super.write();
-      env.copy(compact, MDB_CP_COMPACT);
-      reportSpaceUsed(compact);
+      final int maxValSizeForCopy = 4081; // 2nd copy requires *2 /tmp space
+      if (valSize <= maxValSizeForCopy && tmp.getName().contains(".readKey-")) {
+        env.copy(compact, MDB_CP_COMPACT);
+        reportSpaceUsed(compact);
+      }
       txn = env.txnRead();
       c = db.openCursor(txn);
     }

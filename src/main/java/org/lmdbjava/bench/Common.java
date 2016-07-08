@@ -44,14 +44,17 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 public class Common {
 
   private static final POSIX POSIX = getPOSIX();
-
   private static final BitsStreamGenerator RND = new MersenneTwister();
+  private static final int S_BLKSIZE = 512; // from sys/stat.h
+  private static final File TMP_BENCH;
+
   static final byte[] RND_MB = new byte[1_048_576];
   static final int STRING_KEY_LENGTH = 16;
-  static final int S_BLKSIZE = 512; // from sys/stat.h
 
   static {
     RND.nextBytes(RND_MB);
+    final String tmpParent = getProperty("java.io.tmpdir");
+    TMP_BENCH = new File(tmpParent, "lmdbjava-benchmark-scratch");
   }
 
   File compact;
@@ -131,6 +134,7 @@ public class Common {
       }
     }
 
+    rmdir(TMP_BENCH);
     tmp = create(b, "");
     compact = create(b, "-compacted");
   }
@@ -140,14 +144,11 @@ public class Common {
     if (tmp.getName().contains(".readKey-")) {
       reportSpaceUsed(tmp);
     }
-    rmdir(tmp);
-    rmdir(compact);
+    rmdir(TMP_BENCH);
   }
 
   private File create(BenchmarkParams b, String suffix) throws Exception {
-    final String tmpParent = getProperty("java.io.tmpdir");
-    final File f = new File(tmpParent, b.id() + suffix);
-    rmdir(f);
+    final File f = new File(TMP_BENCH, b.id() + suffix);
     f.mkdirs();
     return f;
   }
@@ -156,8 +157,10 @@ public class Common {
     if (!file.exists()) {
       return;
     }
-    for (final File f : file.listFiles()) {
-      f.delete();
+    if (file.isDirectory()) {
+      for (final File f : file.listFiles()) {
+        rmdir(f);
+      }
     }
     file.delete();
   }

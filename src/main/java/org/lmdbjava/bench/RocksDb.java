@@ -144,6 +144,7 @@ public class RocksDb {
 
     @Override
     public void teardown() throws Exception {
+      reportSpaceBeforeClose();
       if (db != null) {
         db.close();
       }

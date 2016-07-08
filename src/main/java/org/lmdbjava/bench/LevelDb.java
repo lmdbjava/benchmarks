@@ -145,6 +145,7 @@ public class LevelDb {
 
     @Override
     public void teardown() throws Exception {
+      reportSpaceBeforeClose();
       db.close();
       popMemoryPool();
       super.teardown();

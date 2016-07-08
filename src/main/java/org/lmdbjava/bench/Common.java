@@ -139,10 +139,16 @@ public class Common {
     compact = create(b, "-compacted");
   }
 
+  public void reportSpaceBeforeClose() {
+    if (tmp.getName().contains(".readKey-")) {
+      reportSpaceUsed(tmp, "before-close");
+    }
+  }
+
   public void teardown() throws Exception {
     // we only output for key, as all impls offer it and it should be fixed
     if (tmp.getName().contains(".readKey-")) {
-      reportSpaceUsed(tmp);
+      reportSpaceUsed(tmp, "after-close");
     }
     rmdir(TMP_BENCH);
   }
@@ -166,7 +172,7 @@ public class Common {
   }
 
   @SuppressWarnings("UseOfSystemOutOrSystemErr")
-  protected void reportSpaceUsed(final File dir) {
+  protected void reportSpaceUsed(final File dir, final String desc) {
     long bytes = 0;
     for (final File f : dir.listFiles()) {
       if (f.isDirectory()) {
@@ -175,7 +181,7 @@ public class Common {
       final FileStat stat = POSIX.stat(f.getAbsolutePath());
       bytes += (stat.blocks() * S_BLKSIZE);
     }
-    out.println("\nBytes\t" + bytes + "\t" + dir.getName());
+    out.println("\nBytes\t" + desc + "\t" + bytes + "\t" + dir.getName());
   }
 
   final String padKey(int key) {

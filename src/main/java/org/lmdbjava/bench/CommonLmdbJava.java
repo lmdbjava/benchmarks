@@ -103,6 +103,7 @@ public class CommonLmdbJava<T> extends Common {
 
   @Override
   public void teardown() throws Exception {
+    reportSpaceBeforeClose();
     env.close();
     super.teardown();
   }

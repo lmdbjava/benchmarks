@@ -93,6 +93,7 @@ public class Chronicle {
 
     @Override
     public void teardown() throws Exception {
+      reportSpaceBeforeClose();
       map.close();
       super.teardown();
     }

@@ -143,6 +143,7 @@ public class MapDb {
 
     @Override
     public void teardown() throws Exception {
+      reportSpaceBeforeClose();
       db.close();
       super.teardown();
     }

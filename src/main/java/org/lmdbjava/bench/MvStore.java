@@ -138,6 +138,7 @@ public class MvStore {
 
     @Override
     public void teardown() throws Exception {
+      reportSpaceBeforeClose();
       s.close();
       super.teardown();
     }

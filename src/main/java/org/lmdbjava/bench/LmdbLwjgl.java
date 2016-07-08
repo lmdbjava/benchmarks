@@ -39,7 +39,7 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-public class LmdbLWJGL {
+public class LmdbLwjgl {
 
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws Exception {

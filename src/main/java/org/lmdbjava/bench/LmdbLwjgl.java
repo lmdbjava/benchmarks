@@ -212,6 +212,7 @@ public class LmdbLwjgl {
 
     @Override
     public void teardown() throws Exception {
+      reportSpaceBeforeClose();
       mdb_env_close(env);
       super.teardown();
     }

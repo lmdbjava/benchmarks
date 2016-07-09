@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import static java.lang.Integer.BYTES;
 import static java.lang.Integer.MIN_VALUE;
-import static java.lang.String.format;
 import static java.lang.System.getProperty;
 import static java.lang.System.out;
 import java.util.zip.CRC32;
@@ -185,6 +184,7 @@ public class Common {
   }
 
   final String padKey(int key) {
-    return format("%0" + STRING_KEY_LENGTH + "d", key);
+    String skey = key + "";
+    return "0000000000000000".substring(0, 16 - skey.length()) + skey;
   }
 }

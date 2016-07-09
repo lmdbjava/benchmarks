@@ -68,9 +68,9 @@ public class Xodus {
       Exception {
     for (final int key : r.keys) {
       if (r.intKey) {
-        bh.consume(r.store.get(r.tx, intToEntry(key)));
+        bh.consume(r.store.get(r.tx, intToEntry(key)).getBytesUnsafe());
       } else {
-        bh.consume(r.store.get(r.tx, stringToEntry(r.padKey(key))));
+        bh.consume(r.store.get(r.tx, stringToEntry(r.padKey(key))).getBytesUnsafe());
       }
     }
   }

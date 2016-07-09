@@ -47,10 +47,12 @@ that might further reduce their latency. We do not claim we have exhausted
 every tuning option every library exposes, but pull requests are most welcome.
 
 ## Usage
+This benchmark uses POSIX calls to accurately determine consumed disk space and
+only depends on Linux-specific native library wrappers where a range of such
+wrappers exists. Operation on non-Linux operating systems is unsupported.
 
-1. Install `liblmdb` for your platform (eg Arch Linux: `pacman -S lmdb`)
-2. Clone this repository and `mvn clean package`
-3. Run the benchmark with `java -jar target/benchmarks.jar`
+1. Clone this repository and `mvn clean package`
+2. Run the benchmark with `java -jar target/benchmarks.jar`
 
 The benchmark offers many parameters, but to reduce execution time they default
 to a fast, mechanically-sympathetic workload (ie integer keys, sequential IO)

@@ -70,7 +70,8 @@ public class Xodus {
       if (r.intKey) {
         bh.consume(r.store.get(r.tx, intToEntry(key)).getBytesUnsafe());
       } else {
-        bh.consume(r.store.get(r.tx, stringToEntry(r.padKey(key))).getBytesUnsafe());
+        bh.consume(r.store.get(r.tx, stringToEntry(r.padKey(key))).
+            getBytesUnsafe());
       }
     }
   }
@@ -140,10 +141,12 @@ public class Xodus {
     }
 
     void write() throws Exception {
+      final int batchSize = 1_000; // optimal w/ valSize=16368 + default run
       env.executeInTransaction((final Transaction tx) -> {
         final int rndByteMax = RND_MB.length - valSize;
         int rndByteOffset = 0;
-        for (final int key : keys) {
+        for (int i = 0; i < keys.length; i++) {
+          final int key = keys[i];
           ByteIterable keyBi;
           ByteIterable valBi;
           if (intKey) {
@@ -170,6 +173,9 @@ public class Xodus {
             store.putRight(tx, keyBi, valBi);
           } else {
             store.put(tx, keyBi, valBi);
+          }
+          if (i % batchSize == 0) {
+            tx.flush();
           }
         }
         tx.commit();

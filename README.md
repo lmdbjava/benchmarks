@@ -16,6 +16,7 @@ of open source, embedded, memory-mapped, key-value stores available from Java:
 * [RocksDB](http://rocksdb.org/)
 * [MVStore](http://h2database.com/html/mvstore.html) (pure Java)
 * [MapDB](http://www.mapdb.org/) (pure Java)
+* [Xodus](https://github.com/JetBrains/xodus) (pure Java)
 * [Chroncile Map](https://github.com/OpenHFT/Chronicle-Map) (pure Java) (**)
 
 (**) does not support ordered keys, so iteration benchmarks not performed

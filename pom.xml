@@ -114,6 +114,11 @@
       <version>3.0.1-SNAPSHOT</version>
       <classifier>natives-linux</classifier>
     </dependency>
+    <dependency>
+      <groupId>org.jetbrains.xodus</groupId>
+      <artifactId>xodus-environment</artifactId>
+      <version>1.0.0</version>
+    </dependency>
     <!-- Koyoto Cabinet not benchmarked as required .so not in JAR or AUR -->
     <!-- Berkley DB Java Edition not benchmarked due to Affero license -->
     <dependency>

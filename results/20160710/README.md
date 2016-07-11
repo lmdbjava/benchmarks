@@ -358,11 +358,11 @@ random access offers a realistic worst-case scenario.
 
 | Implementation | Bytes | Overhead % |
 | -------------- | ----: | ---------: |
-| (Flat Array) | 40840000000 |  |
-| LevelDB | 40888750080 | .11 |
-| RocksDB | 40888770560 | .11 |
-| Chronicle | 40952766464 | .27 |
-| LMDB DB | 41279459328 | 1.07 |
+| (Flat Array) | 40,840,000,000 |  |
+| LevelDB | 40,888,750,080 | .11 |
+| RocksDB | 40,888,770,560 | .11 |
+| Chronicle | 40,952,766,464 | .27 |
+| LMDB DB | 41,279,459,328 | 1.07 |
 
 With 4,080 byte values, storage efficiency is now excellent for all
 implementations. This efficiency continues to increase in later tests.
@@ -385,11 +385,11 @@ fastest read performance.
 
 | Implementation | Bytes | Overhead % |
 | -------------- | ----: | ---------: |
-| (Flat Array) | 81800000000 |  |
-| LevelDB | 81857499136 | .07 |
-| RocksDB | 81857519616 | .07 |
-| Chronicle | 81912651776 | .13 |
-| LMDB DB | 82241519616 | .53 |
+| (Flat Array) | 81,800,000,000 |  |
+| LevelDB | 81,857,499,136 | .07 |
+| RocksDB | 81,857,519,616 | .07 |
+| Chronicle | 81,912,651,776 | .13 |
+| LMDB DB | 82,241,519,616 | .53 |
 
 The trend toward better storage efficiency with larger values has continued.
 
@@ -411,11 +411,11 @@ finally LevelDB at 268 seconds. As usual, LMDB offers the fastest reads.
 
 | Implementation | Bytes | Overhead % |
 | -------------- | ----: | ---------: |
-| (Flat Array) | 163720000000 |  |
-| LevelDB | 163795005440 | .04 |
-| RocksDB | 163795025920 | .04 |
-| Chronicle | 163832737792 | .06 |
-| LMDB DB | 164160393216 | .26 |
+| (Flat Array) | 163,720,000,000 |  |
+| LevelDB | 163,795,005,440 | .04 |
+| RocksDB | 163,795,025,920 | .04 |
+| Chronicle | 163,832,737,792 | .06 |
+| LMDB DB | 164,160,393,216 | .26 |
 
 In our final storage evaluation for this report, we see all implementations
 offering very good storage space efficiency compared with a flat array. LMDB

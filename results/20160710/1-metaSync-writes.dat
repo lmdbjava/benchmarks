@@ -1,0 +1,9 @@
+# "Param: ap","Param: sync","Benchmark","Param: forceSafe","Param: metaSync","Score"
+true false "LMDB BB (!ms)"  false 161.043017
+true false "LMDB BB (ms)"  true 158.185508
+true false "LMDB DB (!ms)"  false 141.295616
+true false "LMDB DB (ms)"  true 152.807736
+true false "LMDB JGL (!ms)"  false 148.613803
+true false "LMDB JGL (ms)"  true 148.240247
+true false "LMDB JNI (!ms)"  false 154.669403
+true false "LMDB JNI (ms)"  true 157.511752

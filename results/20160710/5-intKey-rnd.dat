@@ -1,0 +1,27 @@
+# "Benchmark","Param: sequential","Score"
+"readKey.Chronicle" false 15944.858487
+"readKey.LevelDB" false 83784.845359
+"readKey.LMDB BB" false 10123.843919
+"readKey.LMDB DB" false 10923.701172
+"readKey.LMDB JGL" false 10857.482575
+"readKey.LMDB JNI" false 10569.633563
+"readKey.MapDB" false 242916.735261
+"readKey.RocksDB" false 44790.249109
+"readKey.Xodus" false 1578955.497375
+"readSeq.LevelDB" false 32047.441805
+"readSeq.LMDB BB" false 2734.506263
+"readSeq.LMDB DB" false 2055.777231
+"readSeq.LMDB JGL" false 2006.324902
+"readSeq.LMDB JNI" false 2226.269781
+"readSeq.MapDB" false 6744.528031
+"readSeq.RocksDB" false 11506.663250
+"readSeq.Xodus" false 203338.677881
+"write.Chronicle" false 22410.744891
+"write.LevelDB" false 86412.087792
+"write.LMDB BB" false 147392.585506
+"write.LMDB DB" false 148642.874642
+"write.LMDB JGL" false 146170.699849
+"write.LMDB JNI" false 148822.840227
+"write.MapDB" false 581837.785494
+"write.RocksDB" false 59849.329291
+"write.Xodus" false 894982.569215

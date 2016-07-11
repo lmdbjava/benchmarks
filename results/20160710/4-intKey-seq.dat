@@ -1,0 +1,57 @@
+# "Param: intKey","Benchmark","Param: sequential","Score"
+true "readCrc.LevelDB" true 1379.226965
+true "readCrc.LMDB BB" true 103.874560
+true "readCrc.LMDB DB" true 147.741975
+true "readCrc.LMDB JGL" true 95.170068
+true "readCrc.LMDB JNI" true 95.412472
+true "readCrc.MapDB" true 192.242294
+true "readCrc.MVStore" true 583.241273
+true "readCrc.RocksDB" true 388.788679
+true "readCrc.Xodus" true 1224.037717
+true "readKey.Chronicle" true 613.912121
+true "readKey.LevelDB" true 2223.447154
+true "readKey.LMDB BB" true 108.204404
+true "readKey.LMDB DB" true 109.745815
+true "readKey.LMDB JGL" true 96.653563
+true "readKey.LMDB JNI" true 102.073745
+true "readKey.MapDB" true 9676.725362
+true "readKey.MVStore" true 7757.598265
+true "readKey.RocksDB" true 1814.036480
+true "readKey.Xodus" true 3486.398692
+true "readRev.LevelDB" true 6265.358108
+true "readRev.LMDB BB" true 36.473645
+true "readRev.LMDB DB" true 36.182089
+true "readRev.LMDB JGL" true 33.422288
+true "readRev.LMDB JNI" true 31.765276
+true "readRev.MapDB" true 117.102567
+true "readRev.MVStore" true 580.678087
+true "readRev.RocksDB" true 1006.955599
+true "readRev.Xodus" true 1174.871154
+true "readSeq.LevelDB" true 1272.272213
+true "readSeq.LMDB BB" true 46.572265
+true "readSeq.LMDB DB" true 43.376563
+true "readSeq.LMDB JGL" true 43.901594
+true "readSeq.LMDB JNI" true 36.628942
+true "readSeq.MapDB" true 96.878096
+true "readSeq.MVStore" true 479.330304
+true "readSeq.RocksDB" true 268.879084
+true "readSeq.Xodus" true 1105.008454
+true "readXxh64.LevelDB" true 1311.186034
+true "readXxh64.LMDB BB" true 68.739928
+true "readXxh64.LMDB DB" true 70.499129
+true "readXxh64.LMDB JGL" true 56.837107
+true "readXxh64.LMDB JNI" true 70.742860
+true "readXxh64.MapDB" true 132.574713
+true "readXxh64.MVStore" true 529.431016
+true "readXxh64.RocksDB" true 344.866816
+true "readXxh64.Xodus" true 1275.534450
+true "write.Chronicle" true 836.705394
+true "write.LevelDB" true 1962.701255
+true "write.LMDB BB" true 144.026987
+true "write.LMDB DB" true 165.403331
+true "write.LMDB JGL" true 142.733247
+true "write.LMDB JNI" true 160.927818
+true "write.MapDB" true 8876.079332
+true "write.MVStore" true 1328.662300
+true "write.RocksDB" true 1800.754517
+true "write.Xodus" true 674.205241

@@ -1,0 +1,81 @@
+# JMH 1.12 (released 99 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 60 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 10000000, sequential = true, valRandom = false, valSize = 8176)
+
+# Run progress: 0.00% complete, ETA 00:00:00
+# Fork: 1 of 1
+Iteration   1: 255152.012 ms/op
+
+
+
+# JMH 1.12 (released 99 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 60 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.write
+# Parameters: (batchSize = 10000000, intKey = true, num = 10000000, sequential = true, valRandom = false, valSize = 8176)
+
+# Run progress: 25.00% complete, ETA 00:13:06
+# Fork: 1 of 1
+Iteration   1: 231086.702 ms/op
+
+
+
+# JMH 1.12 (released 99 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 60 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 10000000, sequential = true, valRandom = false, valSize = 8176)
+
+# Run progress: 50.00% complete, ETA 00:08:29
+# Fork: 1 of 1
+Iteration   1: 181361.408 ms/op
+
+
+
+# JMH 1.12 (released 99 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 60 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.write
+# Parameters: (batchSize = 10000000, intKey = true, num = 10000000, sequential = true, valRandom = false, valSize = 8176)
+
+# Run progress: 75.00% complete, ETA 00:03:53
+# Fork: 1 of 1
+Iteration   1: 224929.377 ms/op
+
+
+
+# Run complete. Total time: 00:15:33
+
+Benchmark      (batchSize)  (intKey)     (num)  (sequential)  (valRandom)  (valSize)  Mode  Cnt       Score   Error  Units
+LevelDb.write      1000000      true  10000000          true        false       8176    ss       255152.012          ms/op
+LevelDb.write     10000000      true  10000000          true        false       8176    ss       231086.702          ms/op
+RocksDb.write      1000000      true  10000000          true        false       8176    ss       181361.408          ms/op
+RocksDb.write     10000000      true  10000000          true        false       8176    ss       224929.377          ms/op
+
+Benchmark result is saved to out-3.csv

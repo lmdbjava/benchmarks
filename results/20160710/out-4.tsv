@@ -1,0 +1,252 @@
+Bytes	before-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	116801536	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	116801536	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	116785152	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	128774144	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	128774144	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	128774144	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	128774144	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	128774144	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	128774144	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	128786432	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	128786432	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	128811008	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	128811008	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	128782336	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	128782336	org.lmdbjava.bench.Chronicle.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	107036672	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	119037952	org.lmdbjava.bench.LevelDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	compacted	117452800	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	117452800	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	117452800	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	171589632	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	171601920	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	171601920	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	171933696	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	171945984	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	171945984	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	172048384	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	172060672	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	172060672	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	128847872	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	128847872	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	128847872	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	189231104	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	189243392	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189243392	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	189423616	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	189435904	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189435904	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	compacted	189112320	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true-compacted
+Bytes	before-close	189124608	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189124608	org.lmdbjava.bench.LMDB DB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	171884544	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	171884544	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	172040192	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	172040192	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	172314624	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	172314624	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	189325312	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189325312	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	188854272	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	188854272	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	188772352	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	188772352	org.lmdbjava.bench.LMDB BB.readKey-SampleTime-forceSafe-false-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	171429888	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	171429888	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	172134400	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	172134400	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	171896832	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	171896832	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	189222912	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189222912	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	189513728	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189513728	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	189173760	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189173760	org.lmdbjava.bench.LMDB JNI.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	117465088	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	117465088	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	171446272	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	171446272	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	172023808	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	172023808	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	171806720	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	171806720	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	128860160	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	128860160	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	189104128	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189104128	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	188899328	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	188899328	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	189554688	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	after-close	189554688	org.lmdbjava.bench.LMDB JGL.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100-writeMap-true
+Bytes	before-close	330301440	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	330301440	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	330301440	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	330301440	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	330301440	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	330301440	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	118489088	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	118489088	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	118489088	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	118489088	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	118489088	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	118489088	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	288358400	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	288358400	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	288358400	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	288358400	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	288358400	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	288358400	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	133169152	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	133169152	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	132120576	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	132120576	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	133169152	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	133169152	org.lmdbjava.bench.MapDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	108859392	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	108859392	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	108859392	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	108859392	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	108859392	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	108859392	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	108937216	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	108937216	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	108933120	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	108933120	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	108933120	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	108933120	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	124211200	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	124211200	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	124211200	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	124211200	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	124211200	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	124211200	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	123576320	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	123576320	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	123580416	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	123580416	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	123580416	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	123580416	org.lmdbjava.bench.MVStore.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	107057152	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	119058432	org.lmdbjava.bench.RocksDB.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	113188864	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	113188864	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	113188864	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	113188864	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	113188864	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	113188864	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	473030656	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	473034752	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	472776704	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	472776704	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	473067520	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	473067520	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	126210048	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	126210048	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	126210048	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	126210048	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	126210048	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	after-close	126210048	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-true-valRandom-false-valSize-100
+Bytes	before-close	486187008	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	486187008	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	485842944	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	485842944	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	before-close	486256640	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100
+Bytes	after-close	486260736	org.lmdbjava.bench.Xodus.readKey-SampleTime-intKey-false-num-1000000-sequential-false-valRandom-false-valSize-100

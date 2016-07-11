@@ -1,0 +1,856 @@
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Chronicle.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 0.00% complete, ETA 00:00:00
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	40952766464	org.lmdbjava.bench.Chronicle.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080
+
+Bytes	after-close	40952766464	org.lmdbjava.bench.Chronicle.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080
+24.495 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Chronicle.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 2.38% complete, ETA 01:16:44
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	81912651776	org.lmdbjava.bench.Chronicle.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-8176
+
+Bytes	after-close	81912651776	org.lmdbjava.bench.Chronicle.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-8176
+44.020 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Chronicle.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 4.76% complete, ETA 01:19:08
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	163832737792	org.lmdbjava.bench.Chronicle.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-16368
+
+Bytes	after-close	163832737792	org.lmdbjava.bench.Chronicle.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-16368
+81.327 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Chronicle.write
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 7.14% complete, ETA 01:40:12
+# Fork: 1 of 1
+Iteration   1: 37.279 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Chronicle.write
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 9.52% complete, ETA 01:20:21
+# Fork: 1 of 1
+Iteration   1: 66.667 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Chronicle.write
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 11.90% complete, ETA 01:12:15
+# Fork: 1 of 1
+Iteration   1: 126.188 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 14.29% complete, ETA 01:13:12
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	40888750080	org.lmdbjava.bench.LevelDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080
+
+Bytes	after-close	40888750080	org.lmdbjava.bench.LevelDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080
+102.697 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 16.67% complete, ETA 01:24:06
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	81857499136	org.lmdbjava.bench.LevelDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-8176
+
+Bytes	after-close	81857499136	org.lmdbjava.bench.LevelDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-8176
+119.783 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 19.05% complete, ETA 01:38:38
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	163795005440	org.lmdbjava.bench.LevelDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-16368
+
+Bytes	after-close	163795005440	org.lmdbjava.bench.LevelDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-16368
+300.783 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 21.43% complete, ETA 02:14:23
+# Fork: 1 of 1
+Iteration   1: 47.244 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 23.81% complete, ETA 02:08:25
+# Fork: 1 of 1
+Iteration   1: 71.537 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 26.19% complete, ETA 02:09:29
+# Fork: 1 of 1
+Iteration   1: 234.602 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 28.57% complete, ETA 02:26:20
+# Fork: 1 of 1
+Iteration   1: 147.699 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 30.95% complete, ETA 02:16:15
+# Fork: 1 of 1
+Iteration   1: 268.697 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LevelDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 33.33% complete, ETA 02:11:25
+# Fork: 1 of 1
+Iteration   1: 500.968 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080, writeMap = true)
+
+# Run progress: 35.71% complete, ETA 02:13:47
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	compacted	41279447040	org.lmdbjava.bench.LmdbJavaAgrona.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080-writeMap-true-compacted
+
+Bytes	before-close	41279459328	org.lmdbjava.bench.LmdbJavaAgrona.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080-writeMap-true
+
+Bytes	after-close	41279459328	org.lmdbjava.bench.LmdbJavaAgrona.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080-writeMap-true
+9.723 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176, writeMap = true)
+
+# Run progress: 38.10% complete, ETA 02:06:02
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	82241519616	org.lmdbjava.bench.LmdbJavaAgrona.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-8176-writeMap-true
+
+Bytes	after-close	82241519616	org.lmdbjava.bench.LmdbJavaAgrona.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-8176-writeMap-true
+8.477 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368, writeMap = true)
+
+# Run progress: 40.48% complete, ETA 01:58:52
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	164160393216	org.lmdbjava.bench.LmdbJavaAgrona.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-16368-writeMap-true
+
+Bytes	after-close	164160393216	org.lmdbjava.bench.LmdbJavaAgrona.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-16368-writeMap-true
+9.733 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080, writeMap = true)
+
+# Run progress: 42.86% complete, ETA 01:53:11
+# Fork: 1 of 1
+Iteration   1: 0.464 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176, writeMap = true)
+
+# Run progress: 45.24% complete, ETA 01:46:09
+# Fork: 1 of 1
+Iteration   1: 0.401 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368, writeMap = true)
+
+# Run progress: 47.62% complete, ETA 01:39:56
+# Fork: 1 of 1
+Iteration   1: 0.401 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.write
+# Parameters: (intKey = true, metaSync = false, num = 10000000, sequential = false, sync = false, valRandom = false, valSize = 4080, writeMap = true)
+
+# Run progress: 50.00% complete, ETA 01:34:43
+# Fork: 1 of 1
+Iteration   1: 159.567 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.write
+# Parameters: (intKey = true, metaSync = false, num = 10000000, sequential = false, sync = false, valRandom = false, valSize = 8176, writeMap = true)
+
+# Run progress: 52.38% complete, ETA 01:28:35
+# Fork: 1 of 1
+Iteration   1: 182.624 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.LmdbJavaAgrona.write
+# Parameters: (intKey = true, metaSync = false, num = 10000000, sequential = false, sync = false, valRandom = false, valSize = 16368, writeMap = true)
+
+# Run progress: 54.76% complete, ETA 01:23:06
+# Fork: 1 of 1
+Iteration   1: 214.141 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 57.14% complete, ETA 01:18:16
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	40888770560	org.lmdbjava.bench.RocksDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080
+
+Bytes	after-close	40888770560	org.lmdbjava.bench.RocksDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-4080
+56.728 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 59.52% complete, ETA 01:13:24
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	81857519616	org.lmdbjava.bench.RocksDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-8176
+
+Bytes	after-close	81857519616	org.lmdbjava.bench.RocksDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-8176
+85.055 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 61.90% complete, ETA 01:09:50
+# Fork: 1 of 1
+Iteration   1: 
+Bytes	before-close	163795025920	org.lmdbjava.bench.RocksDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-16368
+
+Bytes	after-close	163795025920	org.lmdbjava.bench.RocksDb.readKey-SingleShotTime-intKey-true-num-10000000-sequential-false-valRandom-false-valSize-16368
+159.347 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 64.29% complete, ETA 01:09:13
+# Fork: 1 of 1
+Iteration   1: 20.060 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 66.67% complete, ETA 01:03:42
+# Fork: 1 of 1
+Iteration   1: 36.256 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 69.05% complete, ETA 00:59:13
+# Fork: 1 of 1
+Iteration   1: 177.488 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 71.43% complete, ETA 00:57:23
+# Fork: 1 of 1
+Iteration   1: 116.463 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 73.81% complete, ETA 00:51:39
+# Fork: 1 of 1
+Iteration   1: 192.249 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.RocksDb.write
+# Parameters: (batchSize = 1000000, intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 76.19% complete, ETA 00:46:33
+# Fork: 1 of 1
+Iteration   1: 358.466 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 78.57% complete, ETA 00:42:20
+# Fork: 1 of 1
+Iteration   1: 
+2308.673 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 80.95% complete, ETA 00:52:01
+# Fork: 1 of 1
+Iteration   1: 
+3167.190 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.readKey
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 83.33% complete, ETA 01:02:27
+# Fork: 1 of 1
+Iteration   1: 
+4310.985 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 85.71% complete, ETA 01:12:33
+# Fork: 1 of 1
+Iteration   1: 402.647 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 88.10% complete, ETA 01:03:17
+# Fork: 1 of 1
+Iteration   1: 1118.759 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.readSeq
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 90.48% complete, ETA 00:55:25
+# Fork: 1 of 1
+Iteration   1: 1608.455 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.write
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 4080)
+
+# Run progress: 92.86% complete, ETA 00:46:24
+# Fork: 1 of 1
+Iteration   1: 1583.438 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.write
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 8176)
+
+# Run progress: 95.24% complete, ETA 00:31:29
+# Fork: 1 of 1
+Iteration   1: 2274.355 s/op
+
+
+
+# JMH 1.12 (released 100 days ago, please consider updating!)
+# VM version: JDK 1.8.0_92, VM 25.92-b14
+# VM invoker: /usr/lib/jvm/java-8-openjdk/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 1 iterations, single-shot each
+# Timeout: 360 min per iteration
+# Threads: 1 thread
+# Benchmark mode: Single shot invocation time
+# Benchmark: org.lmdbjava.bench.Xodus.write
+# Parameters: (intKey = true, num = 10000000, sequential = false, valRandom = false, valSize = 16368)
+
+# Run progress: 97.62% complete, ETA 00:16:17
+# Fork: 1 of 1
+Iteration   1: 2968.625 s/op
+
+
+
+# Run complete. Total time: 11:57:28
+
+Benchmark               (batchSize)  (intKey)  (metaSync)     (num)  (sequential)  (sync)  (valRandom)  (valSize)  (writeMap)  Mode  Cnt     Score   Error  Units
+Chronicle.readKey               N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss         24.495           s/op
+Chronicle.readKey               N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss         44.020           s/op
+Chronicle.readKey               N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss         81.327           s/op
+Chronicle.write                 N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss         37.279           s/op
+Chronicle.write                 N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss         66.667           s/op
+Chronicle.write                 N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss        126.188           s/op
+LevelDb.readKey                 N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss        102.697           s/op
+LevelDb.readKey                 N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss        119.783           s/op
+LevelDb.readKey                 N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss        300.783           s/op
+LevelDb.readSeq                 N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss         47.244           s/op
+LevelDb.readSeq                 N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss         71.537           s/op
+LevelDb.readSeq                 N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss        234.602           s/op
+LevelDb.write               1000000      true         N/A  10000000         false     N/A        false       4080         N/A    ss        147.699           s/op
+LevelDb.write               1000000      true         N/A  10000000         false     N/A        false       8176         N/A    ss        268.697           s/op
+LevelDb.write               1000000      true         N/A  10000000         false     N/A        false      16368         N/A    ss        500.968           s/op
+LmdbJavaAgrona.readKey          N/A      true         N/A  10000000         false     N/A        false       4080        true    ss          9.723           s/op
+LmdbJavaAgrona.readKey          N/A      true         N/A  10000000         false     N/A        false       8176        true    ss          8.477           s/op
+LmdbJavaAgrona.readKey          N/A      true         N/A  10000000         false     N/A        false      16368        true    ss          9.733           s/op
+LmdbJavaAgrona.readSeq          N/A      true         N/A  10000000         false     N/A        false       4080        true    ss          0.464           s/op
+LmdbJavaAgrona.readSeq          N/A      true         N/A  10000000         false     N/A        false       8176        true    ss          0.401           s/op
+LmdbJavaAgrona.readSeq          N/A      true         N/A  10000000         false     N/A        false      16368        true    ss          0.401           s/op
+LmdbJavaAgrona.write            N/A      true       false  10000000         false   false        false       4080        true    ss        159.567           s/op
+LmdbJavaAgrona.write            N/A      true       false  10000000         false   false        false       8176        true    ss        182.624           s/op
+LmdbJavaAgrona.write            N/A      true       false  10000000         false   false        false      16368        true    ss        214.141           s/op
+RocksDb.readKey                 N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss         56.728           s/op
+RocksDb.readKey                 N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss         85.055           s/op
+RocksDb.readKey                 N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss        159.347           s/op
+RocksDb.readSeq                 N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss         20.060           s/op
+RocksDb.readSeq                 N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss         36.256           s/op
+RocksDb.readSeq                 N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss        177.488           s/op
+RocksDb.write               1000000      true         N/A  10000000         false     N/A        false       4080         N/A    ss        116.463           s/op
+RocksDb.write               1000000      true         N/A  10000000         false     N/A        false       8176         N/A    ss        192.249           s/op
+RocksDb.write               1000000      true         N/A  10000000         false     N/A        false      16368         N/A    ss        358.466           s/op
+Xodus.readKey                   N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss       2308.673           s/op
+Xodus.readKey                   N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss       3167.190           s/op
+Xodus.readKey                   N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss       4310.985           s/op
+Xodus.readSeq                   N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss        402.647           s/op
+Xodus.readSeq                   N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss       1118.759           s/op
+Xodus.readSeq                   N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss       1608.455           s/op
+Xodus.write                     N/A      true         N/A  10000000         false     N/A        false       4080         N/A    ss       1583.438           s/op
+Xodus.write                     N/A      true         N/A  10000000         false     N/A        false       8176         N/A    ss       2274.355           s/op
+Xodus.write                     N/A      true         N/A  10000000         false     N/A        false      16368         N/A    ss       2968.625           s/op
+
+Benchmark result is saved to out-6.csv

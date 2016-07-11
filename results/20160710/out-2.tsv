@@ -1,0 +1,104 @@
+Bytes	before-close	2034450432	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2026
+Bytes	after-close	2034450432	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2026
+Bytes	before-close	2035449856	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2027
+Bytes	after-close	2035449856	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2027
+Bytes	before-close	4088889344	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4080
+Bytes	after-close	4088889344	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4080
+Bytes	before-close	4089888768	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4081
+Bytes	after-close	4089888768	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4081
+Bytes	before-close	8185761792	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8176
+Bytes	after-close	8185761792	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8176
+Bytes	before-close	8186761216	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8177
+Bytes	after-close	8186761216	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8177
+Bytes	before-close	16379514880	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16368
+Bytes	after-close	16379514880	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16368
+Bytes	before-close	16380514304	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16369
+Bytes	after-close	16380514304	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16369
+Bytes	before-close	2034450432	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2026
+Bytes	after-close	2034450432	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2026
+Bytes	before-close	2035449856	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2027
+Bytes	after-close	2035449856	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2027
+Bytes	before-close	4088889344	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4080
+Bytes	after-close	4088889344	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4080
+Bytes	before-close	4089888768	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4081
+Bytes	after-close	4089888768	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4081
+Bytes	before-close	8185761792	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8176
+Bytes	after-close	8185761792	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8176
+Bytes	before-close	8186761216	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8177
+Bytes	after-close	8186761216	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8177
+Bytes	before-close	16379514880	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16368
+Bytes	after-close	16379514880	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16368
+Bytes	before-close	16380514304	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16369
+Bytes	after-close	16380514304	org.lmdbjava.bench.LevelDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16369
+Bytes	compacted	2055106560	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2026-writeMap-true-compacted
+Bytes	before-close	2055118848	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2026-writeMap-true
+Bytes	after-close	2055118848	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2026-writeMap-true
+Bytes	compacted	4118237184	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2027-writeMap-true-compacted
+Bytes	before-close	4118249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2027-writeMap-true
+Bytes	after-close	4118249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2027-writeMap-true
+Bytes	compacted	4118237184	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4080-writeMap-true-compacted
+Bytes	before-close	4118249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4080-writeMap-true
+Bytes	after-close	4118249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4080-writeMap-true
+Bytes	compacted	8214237184	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4081-writeMap-true-compacted
+Bytes	before-close	8214249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4081-writeMap-true
+Bytes	after-close	8214249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4081-writeMap-true
+Bytes	before-close	8214249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8176-writeMap-true
+Bytes	after-close	8214249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8176-writeMap-true
+Bytes	before-close	12310249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8177-writeMap-true
+Bytes	after-close	12310249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8177-writeMap-true
+Bytes	before-close	16406249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16368-writeMap-true
+Bytes	after-close	16406249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16368-writeMap-true
+Bytes	before-close	20502249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16369-writeMap-true
+Bytes	after-close	20502249472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16369-writeMap-true
+Bytes	compacted	2745872384	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2026-writeMap-true-compacted
+Bytes	before-close	2745884672	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2026-writeMap-true
+Bytes	after-close	2745884672	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2026-writeMap-true
+Bytes	compacted	4128477184	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2027-writeMap-true-compacted
+Bytes	before-close	4128489472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2027-writeMap-true
+Bytes	after-close	4128489472	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2027-writeMap-true
+Bytes	compacted	4128100352	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4080-writeMap-true-compacted
+Bytes	before-close	4128112640	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4080-writeMap-true
+Bytes	after-close	4128112640	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4080-writeMap-true
+Bytes	compacted	8223850496	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4081-writeMap-true-compacted
+Bytes	before-close	8223862784	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4081-writeMap-true
+Bytes	after-close	8223862784	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4081-writeMap-true
+Bytes	before-close	8224284672	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8176-writeMap-true
+Bytes	after-close	8224284672	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8176-writeMap-true
+Bytes	before-close	12319891456	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8177-writeMap-true
+Bytes	after-close	12319891456	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8177-writeMap-true
+Bytes	before-close	16416251904	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16368-writeMap-true
+Bytes	after-close	16416251904	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16368-writeMap-true
+Bytes	before-close	20512190464	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16369-writeMap-true
+Bytes	after-close	20512190464	org.lmdbjava.bench.LMDB DB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16369-writeMap-true
+Bytes	before-close	2034470912	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2026
+Bytes	after-close	2034470912	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2026
+Bytes	before-close	2035470336	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2027
+Bytes	after-close	2035470336	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-2027
+Bytes	before-close	4088909824	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4080
+Bytes	after-close	4088909824	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4080
+Bytes	before-close	4089909248	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4081
+Bytes	after-close	4089909248	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-4081
+Bytes	before-close	8185782272	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8176
+Bytes	after-close	8185782272	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8176
+Bytes	before-close	8186781696	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8177
+Bytes	after-close	8186781696	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-8177
+Bytes	before-close	16379535360	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16368
+Bytes	after-close	16379535360	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16368
+Bytes	before-close	16380534784	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16369
+Bytes	after-close	16380534784	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-true-valRandom-false-valSize-16369
+Bytes	before-close	2034470912	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2026
+Bytes	after-close	2034470912	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2026
+Bytes	before-close	2035470336	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2027
+Bytes	after-close	2035470336	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-2027
+Bytes	before-close	4088909824	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4080
+Bytes	after-close	4088909824	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4080
+Bytes	before-close	4089909248	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4081
+Bytes	after-close	4089909248	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-4081
+Bytes	before-close	8185782272	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8176
+Bytes	after-close	8185782272	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8176
+Bytes	before-close	8186781696	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8177
+Bytes	after-close	8186781696	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-8177
+Bytes	before-close	16379535360	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16368
+Bytes	after-close	16379535360	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16368
+Bytes	before-close	16380534784	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16369
+Bytes	after-close	16380534784	org.lmdbjava.bench.RocksDB.readKey-SingleShotTime-intKey-true-num-1000000-sequential-false-valRandom-false-valSize-16369

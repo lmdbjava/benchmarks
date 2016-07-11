@@ -1,0 +1,5 @@
+"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit","Param: batchSize","Param: intKey","Param: num","Param: sequential","Param: valRandom","Param: valSize"
+"org.lmdbjava.bench.LevelDb.write","ss",1,1,255152.012240,NaN,"ms/op",1000000,true,10000000,true,false,8176
+"org.lmdbjava.bench.LevelDb.write","ss",1,1,231086.702068,NaN,"ms/op",10000000,true,10000000,true,false,8176
+"org.lmdbjava.bench.RocksDb.write","ss",1,1,181361.408052,NaN,"ms/op",1000000,true,10000000,true,false,8176
+"org.lmdbjava.bench.RocksDb.write","ss",1,1,224929.376926,NaN,"ms/op",10000000,true,10000000,true,false,8176

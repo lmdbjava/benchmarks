@@ -1,0 +1,5 @@
+# "Benchmark","Param: batchSize","Score"
+"LevelDB 10M" 231086.702068
+"LevelDB 1M" 255152.012240
+"RocksDB 10M" 224929.376926
+"RocksDB 1M" 181361.408052

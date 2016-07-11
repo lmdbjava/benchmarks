@@ -4,7 +4,7 @@
 # LmdbJava Benchmarks
 
 **Just want the latest results?
-[View them here!](https://github.com/lmdbjava/benchmarks/blob/master/results/20160630/README.md)**
+[View them here!](https://github.com/lmdbjava/benchmarks/blob/master/results/20160710/README.md)**
 
 This is a [JMH](http://openjdk.java.net/projects/code-tools/jmh/) benchmark
 of open source, embedded, memory-mapped, key-value stores available from Java:
@@ -12,6 +12,7 @@ of open source, embedded, memory-mapped, key-value stores available from Java:
 * [LmdbJava](https://github.com/lmdbjava/lmdbjava) (with fast `ByteBuffer`, safe
   `ByteBuffer` and an [Agrona](https://github.com/real-logic/Agrona) buffer)
 * [LMDBJNI](https://github.com/deephacks/lmdbjni)
+* [Lightweight Java Game Library](https://github.com/LWJGL/lwjgl3/) (LMDB API)
 * [LevelDBJNI](https://github.com/fusesource/leveldbjni)
 * [RocksDB](http://rocksdb.org/)
 * [MVStore](http://h2database.com/html/mvstore.html) (pure Java)

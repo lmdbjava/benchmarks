@@ -1,0 +1,12 @@
+# "Benchmark","Param: valSize","Score"
+"readKey.Chronicle" 4080 24.495107
+"readKey.LevelDB" 4080 102.697436
+"readKey.LMDB DB" 4080 9.723010
+"readKey.RocksDB" 4080 56.728076
+"readSeq.LevelDB" 4080 47.244228
+"readSeq.LMDB DB" 4080 0.464262
+"readSeq.RocksDB" 4080 20.060184
+"write.Chronicle" 4080 37.279194
+"write.LevelDB" 4080 147.699310
+"write.LMDB DB" 4080 159.566708
+"write.RocksDB" 4080 116.462751

@@ -1,0 +1,11 @@
+# "Param: writeMap","Param: sync","Param: metaSync","Benchmark","Param: forceSafe","Score"
+true   "readCrc.unsafe" 101.158302
+true   "readCrc.safe" 127.579108
+true   "readKey.unsafe" 113.386755
+true   "readKey.safe" 149.501518
+true   "readRev.unsafe" 35.140178
+true   "readRev.safe" 63.163949
+true   "readSeq.unsafe" 41.947230
+true   "readSeq.safe" 70.068825
+true   "readXxh64.unsafe" 73.089024
+true   "readXxh64.safe" 102.307395

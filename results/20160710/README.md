@@ -352,6 +352,8 @@ random access offers a realistic worst-case scenario.
 
 ### 38 GB Random Access of 4,080 Byte Values
 
+#### Storage
+
 ![img](6-size-4080.png)
 
 | Implementation | Bytes | Overhead % |
@@ -362,10 +364,12 @@ random access offers a realistic worst-case scenario.
 | Chronicle | 40952766464 | .27 |
 | LMDB DB | 41279459328 | 1.07 |
 
-![img](6-intKey-rnd-4080.png)
-
 With 4,080 byte values, storage efficiency is now excellent for all
 implementations. This efficiency continues to increase in later tests.
+
+#### Performance
+
+![img](6-intKey-rnd-4080.png)
 
 We can see the larger value sizes are starting to equal out the write speeds.
 Chronicle Map continues to write the fastest, completing the 10M writes in just
@@ -374,6 +378,8 @@ followed by LevelDB (147 seconds) and LMDB (159 seconds). LMDB offers the
 fastest read performance.
 
 ### 76 GB Random Access of 8,176 Byte Values
+
+#### Storage
 
 ![img](6-size-8176.png)
 
@@ -385,9 +391,11 @@ fastest read performance.
 | Chronicle | 81912651776 | .13 |
 | LMDB DB | 82241519616 | .53 |
 
-![img](6-intKey-rnd-8176.png)
-
 The trend toward better storage efficiency with larger values has continued.
+
+#### Performance
+
+![img](6-intKey-rnd-8176.png)
 
 Now that much larger value keys are in use, we start to see the LSM
 implementations slowed down by write amplification. With 8,176 byte values,
@@ -396,6 +404,8 @@ implementations in 182 seconds. RocksDB comes in next at 192 seconds, and
 finally LevelDB at 268 seconds. As usual, LMDB offers the fastest reads.
 
 ### 152 GB Random Access of 16,368 Byte Values
+
+#### Storage
 
 ![img](6-size-16368.png)
 
@@ -407,12 +417,14 @@ finally LevelDB at 268 seconds. As usual, LMDB offers the fastest reads.
 | Chronicle | 163832737792 | .06 |
 | LMDB DB | 164160393216 | .26 |
 
-![img](6-intKey-rnd-16368.png)
-
 In our final storage evaluation for this report, we see all implementations
 offering very good storage space efficiency compared with a flat array. LMDB
 continues to be the most inefficient at around one quarter of one percent
 overhead, but this is unlikely to be an issue for most applications.
+
+#### Performance
+
+![img](6-intKey-rnd-16368.png)
 
 The write amplification issue seen with the earlier 8,176 byte benchmark
 continues, with the LSM implementations further slowing down. LMDB completes the

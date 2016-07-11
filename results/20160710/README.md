@@ -14,7 +14,7 @@ This report generally confirms separately-reported findings that
 implementations often provide faster write performance and higher
 storage space efficiency than the
 [B+ Tree](https://en.wikipedia.org/wiki/B%2B_tree)-based alternatives. However
-write performance benefit of LSM disappears as larger values are used,
+write performance benefits of LSM disappears as larger values are used,
 reflecting the high cost of LSM write amplification. With careful selection of
 entry sizes, the storage overhead can also be minimised to immaterial levels.
 
@@ -51,7 +51,7 @@ was to remove Xodus from the `out-6.csv` file given its performance distorted
 the `6-*.png` graphs. The original Xodus test 6 results remain in `out-6.txt`.
 
 ## Results
-Five benchmarks are reported in this report:
+Five benchmarks are reported:
 
 * `readCrc`: Iterate over ordered entries, computing a CRC32 of keys and values
 * `readSeq`: Iterate over ordered entries, sending each value to the black hole
@@ -77,7 +77,7 @@ used:
 
 All storage sizes referred to in this report reflect the bytes actually consumed
 by the library's assigned work directory just after it closed. The reported
-values were provided by a POSIX `stat` call, and as such reflects the actual
+values were provided by POSIX `stat` calls, and as such reflect the actual
 storage required (as opposed to the "apparent" size which would be reported by
 an `ls` command or `File.length()`).
 
@@ -135,9 +135,9 @@ for the remainder of the benchmark.
 
 ## Test 2: Determine ~2/4/8/16 KB Byte Values
 Some of the later tests require larger value sizes in order to explore the
-behaviour at higher memory workloads. This second benchmark was therefore
-focused on finding reasonable byte values around 2, 4, 8 and 16 KB. Only the
-native implementations were benchmarked.
+behaviour at higher memory workloads. This second test was therefore focused
+on finding reasonable byte values around 2, 4, 8 and 16 KB. Only the native
+implementations were benchmarked.
 
 This benchmark wrote 1M randomly-ordered integer keys, with value sizes
 as indicated on the horizontal axis.
@@ -149,20 +149,19 @@ There are small increases in storage requirements that are commensurate with the
 additional bytes in each value.
 
 On the other hand, LMDB requires more storage for all value sizes and shows
-degradation if pages are not well-aligned with LMDB's page size. The graphs
-show that exceeding the entry size by a single byte will require an additional
-page. For example, moving from 2,026 byte values (so a 2,030 byte entry
-including the 4 byte integer key) to a 2,027 byte value increased the on-disk
-size from 2,745,884,672 to 4,128,489,472 bytes. If storage space is an issue,
-it is important that entry sizes reflect LMDB's page sizing requirements. In
-summary its optimal entry sizes are (in bytes) 2,030, 4,084, 8,180, 12,276 and
-so on in 4,096 byte increments.
+degradation if entry sizes are not well-aligned with LMDB's page size. The
+graphs show that exceeding the entry size by a single byte will require an
+additional page. For example, moving from 2,026 byte values (so a 2,030 byte
+entry including the 4 byte integer key) to a 2,027 byte value increased the
+on-disk size from 2,745,884,672 to 4,128,489,472 bytes. If storage space is an
+issue, it is important that entry sizes reflect LMDB's page sizing requirements.
+In summary its optimal entry sizes are (in bytes) 2,030, 4,084, 8,180, 12,276
+and so on in 4,096 byte increments.
 
 Given there is no disadvantage to LevelDB or RocksDB by using entry sizes that
-align well with LMDB's page sizes, these will be used in later tests. This also
-facilitate a more effective comparison of each library's implementation
-trade-offs, given this approach ensures the overall storage requirements are
-comparable.
+align well with LMDB's page sizes, these will be used in later tests. Ensuring
+overall storage requirements are similar also enables a more reasonable
+comparison of each library's performance (as distinct from storage) trade-offs.
 
 ## Test 3: LevelDB, RocksDB and Xodus Batch Sizes
 
@@ -183,13 +182,13 @@ RocksDB worked better with a batch size of 1M. Given RocksDB with 1M offered
 the fastest performance of the four tested LSM combinations above, 1M will be
 used as the batch size in later tests.
 
-While on the issue of LSM batch sizes, original tests found that RocksDB failed
-with insufficient file handles when using large batch sizes. This was overcome
-with the `nofile` adjustment mentioned earlier. It is therefore important to
-consider the impact of LSM-based implementations on servers with file handle
-constraints. Such constraints may be related to memory, competing uses (eg
-network connections) or security policies (eg a shared server with lower
-per-user file handle limits).
+While on the issue of LSM batch sizes, our original tests found that RocksDB
+failed with insufficient file handles when using large batch sizes. This was
+overcome with the `nofile` adjustment mentioned earlier. It is therefore
+important to consider the impact of LSM-based implementations on servers with
+file handle constraints. Such constraints may be related to memory, competing
+uses (eg network connections) or security policies (eg a shared server with
+lower per-user file handle limits).
 
 One limitation of this report is it only measures the time taken for the client
 thread to complete a given read or write workload. The LSM-based implementations
@@ -203,7 +202,7 @@ particular low cost cloud deployments with limited VM cores per instance).
 Finally, LSM-based implementations typically offer considerable
 [tuning options](https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide).
 Users are expected to tune the store based on their workload type, storage type
-and file system configuration (block size, parity) etc. Such extensive tuning
+and file system configuration (block size, parity etc). Such extensive tuning
 was not conducted in this benchmark because the workload was very comfortably
 memory-bound and an effort had already been made to determine reasonable batch
 sizes. A production LSM deployment will need to tune these parameters carefully.
@@ -212,8 +211,7 @@ A key feature of the non-LSM implementations is they do not require such tuning.
 ## Test 4: 1 Million X 100 Byte Values
 Now that appropriate settings have been verified, this is the first test of all
 implementations. In all of these benchmarks we are inserting 1M entries.
-The vertical (y) axis uses a log scale given the major performance differences
-between the fastest and slowest implementations.
+The vertical (y) axis of each performance graph uses a log scale.
 
 ### Storage Use
 
@@ -330,7 +328,7 @@ an index suitable for ordered key iteration.
 
 ![img](5-intKey-rnd.png)
 
-LMDB remains easily the fastest with random reads. However, random writes
+LMDB easily remains the fastest with random reads. However, random writes
 involving these larger values are a different story, with the two native LSM
 implementations completing the write workloads much faster than LMDB. In the
 graph we see Chronicle Map coming in first (22 seconds), albeit without the
@@ -342,13 +340,13 @@ seconds).
 
 ## Test 6: 10 Million X 4,080, 8,176 and 16,368 Byte Values
 
-Test 6 explores much larger workloads (36 - 152 GB before overhead). Given the
+Test 6 explores much larger workloads (38 - 152 GB before overhead). Given the
 performance of the pure Java sorting implementations (particularly for writes),
 they are not included in test 6. The unsorted Chronicle Map continues to be
 included.
 
 All results in test 6 are reported in seconds (not milliseconds), and there is
-is further reporting of sequential access patterns. This is because random
+no further reporting of sequential access patterns. This is because random
 access patterns are always slower for every implementation, so focusing on
 random access offers a realistic worst-case scenario.
 
@@ -364,10 +362,10 @@ random access offers a realistic worst-case scenario.
 | Chronicle | 40952766464 | .27 |
 | LMDB DB | 41279459328 | 1.07 |
 
+![img](6-intKey-rnd-4080.png)
+
 With 4,080 byte values, storage efficiency is now excellent for all
 implementations. This efficiency continues to increase in later tests.
-
-![img](6-intKey-rnd-4080.png)
 
 We can see the larger value sizes are starting to equal out the write speeds.
 Chronicle Map continues to write the fastest, completing the 10M writes in just
@@ -387,12 +385,12 @@ fastest read performance.
 | Chronicle | 81912651776 | .13 |
 | LMDB DB | 82241519616 | .53 |
 
-The trend toward better storage efficiency with larger values has continued.
-
 ![img](6-intKey-rnd-8176.png)
 
+The trend toward better storage efficiency with larger values has continued.
+
 Now that much larger value keys are in use, we start to see the LSM
-implementations slowed down by write amplification. With the 8,176 byte values
+implementations slowed down by write amplification. With 8,176 byte values,
 LMDB actually completes the write workload faster than the other sorted
 implementations in 182 seconds. RocksDB comes in next at 192 seconds, and
 finally LevelDB at 268 seconds. As usual, LMDB offers the fastest reads.
@@ -409,12 +407,12 @@ finally LevelDB at 268 seconds. As usual, LMDB offers the fastest reads.
 | Chronicle | 163832737792 | .06 |
 | LMDB DB | 164160393216 | .26 |
 
+![img](6-intKey-rnd-16368.png)
+
 In our final storage evaluation for this report, we see all implementations
 offering very good storage space efficiency compared with a flat array. LMDB
 continues to be the most inefficient at around one quarter of one percent
 overhead, but this is unlikely to be an issue for most applications.
-
-![img](6-intKey-rnd-16368.png)
 
 The write amplification issue seen with the earlier 8,176 byte benchmark
 continues, with the LSM implementations further slowing down. LMDB completes the

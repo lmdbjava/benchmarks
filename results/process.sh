@@ -63,6 +63,25 @@ plot_4() {
   done
 }
 
+plot_4_summary() {
+    DAT="$1.dat"
+    PNG="$1-summary.png"
+    KEY=$2
+    SEQ=$3
+    SIZE=$4
+    BENCHES="readKey readSeq write"
+    for BENCH in $BENCHES; do
+        TMP=/tmp/$BENCH
+        grep $BENCH $DAT > $TMP
+        sed -i "s/$BENCH.//g" $TMP
+    done
+    gplot.pl -type png -mplot 3x1 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1 M" -set "terminal png size 1000,350; set key top right; set xtics nomirror rotate by -270" -pointsize 1 -style points -outfile $PNG -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/write
+    for BENCH in $BENCHES; do
+        TMP=/tmp/$BENCH
+        # rm -f $TMP
+    done
+}
+
 plot_5() {
   DAT="$1.dat"
   PNG="$1.png"
@@ -160,6 +179,7 @@ plot_4 4-intKey-seq "Int" "Seq" "100"
 plot_4 4-strKey-seq "Str" "Seq" "100"
 plot_4 4-intKey-rnd "Int" "Rnd" "100"
 plot_4 4-strKey-rnd "Str" "Rnd" "100"
+plot_4_summary 4-intKey-rnd "Int" "Rnd" "100"
 
 grep 'intKey-true-num-1000000-sequential-false' out-4.tsv | grep 'after-close' | sed -r 's/Bytes\tafter-close\t([0-9]+)\torg.lmdbjava.bench.([ |a-z|A-Z]+).*/\1 "\2"/g' > 4-size.dat
 echo '104000000 "(Flat Array)"' > 4-size-sorted.dat

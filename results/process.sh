@@ -1,5 +1,8 @@
 #!/bin/bash
 
+PLOT_DEFAULTS="set boxwidth 0.5; set style fill solid 0.25 border; set xtics nomirror rotate by -270"
+KEY_DEFAULTS="set key outside bottom center samplen 1"
+
 fix_names() {
   sed -i 's/LmdbJavaAgrona/LMDB DB/g' $1
   sed -i 's/LmdbJavaByteBuffer/LMDB BB/g' $1
@@ -44,6 +47,7 @@ layout() {
   rm $TMP
 }
 
+
 plot_4() {
   DAT="$1.dat"
   PNG="$1.png"
@@ -56,7 +60,7 @@ plot_4() {
     grep $BENCH $DAT > $TMP
     sed -i "s/$BENCH.//g" $TMP
   done
-  gplot.pl -type png -mplot 3x2 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1 M (log)" -set "logscale y; set terminal png size 1000,700; set key top right; set xtics nomirror rotate by -270" -pointsize 1 -style points -outfile $PNG -using '4:xtic(2)' /tmp/readCrc -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/readXxh64 -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/write -using '4:xtic(2)' /tmp/readRev
+  gplot.pl -type png -mplot 3x2 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1M (log)" -set "logscale y; set terminal png size 1000,700; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '4:xtic(2)' /tmp/readCrc -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/readXxh64 -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/write -using '4:xtic(2)' /tmp/readRev
   for BENCH in $BENCHES; do
     TMP=/tmp/$BENCH
    # rm -f $TMP
@@ -75,7 +79,7 @@ plot_4_summary() {
         grep $BENCH $DAT > $TMP
         sed -i "s/$BENCH.//g" $TMP
     done
-    gplot.pl -type png -mplot 3x1 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1 M" -set "terminal png size 1000,350; set key top right; set xtics nomirror rotate by -270" -pointsize 1 -style points -outfile $PNG -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/write
+    gplot.pl -type png -mplot 3x1 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1M" -set "terminal png size 1000,350; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/write
     for BENCH in $BENCHES; do
         TMP=/tmp/$BENCH
         # rm -f $TMP
@@ -95,7 +99,7 @@ plot_5() {
     grep $BENCH $DAT > $TMP
     sed -i "s/$BENCH.//g" $TMP
   done
-  gplot.pl -type png -mplot 3x1 -title "10M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "$TIME_UNIT / 10 M (log)" -set "logscale y; set terminal png size 1000,350; set key top right; set xtics nomirror rotate by -270" -pointsize 1 -style points -outfile $PNG -using '3:xtic(1)' /tmp/readKey -using '3:xtic(1)' /tmp/readSeq -using '3:xtic(1)' /tmp/write
+  gplot.pl -type png -mplot 3x1 -title "10M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "$TIME_UNIT / 10M (log)" -set "logscale y; set terminal png size 1000,350; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '3:xtic(1)' /tmp/readKey -using '3:xtic(1)' /tmp/readSeq -using '3:xtic(1)' /tmp/write
   for BENCH in $BENCHES; do
     TMP=/tmp/$BENCH
    # rm -f $TMP
@@ -131,7 +135,7 @@ grep '#\|true   "read' 1-forceSafe.dat | grep '#\|LMDB BB' > 1-forceSafe-reads.d
 rm 1-forceSafe.dat
 sed -i 's/LMDB BB" true/safe"/g' 1-forceSafe-reads.dat
 sed -i 's/LMDB BB" false/unsafe"/g' 1-forceSafe-reads.dat
-gplot.pl -type png -title "LmdbJava ByteBuffer Safe vs Unsafe Overhead" -xlabel "" -ylabel "Ms / 1M" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '3:xtic(2)' -outfile 1-forceSafe-reads.png 1-forceSafe-reads.dat
+gplot.pl -type png -title "LmdbJava ByteBuffer Safe vs Unsafe Overhead" -xlabel "" -ylabel "Ms / 1M" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '3:xtic(2)' -outfile 1-forceSafe-reads.png 1-forceSafe-reads.dat
 
 layout 1 'sync' '$16 $10 $1 $8 $13 $5'
 grep '#\|true false "write' 1-sync.dat > 1-sync-writes.dat
@@ -139,7 +143,7 @@ rm 1-sync.dat
 sed -i 's/write.//g' 1-sync-writes.dat
 sed -i 's/"  true/ (sync)"  true/g' 1-sync-writes.dat
 sed -i 's/"  false/ (no sync)"  false/g' 1-sync-writes.dat
-gplot.pl -type png -title "LMDB Sync" -xlabel "" -ylabel "Ms / 1M" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '5:xtic(3)' -outfile 1-sync-writes.png 1-sync-writes.dat
+gplot.pl -type png -title "LMDB Sync" -xlabel "" -ylabel "Ms / 1M" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '5:xtic(3)' -outfile 1-sync-writes.png 1-sync-writes.dat
 
 layout 1 'writeMap' '$13 $10 $1 $8 $16 $5'
 grep '#\|false false "write' 1-writeMap.dat > 1-writeMap-writes.dat
@@ -147,7 +151,7 @@ rm 1-writeMap.dat
 sed -i 's/write.//g' 1-writeMap-writes.dat
 sed -i 's/"  true/ (wm)"  true/g' 1-writeMap-writes.dat
 sed -i 's/"  false/ (!wm)"  false/g' 1-writeMap-writes.dat
-gplot.pl -type png -title "LMDB Write Map" -xlabel "" -ylabel "Ms / 1M" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '5:xtic(3)' -outfile 1-writeMap-writes.png 1-writeMap-writes.dat
+gplot.pl -type png -title "LMDB Write Map" -xlabel "" -ylabel "Ms / 1M" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '5:xtic(3)' -outfile 1-writeMap-writes.png 1-writeMap-writes.dat
 
 layout 1 'metaSync' '$16 $13 $1 $8 $10 $5'
 grep '#\|true false "write' 1-metaSync.dat > 1-metaSync-writes.dat
@@ -155,18 +159,18 @@ rm 1-metaSync.dat
 sed -i 's/write.//g' 1-metaSync-writes.dat
 sed -i 's/"  true/ (ms)"  true/g' 1-metaSync-writes.dat
 sed -i 's/"  false/ (!ms)"  false/g' 1-metaSync-writes.dat
-gplot.pl -type png -title "LMDB Metasync" -xlabel "" -ylabel "Ms / 1M" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '5:xtic(3)' -outfile 1-metaSync-writes.png 1-metaSync-writes.dat
+gplot.pl -type png -title "LMDB Metasync" -xlabel "" -ylabel "Ms / 1M" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '5:xtic(3)' -outfile 1-metaSync-writes.png 1-metaSync-writes.dat
 
 # out-2.csv: bm (1), score (5), sequential (10), valSize (12)
 grep 'sequential-false' out-2.tsv | grep 'after-close' | sed -r 's/Bytes\tafter-close\t([0-9]+)\torg.lmdbjava.bench.([a-z|A-Z]+).*-valSize-([0-9]+).*/\1 "\2 \3"/g' > 2-size.dat
-gplot.pl -type png -title "Native Library Disk Use 1M Rnd X Approx 2-16 KB Values" -xlabel "" -ylabel "Bytes" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '1:xtic(2)' -outfile 2-size.png 2-size.dat
+gplot.pl -type png -title "Native Library Disk Use 1M Rnd X Approx 2-16 KB Values" -xlabel "" -ylabel "Bytes" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '1:xtic(2)' -outfile 2-size.png 2-size.dat
 
 # out-3.csv: bm (1), score (5), batchSize (8)
 layout 3 'batchSize' '$1 $8 $5'
 grep '#\|"write' 3-batchSize.dat > 3-batchSize-writes.dat
 rm 3-batchSize.dat
 sed -i -r 's/"write\.(.*)" ([0-9]+)000000 (.*)/"\1 \2M" \3/g' 3-batchSize-writes.dat
-gplot.pl -type png -title "Native LSM Write Speed by Batch Size (10M Seq X 8,176 Byte Values)" -xlabel "Batch Size" -ylabel "Ms / 1M W" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '2:xtic(1)' -outfile 3-batchSize-writes.png 3-batchSize-writes.dat
+gplot.pl -type png -title "Native LSM Write Speed by Batch Size (10M Seq X 8,176 Byte Values)" -xlabel "Batch Size" -ylabel "Ms / 1M" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '2:xtic(1)' -outfile 3-batchSize-writes.png 3-batchSize-writes.dat
 
 # out-4.csv: bm (1), score (5), sequential (13), intKey (10)
 layout 4 'seq' '$10 $1 $13 $5'
@@ -187,7 +191,7 @@ sort -n 4-size.dat | awk '!(NR%3)' | sort -n >> 4-size-sorted.dat
 rm 4-size.dat
 mv 4-size-sorted.dat 4-size.dat
 size_fragment "4-size"
-gplot.pl -type png -title "Library Disk Use 1M Rnd X 100 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '1:xtic(2)' -outfile 4-size.png 4-size.dat
+gplot.pl -type png -title "Library Disk Use 1M Rnd X 100 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '1:xtic(2)' -outfile 4-size.png 4-size.dat
 
 # out-5.csv: bm (1), score (5), sequential (13)
 layout 5 'seq' '$1 $13 $5'
@@ -203,7 +207,7 @@ sort -n 5-size.dat >> 5-size-sorted.dat
 rm 5-size.dat
 mv 5-size-sorted.dat 5-size.dat
 size_fragment "5-size"
-gplot.pl -type png -title "Library Disk Use 10M Rnd X 2,026 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '1:xtic(2)' -outfile 5-size.png 5-size.dat
+gplot.pl -type png -title "Library Disk Use 10M Rnd X 2,026 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '1:xtic(2)' -outfile 5-size.png 5-size.dat
 
 # out-6.csv: bm (1), score (5), valSize (15)
 layout 6 'all' '$1 $15 $5'
@@ -224,6 +228,6 @@ grep 'valRandom-false-valSize-16368' out-6.tsv | grep 'after-close' | sed -r 's/
 size_fragment "6-size-4080"
 size_fragment "6-size-8176"
 size_fragment "6-size-16368"
-gplot.pl -type png -title "Library Disk Use 10M Rnd X 4,080 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '1:xtic(2)' -outfile 6-size-4080.png 6-size-4080.dat
-gplot.pl -type png -title "Library Disk Use 10M Rnd X 8,176 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '1:xtic(2)' -outfile 6-size-8176.png 6-size-8176.dat
-gplot.pl -type png -title "Library Disk Use 10M Rnd X 4,080 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; set xtics nomirror rotate by -270" -pointsize 1 -style points -using '1:xtic(2)' -outfile 6-size-16368.png 6-size-16368.dat
+gplot.pl -type png -title "Library Disk Use 10M Rnd X 4,080 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '1:xtic(2)' -outfile 6-size-4080.png 6-size-4080.dat
+gplot.pl -type png -title "Library Disk Use 10M Rnd X 8,176 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '1:xtic(2)' -outfile 6-size-8176.png 6-size-8176.dat
+gplot.pl -type png -title "Library Disk Use 10M Rnd X 4,080 Byte Values" -xlabel "" -ylabel "Bytes" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '1:xtic(2)' -outfile 6-size-16368.png 6-size-16368.dat

@@ -121,10 +121,9 @@ public class LmdbJavaByteBuffer {
     ByteBuffer rwVal;
 
     @Override
-    public void setup(BenchmarkParams b, final boolean metaSync,
-                      final boolean sync) throws
+    public void setup(BenchmarkParams b, final boolean sync) throws
         Exception {
-      super.setup(b, metaSync, sync);
+      super.setup(b, sync);
       rwKey = allocateDirect(keySize).order(LITTLE_ENDIAN);
       rwVal = allocateDirect(valSize);
     }
@@ -179,7 +178,7 @@ public class LmdbJavaByteBuffer {
     @Override
     public void setup(BenchmarkParams b) throws Exception {
       bufferProxy = forceSafe ? PROXY_SAFE : PROXY_OPTIMAL;
-      super.setup(b, false, false);
+      super.setup(b, false);
       super.write();
       txn = env.txnRead();
       c = db.openCursor(txn);
@@ -198,12 +197,6 @@ public class LmdbJavaByteBuffer {
   public static class Writer extends LmdbJava {
 
     /**
-     * Whether {@link EnvFlags#MDB_NOMETASYNC} is used.
-     */
-    @Param({"false"})
-    boolean metaSync;
-
-    /**
      * Whether {@link EnvFlags#MDB_NOSYNC} is used.
      */
     @Param({"false"})
@@ -213,7 +206,7 @@ public class LmdbJavaByteBuffer {
     @Override
     public void setup(BenchmarkParams b) throws Exception {
       bufferProxy = PROXY_OPTIMAL;
-      super.setup(b, metaSync, sync);
+      super.setup(b, sync);
     }
 
     @TearDown(Invocation)

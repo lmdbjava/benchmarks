@@ -139,10 +139,9 @@ public class LmdbJavaAgrona {
     byte[] valBytes;
 
     @Override
-    public void setup(BenchmarkParams b, final boolean metaSync,
-                      final boolean sync) throws
+    public void setup(BenchmarkParams b, final boolean sync) throws
         Exception {
-      super.setup(b, metaSync, sync);
+      super.setup(b, sync);
       keyBytes = new byte[keySize];
       valBytes = new byte[valSize];
       rwKey = new UnsafeBuffer(allocateDirect(keySize).order(LITTLE_ENDIAN));
@@ -189,7 +188,7 @@ public class LmdbJavaAgrona {
     @Override
     public void setup(BenchmarkParams b) throws Exception {
       bufferProxy = PROXY_DB;
-      super.setup(b, false, false);
+      super.setup(b, false);
       super.write();
       final int maxValSizeForCopy = 4_081; // 2nd copy requires *2 /tmp space
       if (valSize <= maxValSizeForCopy && tmp.getName().contains(".readKey-")) {
@@ -213,12 +212,6 @@ public class LmdbJavaAgrona {
   public static class Writer extends LmdbJava {
 
     /**
-     * Whether {@link EnvFlags#MDB_NOMETASYNC} is used.
-     */
-    @Param({"false"})
-    boolean metaSync;
-
-    /**
      * Whether {@link EnvFlags#MDB_NOSYNC} is used.
      */
     @Param({"false"})
@@ -228,7 +221,7 @@ public class LmdbJavaAgrona {
     @Override
     public void setup(BenchmarkParams b) throws Exception {
       bufferProxy = PROXY_DB;
-      super.setup(b, metaSync, sync);
+      super.setup(b, sync);
     }
 
     @TearDown(Invocation)

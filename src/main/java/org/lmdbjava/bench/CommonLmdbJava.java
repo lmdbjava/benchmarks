@@ -24,7 +24,6 @@ import static org.lmdbjava.DbiFlags.MDB_CREATE;
 import static org.lmdbjava.DbiFlags.MDB_INTEGERKEY;
 import static org.lmdbjava.Env.DISABLE_CHECKS_PROP;
 import static org.lmdbjava.Env.create;
-import static org.lmdbjava.EnvFlags.MDB_NOMETASYNC;
 import static org.lmdbjava.EnvFlags.MDB_NOSYNC;
 import static org.lmdbjava.EnvFlags.MDB_WRITEMAP;
 import org.openjdk.jmh.annotations.Param;
@@ -56,17 +55,13 @@ public class CommonLmdbJava<T> extends Common {
     return flags;
   }
 
-  static final EnvFlags[] envFlags(final boolean writeMap,
-                                   final boolean metaSync, final boolean sync) {
+  static final EnvFlags[] envFlags(final boolean writeMap, final boolean sync) {
     final Set<EnvFlags> envFlagSet = new HashSet<>();
     if (writeMap) {
       envFlagSet.add(MDB_WRITEMAP);
     }
     if (!sync) {
       envFlagSet.add(MDB_NOSYNC);
-    }
-    if (!metaSync) {
-      envFlagSet.add(MDB_NOMETASYNC);
     }
     final EnvFlags[] envFlags = new EnvFlags[envFlagSet.size()];
     envFlagSet.toArray(envFlags);
@@ -87,10 +82,10 @@ public class CommonLmdbJava<T> extends Common {
   @Param({"true"})
   boolean writeMap;
 
-  public void setup(final BenchmarkParams b, final boolean metaSync,
-                    final boolean sync) throws Exception {
+  public void setup(final BenchmarkParams b, final boolean sync) throws
+      Exception {
     super.setup(b);
-    final EnvFlags[] envFlags = envFlags(writeMap, metaSync, sync);
+    final EnvFlags[] envFlags = envFlags(writeMap, sync);
     env = create(bufferProxy)
         .setMapSize(mapSize(num, valSize))
         .setMaxDbs(1)

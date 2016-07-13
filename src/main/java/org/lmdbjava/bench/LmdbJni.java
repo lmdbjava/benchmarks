@@ -152,8 +152,7 @@ public class LmdbJni {
      */
     DirectBuffer wvb;
 
-    public void setup(BenchmarkParams b, final boolean metaSync,
-                      final boolean sync) throws
+    public void setup(BenchmarkParams b, final boolean sync) throws
         Exception {
       super.setup(b);
       wkb = new DirectBuffer(allocateDirect(keySize));
@@ -161,7 +160,7 @@ public class LmdbJni {
       keyBytes = new byte[keySize];
       valBytes = new byte[valSize];
 
-      final EnvFlags[] envFlags = envFlags(writeMap, metaSync, sync);
+      final EnvFlags[] envFlags = envFlags(writeMap, sync);
 
       env = new Env();
       env.setMapSize(mapSize(num, valSize));
@@ -226,7 +225,7 @@ public class LmdbJni {
     @Setup(Trial)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      super.setup(b, false, false);
+      super.setup(b, false);
       super.write();
       tx = env.createReadTransaction();
       c = db.bufferCursor(tx);
@@ -245,12 +244,6 @@ public class LmdbJni {
   public static class Writer extends CommonLmdbJni {
 
     /**
-     * Whether {@link EnvFlags#MDB_NOMETASYNC} is used.
-     */
-    @Param({"false"})
-    boolean metaSync;
-
-    /**
      * Whether {@link EnvFlags#MDB_NOSYNC} is used.
      */
     @Param({"false"})
@@ -259,7 +252,7 @@ public class LmdbJni {
     @Setup(Invocation)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      super.setup(b, metaSync, sync);
+      super.setup(b, sync);
     }
 
     @TearDown(Invocation)

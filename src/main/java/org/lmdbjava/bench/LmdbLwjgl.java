@@ -146,17 +146,13 @@ public class LmdbLwjgl {
       return flags;
     }
 
-    private static int envFlags(final boolean writeMap, final boolean metaSync,
-                                final boolean sync) {
+    private static int envFlags(final boolean writeMap, final boolean sync) {
       int envFlags = 0;
       if (writeMap) {
         envFlags |= MDB_WRITEMAP;
       }
       if (!sync) {
         envFlags |= MDB_NOSYNC;
-      }
-      if (!metaSync) {
-        envFlags |= MDB_NOMETASYNC;
       }
       return envFlags;
     }
@@ -180,8 +176,8 @@ public class LmdbLwjgl {
     @Param({"true"})
     boolean writeMap;
 
-    public void setup(final BenchmarkParams b, final boolean metaSync,
-                      final boolean sync) throws Exception {
+    public void setup(final BenchmarkParams b, final boolean sync) throws
+        Exception {
       super.setup(b);
 
       try (MemoryStack stack = stackPush()) {
@@ -195,8 +191,7 @@ public class LmdbLwjgl {
         E(mdb_env_set_mapsize(env, mapSize(num, valSize)));
 
         // Open environment
-        E(mdb_env_open(env, tmp.getPath(), envFlags(writeMap, metaSync, sync),
-                       POSIX_MODE));
+        E(mdb_env_open(env, tmp.getPath(), envFlags(writeMap, sync), POSIX_MODE));
 
         // Open database
         E(mdb_txn_begin(env, NULL, 0, pp));
@@ -273,7 +268,7 @@ public class LmdbLwjgl {
     @Setup(Trial)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      super.setup(b, false, false);
+      super.setup(b, false);
       super.write();
 
       try (MemoryStack stack = stackPush()) {
@@ -300,12 +295,6 @@ public class LmdbLwjgl {
   public static class Writer extends CommonLmdbLWJGL {
 
     /**
-     * Whether {@link LMDB#MDB_NOMETASYNC} is used.
-     */
-    @Param({"false"})
-    boolean metaSync;
-
-    /**
      * Whether {@link LMDB#MDB_NOSYNC} is used.
      */
     @Param({"false"})
@@ -314,7 +303,7 @@ public class LmdbLwjgl {
     @Setup(Invocation)
     @Override
     public void setup(BenchmarkParams b) throws Exception {
-      super.setup(b, metaSync, sync);
+      super.setup(b, sync);
     }
 
     @TearDown(Invocation)

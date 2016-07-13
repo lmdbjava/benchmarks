@@ -1,23 +1,10 @@
 ## Introduction
 This report provides a performance evaluation of ten embedded key-value (K-V)
 store library options available to Java applications. It evaluates a range of
-small (99 MB) to large (152 GB) workloads that can be easily stored in memory on
-server-grade hardware. The evaluation includes the write performance, actual
-storage required, and a range of read scenarios including fetching entries by
-key, sequentially iterating over all entries, reverse iterating over all
-entries, computing a sequential CRC32 of all entries, and computing a sequential
-xxHash of all entries. The write benchmarks and read by key benchmarks are
-evaluated when keys are provided in both sequential and random order.
-
-We confirm separately-reported findings that
-[LSM](https://en.wikipedia.org/wiki/Log-structured_merge-tree)-based
-implementations often provide faster write performance and higher
-storage space efficiency than the
-[B+ Tree](https://en.wikipedia.org/wiki/B%2B_tree)-based alternatives. However,
-the write performance benefits of LSM disappears as larger values are used
-(owing to LSM write amplification overhead). In addition, with appropriate
-selection of entry sizes, the storage overhead can also be minimised to
-immaterial levels.
+small (99 MB) to large (152 GB) workloads that were easily stored in memory on
+server-grade hardware. The evaluation includes a variety of key types, value
+sizes, number of entries, key access patterns, iteration styles and
+implementation-specific configuration settings.
 
 ## Methodology
 The benchmark was executed on 10 July 2016 using
@@ -34,11 +21,15 @@ JetBrains [Xodus](https://github.com/JetBrains/xodus) 1.0.0.
 Those implementations that rely upon native code used the shared libraries
 bundled inside their JAR files.
 
-The test server had 512 GB RAM and 2 x Intel Xeon E5-2667 v 3 CPUs. The `/tmp`
+The test server had 512 GB RAM and dual Intel Xeon E5-2667 v 3 CPUs. The `/tmp`
 directory (on a 256 GB `tmpfs` file system) was used as the work directory
 during each benchmark. The server was running Linux 4.6.3 (x86_64) with
 Java 1.8.0_92, and had its `/etc/security/limits.conf` configured with soft and
 hard `nofile` limits of 1,000,000.
+
+All benchmarks were executed by the standard
+[JMH](http://openjdk.java.net/projects/code-tools/jmh/) creation of JVM forks
+with default JVM arguments. No custom garbage collection parameters were used.
 
 The tests and graphs can be reproduced by checking out the previously-specified
 LmdbJava Benchmarks version on a Linux server with the required `nofile`
@@ -52,20 +43,21 @@ was to remove Xodus from the `out-6.csv` file given its performance distorted
 the `6-*.png` graphs. The original Xodus test 6 results remain in `out-6.txt`.
 
 ## Results
-Five benchmarks are reported:
+Six benchmarks are reported:
 
-* `readCrc`: Iterate over ordered entries, computing a CRC32 of keys and values
-* `readSeq`: Iterate over ordered entries, sending each value to the black hole
+* `write`: Bulk insert the entries into the store
+* `readKey`: Fetch each entry by presenting its key, sending each value to the
+   JMH black hole
+* `readSeq`: Iterate over the key-ordered entries, sending each value to the
+   JMH black hole
 * `readRev`: Same as `readSeq`, except iterating entries in reverse order
+* `readCrc`: Iterate over the key-ordered entries, computing a CRC32 of keys and values
 * `readXxh64`: Same as `readCrc`, except computing an XXH64 via
   [Zero-Allocation-Hashing](https://github.com/OpenHFT/Zero-Allocation-Hashing)
   (ZAH XXH64 is currently the fastest JVM hasher, as separately benchmarked via
   [Hash-Bench](https://github.com/benalexau/hash-bench))
-* `write`: Write the 1M/10M entries out in an implementation-optimal manner (eg
-  via a single transaction or batch if supported)
 
-To make the graphs and associated discussion more concise, the follow terms are
-used:
+To make the graphs more concise, the follow terms are used:
 
 * Int/Integer: 32-bit signed integer (using the implementation's default byte
   ordering)
@@ -73,6 +65,7 @@ used:
 * Ms: Milliseconds
 * Rnd: Random data access (ie integers selected from a
   [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister))
+* Sec: Seconds
 * Seq: Sequential data access (ie ordered integers from 0 to 1M/10M)
 * Str: 16 byte string containing a zero-padded integer (no length prefix or null
   terminator)
@@ -126,15 +119,6 @@ LMDB also supports a `MDB_WRITEMAP` flag, which enables a writable memory map.
 Enabling the write map (shown as `(wm)` above) results in improved write
 latencies. It remains enabled for the remainder of the benchmark.
 
-### Meta Sync
-
-![img](1-metaSync-writes.png)
-
-This final LMDB-specific benchmark explores the write latency impact of the
-`MDB_NOMETASYNC` flag. This flag prevents an fsync metapage after commit. Given
-the results are inconclusive across different buffer types, it will be disabled
-for the remainder of the benchmark.
-
 ## Test 2: Determine ~2/4/8/16 KB Byte Values
 Some of the later tests require larger value sizes in order to explore the
 behaviour at higher memory workloads. This second test was therefore focused
@@ -169,11 +153,11 @@ comparison of each library's performance (as distinct from storage) trade-offs.
 
 ![img](3-batchSize-writes.png)
 
-LevelDB, RocksDB and Xodus are all LSM-based stores and benefit from inserting
-data in batches. Early testing of Xodus with large value sizes and large batch
-sizes rapidly led to Java out of memory exceptions (with the default JMH-forked
-JVM memory configuration). As such, a static write batch size of 1,000 was
-always used for Xodus.
+LevelDB, RocksDB and Xodus are all
+[LSM](https://en.wikipedia.org/wiki/Log-structured_merge-tree)-based stores and
+benefit from inserting data in batches. Early testing of Xodus with large value
+sizes and large batch sizes rapidly led to Java out of memory exceptions. As
+such, a static write batch size of 1,000 was always used for Xodus.
 
 LevelDB and RocksDB both handled large value sizes with a variety of very large
 batch sizes. The above graph illustrates the batch size impact when writing 10M
@@ -399,11 +383,11 @@ The trend toward better storage efficiency with larger values has continued.
 
 ![img](6-intKey-rnd-8176.png)
 
-Now that much larger value keys are in use, we start to see the LSM
-implementations slowed down by write amplification. With 8,176 byte values,
-LMDB actually completes the write workload faster than the other sorted
-implementations in 182 seconds. RocksDB comes in next at 192 seconds, and
-finally LevelDB at 268 seconds. As usual, LMDB offers the fastest reads.
+Now that much larger values are in use, we start to see the LSM implementations
+slowed down by write amplification. With 8,176 byte values, LMDB actually
+completes the write workload faster than the other sorted implementations in
+182 seconds. RocksDB comes in next at 192 seconds, and finally LevelDB at
+268 seconds. As usual, LMDB offers the fastest reads.
 
 ### 152 GB Random Access of 16,368 Byte Values
 
@@ -437,11 +421,10 @@ After testing many workloads from 99 MB to 152 GB, we have seen a number of
 important differences between the implementations.
 
 Before discussing the ordered key implementations, it is noted that Chronicle
-Map offers a good all-round option for unordered keys. It's consistently fast
-for both reads and writes, plus storage space efficient. These properties are
-sustained regardless of entry size. Chronicle Map also offers a different
-functional scope than the other embedded key-value stores in this report. For
-example, it lacks transactions but does offer inter-node replication.
+Map offers a good option for unordered keys. It's consistently fast for both
+reads and writes, plus storage space efficient. Chronicle Map also offers a
+different scope than the other embedded key-value stores in this report. For
+example, it lacks transactions but does offer replication.
 
 Ordered key implementations were the focus of this report. Those use cases which
 can employ ordered keys will always achieve much better read performance by
@@ -479,17 +462,17 @@ compressed values. This may also improve performance in the case of IO
 bottlenecks, as the CPU can decompress while waiting on further IO.
 
 In terms of broader efficiency, LMDB operates in the same thread as its caller
-and therefore its reported performance is a total indication of LMDB overhead.
+and therefore the performance reported above is a total indication of LMDB cost.
 On the other hand, RocksDB and LevelDB use a second thread for write compaction.
-This results in a material component of sorting overhead in an unreported
-thread. We also see a similar situation with operating system resource
-consumption, with LMDB only requiring two open files. RocksDB and LevelDB both
-require large numbers of open files to operate. Finally, RocksDB and LevelDB
-need careful tuning and batch sizing. LMDB does not require such configuration.
+This second thread may compete with application workloads on busy servers. We
+also see a similar efficiency concern around operating system file handle
+consumption. While LMDB only requires two open files, RocksDB and LevelDB both
+require tens to hundreds of thousands of open files to operate.
 
 The qualitative dimensions of each implementation should also be considered. For
 example, consider recovery time from dirty shutdown (eg process/OS/server crash),
 ACID transaction guarantees, inter-process usage flexibility, runtime monitoring
 requirements, hot backup support and ongoing configuration effort. In these
 situations LMDB delivers a very strong solution. For more information, see the
-[LMDB Feature Comparison Chart](https://symas.com/products/lightning-memory-mapped-database/feature-comparison/).
+[LMDB Feature Comparison Chart](https://symas.com/products/lightning-memory-mapped-database/feature-comparison/)
+and [LmdbJava](https://github.com/lmdbjava/lmdbjava) features list.

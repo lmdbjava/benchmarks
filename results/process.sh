@@ -60,7 +60,7 @@ plot_4() {
     grep $BENCH $DAT > $TMP
     sed -i "s/$BENCH.//g" $TMP
   done
-  gplot.pl -type png -mplot 3x2 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1M (log)" -set "logscale y; set terminal png size 1000,700; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '4:xtic(2)' /tmp/readCrc -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/readXxh64 -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/write -using '4:xtic(2)' /tmp/readRev
+  gplot.pl -type png -mplot 3x2 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1M (log)" -set "logscale y; set terminal png size 1000,700; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '4:xtic(2)' /tmp/readCrc -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/readXxh64 -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/write -using '4:xtic(2)' /tmp/readRev
   for BENCH in $BENCHES; do
     TMP=/tmp/$BENCH
    # rm -f $TMP
@@ -79,7 +79,7 @@ plot_4_summary() {
         grep $BENCH $DAT > $TMP
         sed -i "s/$BENCH.//g" $TMP
     done
-    gplot.pl -type png -mplot 3x1 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1M" -set "terminal png size 1000,350; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/write
+    gplot.pl -type png -mplot 3x1 -title "1M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "Ms / 1M" -set "terminal png size 1000,350; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '4:xtic(2)' /tmp/readSeq -using '4:xtic(2)' /tmp/readKey -using '4:xtic(2)' /tmp/write
     for BENCH in $BENCHES; do
         TMP=/tmp/$BENCH
         # rm -f $TMP
@@ -99,7 +99,7 @@ plot_5() {
     grep $BENCH $DAT > $TMP
     sed -i "s/$BENCH.//g" $TMP
   done
-  gplot.pl -type png -mplot 3x1 -title "10M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "$TIME_UNIT / 10M (log)" -set "logscale y; set terminal png size 1000,350; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '3:xtic(1)' /tmp/readKey -using '3:xtic(1)' /tmp/readSeq -using '3:xtic(1)' /tmp/write
+  gplot.pl -type png -mplot 3x1 -title "10M $SEQ $KEY X $SIZE Byte Values" -xlabel "" -ylabel "$TIME_UNIT / 10M (log)" -set "logscale y; set terminal png size 1000,350; $PLOT_DEFAULTS; $KEY_DEFAULTS" -style boxes -outfile $PNG -using '3:xtic(1)' /tmp/readSeq -using '3:xtic(1)' /tmp/readKey -using '3:xtic(1)' /tmp/write
   for BENCH in $BENCHES; do
     TMP=/tmp/$BENCH
    # rm -f $TMP
@@ -127,6 +127,8 @@ for FILE in $FILES; do disk_use $FILE; done
 
 #### Generate .dat files and plots
 
+# NB: The following are all designed for use with rev b643a1e. A later rev removes metaSync, so the column IDs in the CSV will change!
+
 # out-1.csv: bm (1), score (5), sync (13), forceSafe (8), metaSync (10), writeMap (16)
 # defaults: sync=false, forceSafe=false, metaSync=false, writeMap=true
 
@@ -153,14 +155,6 @@ sed -i 's/"  true/ (wm)"  true/g' 1-writeMap-writes.dat
 sed -i 's/"  false/ (!wm)"  false/g' 1-writeMap-writes.dat
 gplot.pl -type png -title "LMDB Write Map" -xlabel "" -ylabel "Ms / 1M" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '5:xtic(3)' -outfile 1-writeMap-writes.png 1-writeMap-writes.dat
 
-layout 1 'metaSync' '$16 $13 $1 $8 $10 $5'
-grep '#\|true false "write' 1-metaSync.dat > 1-metaSync-writes.dat
-rm 1-metaSync.dat
-sed -i 's/write.//g' 1-metaSync-writes.dat
-sed -i 's/"  true/ (ms)"  true/g' 1-metaSync-writes.dat
-sed -i 's/"  false/ (!ms)"  false/g' 1-metaSync-writes.dat
-gplot.pl -type png -title "LMDB Metasync" -xlabel "" -ylabel "Ms / 1M" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '5:xtic(3)' -outfile 1-metaSync-writes.png 1-metaSync-writes.dat
-
 # out-2.csv: bm (1), score (5), sequential (10), valSize (12)
 grep 'sequential-false' out-2.tsv | grep 'after-close' | sed -r 's/Bytes\tafter-close\t([0-9]+)\torg.lmdbjava.bench.([a-z|A-Z]+).*-valSize-([0-9]+).*/\1 "\2 \3"/g' > 2-size.dat
 gplot.pl -type png -title "Native Library Disk Use 1M Rnd X Approx 2-16 KB Values" -xlabel "" -ylabel "Bytes" -set "nokey; $PLOT_DEFAULTS" -style boxes -using '1:xtic(2)' -outfile 2-size.png 2-size.dat
@@ -183,6 +177,7 @@ plot_4 4-intKey-seq "Int" "Seq" "100"
 plot_4 4-strKey-seq "Str" "Seq" "100"
 plot_4 4-intKey-rnd "Int" "Rnd" "100"
 plot_4 4-strKey-rnd "Str" "Rnd" "100"
+plot_4_summary 4-intKey-seq "Int" "Seq" "100"
 plot_4_summary 4-intKey-rnd "Int" "Rnd" "100"
 
 grep 'intKey-true-num-1000000-sequential-false' out-4.tsv | grep 'after-close' | sed -r 's/Bytes\tafter-close\t([0-9]+)\torg.lmdbjava.bench.([ |a-z|A-Z]+).*/\1 "\2"/g' > 4-size.dat

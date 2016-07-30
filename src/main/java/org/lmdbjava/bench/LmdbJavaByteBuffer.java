@@ -72,7 +72,7 @@ public class LmdbJavaByteBuffer {
     for (final int key : r.keys) {
       r.rwKey.clear();
       if (r.intKey) {
-        r.rwKey.putInt(0, key).flip();
+        r.rwKey.putInt(key).flip();
       } else {
         final byte[] str = r.padKey(key).getBytes();
         r.rwKey.put(str, 0, str.length).flip();
@@ -138,7 +138,7 @@ public class LmdbJavaByteBuffer {
             rwKey.clear();
             rwVal.clear();
             if (intKey) {
-              rwKey.putInt(0, key).flip();
+              rwKey.putInt(key).flip();
             } else {
               final byte[] str = padKey(key).getBytes();
               rwKey.put(str, 0, str.length).flip();
@@ -150,7 +150,9 @@ public class LmdbJavaByteBuffer {
                 rndByteOffset = 0;
               }
             } else {
-              rwVal.putInt(0, key).flip();
+              rwVal.putInt(key);
+              rwVal.position(valSize);
+              rwVal.flip();
             }
             c.put(rwKey, rwVal, flags);
           }

@@ -31,7 +31,7 @@
   </repositories>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jmh.version>1.12</jmh.version>
+    <jmh.version>1.13</jmh.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <uberjar.name>benchmarks</uberjar.name>
@@ -61,12 +61,12 @@
     <dependency>
       <groupId>org.lmdbjava</groupId>
       <artifactId>lmdbjava</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.agrona</groupId>
       <artifactId>Agrona</artifactId>
-      <version>0.5.1</version>
+      <version>0.5.3</version>
     </dependency>
     <dependency>
       <groupId>net.openhft</groupId>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.mapdb</groupId>
       <artifactId>mapdb</artifactId>
-      <version>3.0.0-RC2</version>
+      <version>3.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -108,7 +108,7 @@
     <dependency>
       <groupId>org.rocksdb</groupId>
       <artifactId>rocksdbjni</artifactId>
-      <version>4.5.1</version>
+      <version>4.8.0</version>
     </dependency>
     <dependency>
       <groupId>net.openhft</groupId>
@@ -139,7 +139,7 @@
     <dependency>
       <groupId>org.jetbrains.xodus</groupId>
       <artifactId>xodus-environment</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
       <exclusions>
         <exclusion>
           <groupId>org.jetbrains</groupId>

@@ -1,21 +1,27 @@
-/*
- * Copyright 2016 The LmdbJava Project, http://lmdbjava.org/
- *
+/*-
+ * #%L
+ * LmdbJava Benchmarks
+ * %%
+ * Copyright (C) 2016 The LmdbJava Open Source Project
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.lmdbjava.bench;
 
 import java.io.File;
+import java.io.IOException;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -48,12 +54,13 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
+@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class MapDb {
 
   @Benchmark
-  public void readCrc(final Reader r, final Blackhole bh) throws Exception {
+  public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
-    Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
+    final Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
     while (iterator.hasNext()) {
       final Entry<byte[], byte[]> entry = iterator.next();
       r.crc.update(entry.getKey());
@@ -63,7 +70,7 @@ public class MapDb {
   }
 
   @Benchmark
-  public void readKey(final Reader r, final Blackhole bh) throws Exception {
+  public void readKey(final Reader r, final Blackhole bh) {
     for (final int key : r.keys) {
       if (r.intKey) {
         r.wkb.putInt(0, key);
@@ -75,8 +82,9 @@ public class MapDb {
   }
 
   @Benchmark
-  public void readRev(final Reader r, final Blackhole bh) throws Exception {
-    Iterator<Entry<byte[], byte[]>> iterator = r.map.descendingEntryIterator();
+  public void readRev(final Reader r, final Blackhole bh) {
+    final Iterator<Entry<byte[], byte[]>> iterator = r.map
+        .descendingEntryIterator();
     while (iterator.hasNext()) {
       final Entry<byte[], byte[]> entry = iterator.next();
       bh.consume(entry.getValue());
@@ -84,8 +92,8 @@ public class MapDb {
   }
 
   @Benchmark
-  public void readSeq(final Reader r, final Blackhole bh) throws Exception {
-    Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
+  public void readSeq(final Reader r, final Blackhole bh) {
+    final Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
     while (iterator.hasNext()) {
       final Entry<byte[], byte[]> entry = iterator.next();
       bh.consume(entry.getValue());
@@ -93,9 +101,9 @@ public class MapDb {
   }
 
   @Benchmark
-  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+  public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
-    Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
+    final Iterator<Entry<byte[], byte[]>> iterator = r.map.entryIterator();
     while (iterator.hasNext()) {
       final Entry<byte[], byte[]> entry = iterator.next();
       result += xx_r39().hashBytes(entry.getKey());
@@ -105,11 +113,12 @@ public class MapDb {
   }
 
   @Benchmark
-  public void write(final Writer w, final Blackhole bh) throws Exception {
+  public void write(final Writer w, final Blackhole bh) {
     w.write();
   }
 
   @State(value = Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class CommonMapDb extends Common {
 
     DB db;
@@ -126,7 +135,7 @@ public class MapDb {
     MutableDirectBuffer wvb;
 
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
       wkb = new UnsafeBuffer(new byte[keySize]);
       wvb = new UnsafeBuffer(new byte[valSize]);
@@ -142,13 +151,13 @@ public class MapDb {
     }
 
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       reportSpaceBeforeClose();
       db.close();
       super.teardown();
     }
 
-    void write() throws Exception {
+    void write() {
       final int rndByteMax = RND_MB.length - valSize;
       int rndByteOffset = 0;
       for (final int key : keys) {
@@ -176,14 +185,14 @@ public class MapDb {
 
     @Setup(Trial)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
       super.write();
     }
 
     @TearDown(Trial)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }
@@ -193,13 +202,13 @@ public class MapDb {
 
     @Setup(Invocation)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
     }
 
     @TearDown(Invocation)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }

@@ -1,20 +1,26 @@
-/*
- * Copyright 2016 The LmdbJava Project, http://lmdbjava.org/
- *
+/*-
+ * #%L
+ * LmdbJava Benchmarks
+ * %%
+ * Copyright (C) 2016 The LmdbJava Open Source Project
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.lmdbjava.bench;
 
+import java.io.IOException;
 import static java.util.Arrays.copyOfRange;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import jetbrains.exodus.ArrayByteIterable;
@@ -50,10 +56,10 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
+@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class Xodus {
 
-  @Benchmark public void readCrc(final Reader r, final Blackhole bh) throws
-      Exception {
+  @Benchmark public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
     try (final Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
@@ -64,8 +70,7 @@ public class Xodus {
     bh.consume(r.crc.getValue());
   }
 
-  @Benchmark public void readKey(final Reader r, final Blackhole bh) throws
-      Exception {
+  @Benchmark public void readKey(final Reader r, final Blackhole bh) {
     for (final int key : r.keys) {
       if (r.intKey) {
         bh.consume(r.store.get(r.tx, intToEntry(key)).getBytesUnsafe());
@@ -77,7 +82,7 @@ public class Xodus {
   }
 
   @Benchmark
-  public void readRev(final Reader r, final Blackhole bh) throws Exception {
+  public void readRev(final Reader r, final Blackhole bh) {
     try (final Cursor c = r.store.openCursor(r.tx)) {
       c.getLast();
       do {
@@ -87,7 +92,7 @@ public class Xodus {
   }
 
   @Benchmark
-  public void readSeq(final Reader r, final Blackhole bh) throws Exception {
+  public void readSeq(final Reader r, final Blackhole bh) {
     try (final Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
         bh.consume(c.getValue().getBytesUnsafe());
@@ -95,8 +100,7 @@ public class Xodus {
     }
   }
 
-  @Benchmark public void readXxh64(final Reader r, final Blackhole bh) throws
-      Exception {
+  @Benchmark public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
     try (final Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
@@ -114,13 +118,14 @@ public class Xodus {
   }
 
   @State(value = Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class CommonXodus extends Common {
 
     Environment env;
     Store store;
 
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
 
       final EnvironmentConfig cfg = new EnvironmentConfig();
@@ -134,13 +139,13 @@ public class Xodus {
     }
 
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       reportSpaceBeforeClose();
       env.close();
       super.teardown();
     }
 
-    void write() throws Exception {
+    void write() {
       final int batchSize = 1_000; // optimal w/ valSize=16368 + default run
       env.executeInTransaction((final Transaction tx) -> {
         final int rndByteMax = RND_MB.length - valSize;
@@ -155,18 +160,18 @@ public class Xodus {
             keyBi = stringToEntry(padKey(key));
           }
           if (valRandom) {
-            byte[] bytes = copyOfRange(RND_MB, rndByteOffset, valSize);
+            final byte[] bytes = copyOfRange(RND_MB, rndByteOffset, valSize);
             valBi = new ArrayByteIterable(bytes);
             rndByteOffset += valSize;
             if (rndByteOffset >= rndByteMax) {
               rndByteOffset = 0;
             }
           } else {
-            byte[] bytes = new byte[valSize];
+            final byte[] bytes = new byte[valSize];
             bytes[0] = (byte) (key >>> 24);
             bytes[1] = (byte) (key >>> 16);
             bytes[2] = (byte) (key >>> 8);
-            bytes[3] = (byte) (key);
+            bytes[3] = (byte) key;
             valBi = new ArrayByteIterable(bytes, valSize);
           }
           if (sequential) {
@@ -184,13 +189,14 @@ public class Xodus {
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Reader extends CommonXodus {
 
     Transaction tx;
 
     @Setup(Trial)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
       super.write();
       tx = env.beginReadonlyTransaction();
@@ -199,7 +205,7 @@ public class Xodus {
 
     @TearDown(Trial)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       tx.abort();
       super.teardown();
     }
@@ -210,13 +216,13 @@ public class Xodus {
 
     @Setup(Invocation)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
     }
 
     @TearDown(Invocation)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }

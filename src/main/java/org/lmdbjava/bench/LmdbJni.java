@@ -1,20 +1,26 @@
-/*
- * Copyright 2016 The LmdbJava Project, http://lmdbjava.org/
- *
+/*-
+ * #%L
+ * LmdbJava Benchmarks
+ * %%
+ * Copyright (C) 2016 The LmdbJava Open Source Project
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.lmdbjava.bench;
 
+import java.io.IOException;
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
 import static java.nio.ByteBuffer.allocateDirect;
@@ -55,10 +61,11 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
+@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class LmdbJni {
 
   @Benchmark
-  public void readCrc(final Reader r, final Blackhole bh) throws Exception {
+  public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
     bh.consume(r.c.first());
     do {
@@ -71,7 +78,7 @@ public class LmdbJni {
   }
 
   @Benchmark
-  public void readKey(final Reader r, final Blackhole bh) throws Exception {
+  public void readKey(final Reader r, final Blackhole bh) {
     for (final int key : r.keys) {
       if (r.intKey) {
         r.wkb.putInt(0, key);
@@ -85,7 +92,7 @@ public class LmdbJni {
   }
 
   @Benchmark
-  public void readRev(final Reader r, final Blackhole bh) throws Exception {
+  public void readRev(final Reader r, final Blackhole bh) {
     bh.consume(r.c.last());
     do {
       bh.consume(r.c.valBuffer());
@@ -93,7 +100,7 @@ public class LmdbJni {
   }
 
   @Benchmark
-  public void readSeq(final Reader r, final Blackhole bh) throws Exception {
+  public void readSeq(final Reader r, final Blackhole bh) {
     bh.consume(r.c.first());
     do {
       bh.consume(r.c.valBuffer());
@@ -101,7 +108,7 @@ public class LmdbJni {
   }
 
   @Benchmark
-  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+  public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
     bh.consume(r.c.first());
     do {
@@ -112,16 +119,13 @@ public class LmdbJni {
   }
 
   @Benchmark
-  public void write(final Writer w, final Blackhole bh) throws Exception {
+  public void write(final Writer w, final Blackhole bh) {
     w.write();
   }
 
   @State(value = Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class CommonLmdbJni extends Common {
-
-    static {
-      setProperty(DISABLE_BOUNDS_CHECKS_PROP_NAME, TRUE.toString());
-    }
 
     Database db;
     Env env;
@@ -144,7 +148,7 @@ public class LmdbJni {
     /**
      * Whether {@link EnvFlags#MDB_WRITEMAP} is used.
      */
-    @Param({"true"})
+    @Param("true")
     boolean writeMap;
 
     /**
@@ -152,8 +156,12 @@ public class LmdbJni {
      */
     DirectBuffer wvb;
 
-    public void setup(BenchmarkParams b, final boolean sync) throws
-        Exception {
+    static {
+      setProperty(DISABLE_BOUNDS_CHECKS_PROP_NAME, TRUE.toString());
+    }
+
+    public void setup(final BenchmarkParams b, final boolean sync) throws
+        IOException {
       super.setup(b);
       wkb = new DirectBuffer(allocateDirect(keySize));
       wvb = new DirectBuffer(allocateDirect(valSize));
@@ -176,13 +184,13 @@ public class LmdbJni {
     }
 
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       reportSpaceBeforeClose();
       env.close();
       super.teardown();
     }
 
-    void write() throws Exception {
+    void write() {
       try (final Transaction tx = env.createWriteTransaction()) {
         try (final BufferCursor c = db.bufferCursor(tx);) {
           final int rndByteMax = RND_MB.length - valSize;
@@ -217,6 +225,7 @@ public class LmdbJni {
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Reader extends CommonLmdbJni {
 
     BufferCursor c;
@@ -224,7 +233,7 @@ public class LmdbJni {
 
     @Setup(Trial)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b, false);
       super.write();
       tx = env.createReadTransaction();
@@ -233,7 +242,7 @@ public class LmdbJni {
 
     @TearDown(Trial)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       c.close();
       tx.abort();
       super.teardown();
@@ -241,23 +250,24 @@ public class LmdbJni {
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Writer extends CommonLmdbJni {
 
     /**
      * Whether {@link EnvFlags#MDB_NOSYNC} is used.
      */
-    @Param({"false"})
+    @Param("false")
     boolean sync;
 
     @Setup(Invocation)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b, sync);
     }
 
     @TearDown(Invocation)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }

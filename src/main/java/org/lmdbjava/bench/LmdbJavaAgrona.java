@@ -1,20 +1,26 @@
-/*
- * Copyright 2016 The LmdbJava Project, http://lmdbjava.org/
- *
+/*-
+ * #%L
+ * LmdbJava Benchmarks
+ * %%
+ * Copyright (C) 2016 The LmdbJava Open Source Project
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.lmdbjava.bench;
 
+import java.io.IOException;
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
 import static java.nio.ByteBuffer.allocateDirect;
@@ -28,7 +34,6 @@ import static org.agrona.concurrent.UnsafeBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME
 import static org.lmdbjava.CopyFlags.MDB_CP_COMPACT;
 import org.lmdbjava.Cursor;
 import static org.lmdbjava.DirectBufferProxy.PROXY_DB;
-import org.lmdbjava.EnvFlags;
 import static org.lmdbjava.GetOp.MDB_SET_KEY;
 import org.lmdbjava.PutFlags;
 import static org.lmdbjava.PutFlags.MDB_APPEND;
@@ -59,10 +64,11 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
+@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class LmdbJavaAgrona {
 
   @Benchmark
-  public void readCrc(final Reader r, final Blackhole bh) throws Exception {
+  public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
     bh.consume(r.c.seek(MDB_FIRST));
     do {
@@ -75,7 +81,7 @@ public class LmdbJavaAgrona {
   }
 
   @Benchmark
-  public void readKey(final Reader r, final Blackhole bh) throws Exception {
+  public void readKey(final Reader r, final Blackhole bh) {
     for (final int key : r.keys) {
       if (r.intKey) {
         r.rwKey.putInt(0, key);
@@ -88,7 +94,7 @@ public class LmdbJavaAgrona {
   }
 
   @Benchmark
-  public void readRev(final Reader r, final Blackhole bh) throws Exception {
+  public void readRev(final Reader r, final Blackhole bh) {
     bh.consume(r.c.seek(MDB_LAST));
     do {
       bh.consume(r.txn.val());
@@ -96,7 +102,7 @@ public class LmdbJavaAgrona {
   }
 
   @Benchmark
-  public void readSeq(final Reader r, final Blackhole bh) throws Exception {
+  public void readSeq(final Reader r, final Blackhole bh) {
     bh.consume(r.c.seek(MDB_FIRST));
     do {
       bh.consume(r.txn.val());
@@ -104,7 +110,7 @@ public class LmdbJavaAgrona {
   }
 
   @Benchmark
-  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+  public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
     bh.consume(r.c.seek(MDB_FIRST));
     do {
@@ -115,16 +121,13 @@ public class LmdbJavaAgrona {
   }
 
   @Benchmark
-  public void write(final Writer w, final Blackhole bh) throws Exception {
+  public void write(final Writer w, final Blackhole bh) {
     w.write();
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class LmdbJava extends CommonLmdbJava<DirectBuffer> {
-
-    static {
-      setProperty(DISABLE_BOUNDS_CHECKS_PROP_NAME, TRUE.toString());
-    }
 
     /**
      * CRC scratch (memory-mapped MDB can't return a byte[] or ByteBuffer).
@@ -138,9 +141,13 @@ public class LmdbJavaAgrona {
      */
     byte[] valBytes;
 
+    static {
+      setProperty(DISABLE_BOUNDS_CHECKS_PROP_NAME, TRUE.toString());
+    }
+
     @Override
-    public void setup(BenchmarkParams b, final boolean sync) throws
-        Exception {
+    public void setup(final BenchmarkParams b, final boolean sync) throws
+        IOException {
       super.setup(b, sync);
       keyBytes = new byte[keySize];
       valBytes = new byte[valSize];
@@ -148,7 +155,7 @@ public class LmdbJavaAgrona {
       rwVal = new UnsafeBuffer(allocateDirect(valSize));
     }
 
-    void write() throws Exception {
+    void write() {
       try (final Txn<DirectBuffer> tx = env.txnWrite()) {
         try (final Cursor<DirectBuffer> c = db.openCursor(tx);) {
           final PutFlags flags = sequential ? MDB_APPEND : null;
@@ -179,6 +186,7 @@ public class LmdbJavaAgrona {
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Reader extends LmdbJava {
 
     Cursor<DirectBuffer> c;
@@ -186,7 +194,7 @@ public class LmdbJavaAgrona {
 
     @Setup(Trial)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       bufferProxy = PROXY_DB;
       super.setup(b, false);
       super.write();
@@ -201,7 +209,7 @@ public class LmdbJavaAgrona {
 
     @TearDown(Trial)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       c.close();
       txn.abort();
       super.teardown();
@@ -209,24 +217,25 @@ public class LmdbJavaAgrona {
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Writer extends LmdbJava {
 
     /**
-     * Whether {@link EnvFlags#MDB_NOSYNC} is used.
+     * Whether <code>MDB_NOSYNC</code> is used.
      */
-    @Param({"false"})
+    @Param("false")
     boolean sync;
 
     @Setup(Invocation)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       bufferProxy = PROXY_DB;
       super.setup(b, sync);
     }
 
     @TearDown(Invocation)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }

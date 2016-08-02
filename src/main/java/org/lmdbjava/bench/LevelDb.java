@@ -1,20 +1,26 @@
-/*
- * Copyright 2016 The LmdbJava Project, http://lmdbjava.org/
- *
+/*-
+ * #%L
+ * LmdbJava Benchmarks
+ * %%
+ * Copyright (C) 2016 The LmdbJava Open Source Project
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.lmdbjava.bench;
 
+import java.io.IOException;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import java.util.Map.Entry;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -51,10 +57,11 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
+@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class LevelDb {
 
   @Benchmark
-  public void readCrc(final Reader r, final Blackhole bh) throws Exception {
+  public void readCrc(final Reader r, final Blackhole bh) throws IOException {
     r.crc.reset();
     try (final DBIterator iterator = r.db.iterator()) {
       for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
@@ -67,7 +74,7 @@ public class LevelDb {
   }
 
   @Benchmark
-  public void readKey(final Reader r, final Blackhole bh) throws Exception {
+  public void readKey(final Reader r, final Blackhole bh) throws IOException {
     for (final int key : r.keys) {
       if (r.intKey) {
         r.wkb.putInt(0, key);
@@ -79,7 +86,7 @@ public class LevelDb {
   }
 
   @Benchmark
-  public void readRev(final Reader r, final Blackhole bh) throws Exception {
+  public void readRev(final Reader r, final Blackhole bh) throws IOException {
     try (final DBIterator iterator = r.db.iterator()) {
       for (iterator.seekToLast(); iterator.hasPrev(); iterator.prev()) {
         final Entry<byte[], byte[]> peeked = iterator.peekPrev();
@@ -89,7 +96,7 @@ public class LevelDb {
   }
 
   @Benchmark
-  public void readSeq(final Reader r, final Blackhole bh) throws Exception {
+  public void readSeq(final Reader r, final Blackhole bh) throws IOException {
     try (final DBIterator iterator = r.db.iterator()) {
       for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
         final Entry<byte[], byte[]> peeked = iterator.peekNext();
@@ -99,7 +106,7 @@ public class LevelDb {
   }
 
   @Benchmark
-  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+  public void readXxh64(final Reader r, final Blackhole bh) throws IOException {
     long result = 0;
     try (final DBIterator iterator = r.db.iterator()) {
       for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
@@ -112,11 +119,12 @@ public class LevelDb {
   }
 
   @Benchmark
-  public void write(final Writer w, final Blackhole bh) throws Exception {
+  public void write(final Writer w, final Blackhole bh) throws IOException {
     w.write(w.batchSize);
   }
 
   @State(value = Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class CommonLevelDb extends Common {
 
     DB db;
@@ -132,7 +140,7 @@ public class LevelDb {
     MutableDirectBuffer wvb;
 
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
       wkb = new UnsafeBuffer(new byte[keySize]);
       wvb = new UnsafeBuffer(new byte[valSize]);
@@ -144,14 +152,14 @@ public class LevelDb {
     }
 
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       reportSpaceBeforeClose();
       db.close();
       popMemoryPool();
       super.teardown();
     }
 
-    void write(final int batchSize) throws Exception {
+    void write(final int batchSize) throws IOException {
       final int rndByteMax = RND_MB.length - valSize;
       int rndByteOffset = 0;
       WriteBatch batch = db.createWriteBatch();
@@ -188,33 +196,34 @@ public class LevelDb {
 
     @Setup(Trial)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
       super.write(num);
     }
 
     @TearDown(Trial)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Writer extends CommonLevelDb {
 
-    @Param({"1000000"})
+    @Param("1000000")
     int batchSize;
 
     @Setup(Invocation)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
     }
 
     @TearDown(Invocation)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }

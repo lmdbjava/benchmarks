@@ -1,18 +1,23 @@
-/*
- * Copyright 2016 The LmdbJava Project, http://lmdbjava.org/
- *
+/*-
+ * #%L
+ * LmdbJava Benchmarks
+ * %%
+ * Copyright (C) 2016 The LmdbJava Open Source Project
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.lmdbjava.bench;
 
 import java.io.File;
@@ -35,26 +40,22 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 
 /**
  * Common JMH {@link State} superclass for all DB benchmark states.
+ *
  * <p>
  * Members do not reflect the typical code standards of the LmdbJava project due
  * to compliance requirements with JMH {@link Param} and {@link State}.
  */
 @State(Benchmark)
+@SuppressWarnings({"checkstyle:designforextension",
+                   "checkstyle:visibilitymodifier"})
 public class Common {
 
+  static final byte[] RND_MB = new byte[1_048_576];
+  static final int STRING_KEY_LENGTH = 16;
   private static final POSIX POSIX = getPOSIX();
   private static final BitsStreamGenerator RND = new MersenneTwister();
   private static final int S_BLKSIZE = 512; // from sys/stat.h
   private static final File TMP_BENCH;
-
-  static final byte[] RND_MB = new byte[1_048_576];
-  static final int STRING_KEY_LENGTH = 16;
-
-  static {
-    RND.nextBytes(RND_MB);
-    final String tmpParent = getProperty("java.io.tmpdir");
-    TMP_BENCH = new File(tmpParent, "lmdbjava-benchmark-scratch");
-  }
 
   File compact;
 
@@ -65,7 +66,7 @@ public class Common {
    * (taking 4 bytes) or as zero-padded 16 byte strings. Storing keys as
    * integers offers a major performance gain.
    */
-  @Param({"true"})
+  @Param("true")
   boolean intKey;
 
   /**
@@ -80,7 +81,7 @@ public class Common {
   /**
    * Number of entries to read/write to the database.
    */
-  @Param({"1000000"})
+  @Param("1000000")
   int num;
 
   /**
@@ -91,7 +92,7 @@ public class Common {
    * and the keys will instead be inserted (and read back via "readKeys") in a
    * random order.
    */
-  @Param({"true"})
+  @Param("true")
   boolean sequential;
 
   File tmp;
@@ -101,16 +102,22 @@ public class Common {
    * If true, the random bytes are obtained sequentially from a 1 MB random byte
    * buffer.
    */
-  @Param({"false"})
+  @Param("false")
   boolean valRandom;
 
   /**
    * Number of bytes in each value.
    */
-  @Param({"100"})
+  @Param("100")
   int valSize;
 
-  public void setup(BenchmarkParams b) throws Exception {
+  static {
+    RND.nextBytes(RND_MB);
+    final String tmpParent = getProperty("java.io.tmpdir");
+    TMP_BENCH = new File(tmpParent, "lmdbjava-benchmark-scratch");
+  }
+
+  public void setup(final BenchmarkParams b) throws IOException {
     keySize = intKey ? BYTES : STRING_KEY_LENGTH;
     crc = new CRC32();
     final IntHashSet set = new IntHashSet(num, MIN_VALUE);
@@ -144,30 +151,12 @@ public class Common {
     }
   }
 
-  public void teardown() throws Exception {
+  public void teardown() throws IOException {
     // we only output for key, as all impls offer it and it should be fixed
     if (tmp.getName().contains(".readKey-")) {
       reportSpaceUsed(tmp, "after-close");
     }
     rmdir(TMP_BENCH);
-  }
-
-  private File create(BenchmarkParams b, String suffix) throws Exception {
-    final File f = new File(TMP_BENCH, b.id() + suffix);
-    f.mkdirs();
-    return f;
-  }
-
-  private void rmdir(File file) throws IOException {
-    if (!file.exists()) {
-      return;
-    }
-    if (file.isDirectory()) {
-      for (final File f : file.listFiles()) {
-        rmdir(f);
-      }
-    }
-    file.delete();
   }
 
   @SuppressWarnings("UseOfSystemOutOrSystemErr")
@@ -178,13 +167,31 @@ public class Common {
         throw new UnsupportedOperationException("impl created directory");
       }
       final FileStat stat = POSIX.stat(f.getAbsolutePath());
-      bytes += (stat.blocks() * S_BLKSIZE);
+      bytes += stat.blocks() * S_BLKSIZE;
     }
     out.println("\nBytes\t" + desc + "\t" + bytes + "\t" + dir.getName());
   }
 
-  final String padKey(int key) {
-    String skey = key + "";
+  final String padKey(final int key) {
+    final String skey = Integer.toString(key);
     return "0000000000000000".substring(0, 16 - skey.length()) + skey;
+  }
+
+  private File create(final BenchmarkParams b, final String suffix) {
+    final File f = new File(TMP_BENCH, b.id() + suffix);
+    f.mkdirs();
+    return f;
+  }
+
+  private void rmdir(final File file) {
+    if (!file.exists()) {
+      return;
+    }
+    if (file.isDirectory()) {
+      for (final File f : file.listFiles()) {
+        rmdir(f);
+      }
+    }
+    file.delete();
   }
 }

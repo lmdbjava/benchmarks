@@ -1,20 +1,26 @@
-/*
- * Copyright 2016 The LmdbJava Project, http://lmdbjava.org/
- *
+/*-
+ * #%L
+ * LmdbJava Benchmarks
+ * %%
+ * Copyright (C) 2016 The LmdbJava Open Source Project
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.lmdbjava.bench;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
@@ -23,7 +29,6 @@ import static net.openhft.hashing.LongHashFunction.xx_r39;
 import static org.lmdbjava.ByteBufferProxy.PROXY_OPTIMAL;
 import static org.lmdbjava.ByteBufferProxy.PROXY_SAFE;
 import org.lmdbjava.Cursor;
-import org.lmdbjava.EnvFlags;
 import static org.lmdbjava.GetOp.MDB_SET_KEY;
 import org.lmdbjava.PutFlags;
 import static org.lmdbjava.PutFlags.MDB_APPEND;
@@ -54,10 +59,11 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
+@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class LmdbJavaByteBuffer {
 
   @Benchmark
-  public void readCrc(final Reader r, final Blackhole bh) throws Exception {
+  public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
     bh.consume(r.c.seek(MDB_FIRST));
     do {
@@ -68,7 +74,7 @@ public class LmdbJavaByteBuffer {
   }
 
   @Benchmark
-  public void readKey(final Reader r, final Blackhole bh) throws Exception {
+  public void readKey(final Reader r, final Blackhole bh) {
     for (final int key : r.keys) {
       r.rwKey.clear();
       if (r.intKey) {
@@ -83,7 +89,7 @@ public class LmdbJavaByteBuffer {
   }
 
   @Benchmark
-  public void readRev(final Reader r, final Blackhole bh) throws Exception {
+  public void readRev(final Reader r, final Blackhole bh) {
     bh.consume(r.c.seek(MDB_LAST));
     do {
       bh.consume(r.txn.val());
@@ -91,7 +97,7 @@ public class LmdbJavaByteBuffer {
   }
 
   @Benchmark
-  public void readSeq(final Reader r, final Blackhole bh) throws Exception {
+  public void readSeq(final Reader r, final Blackhole bh) {
     bh.consume(r.c.seek(MDB_FIRST));
     do {
       bh.consume(r.txn.val());
@@ -99,7 +105,7 @@ public class LmdbJavaByteBuffer {
   }
 
   @Benchmark
-  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+  public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
     bh.consume(r.c.seek(MDB_FIRST));
     do {
@@ -110,25 +116,26 @@ public class LmdbJavaByteBuffer {
   }
 
   @Benchmark
-  public void write(final Writer w, final Blackhole bh) throws Exception {
+  public void write(final Writer w, final Blackhole bh) {
     w.write();
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class LmdbJava extends CommonLmdbJava<ByteBuffer> {
 
     ByteBuffer rwKey;
     ByteBuffer rwVal;
 
     @Override
-    public void setup(BenchmarkParams b, final boolean sync) throws
-        Exception {
+    public void setup(final BenchmarkParams b, final boolean sync) throws
+        IOException {
       super.setup(b, sync);
       rwKey = allocateDirect(keySize).order(LITTLE_ENDIAN);
       rwVal = allocateDirect(valSize);
     }
 
-    void write() throws Exception {
+    void write() {
       try (final Txn<ByteBuffer> tx = env.txnWrite();) {
         try (final Cursor<ByteBuffer> c = db.openCursor(tx);) {
           final PutFlags flags = sequential ? MDB_APPEND : null;
@@ -164,21 +171,22 @@ public class LmdbJavaByteBuffer {
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Reader extends LmdbJava {
 
     Cursor<ByteBuffer> c;
 
     /**
-     * Whether the byte buffer accessor is safe or not
+     * Whether the byte buffer accessor is safe or not.
      */
-    @Param({"false"})
+    @Param("false")
     boolean forceSafe;
 
     Txn<ByteBuffer> txn;
 
     @Setup(Trial)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       bufferProxy = forceSafe ? PROXY_SAFE : PROXY_OPTIMAL;
       super.setup(b, false);
       super.write();
@@ -188,7 +196,7 @@ public class LmdbJavaByteBuffer {
 
     @TearDown(Trial)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       c.close();
       txn.abort();
       super.teardown();
@@ -196,24 +204,25 @@ public class LmdbJavaByteBuffer {
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Writer extends LmdbJava {
 
     /**
-     * Whether {@link EnvFlags#MDB_NOSYNC} is used.
+     * Whether <code>MDB_NOSYNC</code> is used.
      */
-    @Param({"false"})
+    @Param("false")
     boolean sync;
 
     @Setup(Invocation)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       bufferProxy = PROXY_OPTIMAL;
       super.setup(b, sync);
     }
 
     @TearDown(Invocation)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }

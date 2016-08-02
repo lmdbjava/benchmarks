@@ -1,20 +1,26 @@
-/*
- * Copyright 2016 The LmdbJava Project, http://lmdbjava.org/
- *
+/*-
+ * #%L
+ * LmdbJava Benchmarks
+ * %%
+ * Copyright (C) 2016 The LmdbJava Open Source Project
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
+
 package org.lmdbjava.bench;
 
+import java.io.IOException;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
@@ -41,6 +47,7 @@ import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import static org.rocksdb.RocksDB.loadLibrary;
 import static org.rocksdb.RocksDB.open;
+import org.rocksdb.RocksDBException;
 import org.rocksdb.RocksIterator;
 import org.rocksdb.WriteBatch;
 import org.rocksdb.WriteOptions;
@@ -50,10 +57,11 @@ import org.rocksdb.WriteOptions;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
+@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class RocksDb {
 
   @Benchmark
-  public void readCrc(final Reader r, final Blackhole bh) throws Exception {
+  public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
     final RocksIterator iterator = r.db.newIterator();
     iterator.seekToFirst();
@@ -66,7 +74,8 @@ public class RocksDb {
   }
 
   @Benchmark
-  public void readKey(final Reader r, final Blackhole bh) throws Exception {
+  public void readKey(final Reader r, final Blackhole bh) throws
+      RocksDBException {
     for (final int key : r.keys) {
       if (r.intKey) {
         r.wkb.putInt(0, key);
@@ -78,7 +87,7 @@ public class RocksDb {
   }
 
   @Benchmark
-  public void readRev(final Reader r, final Blackhole bh) throws Exception {
+  public void readRev(final Reader r, final Blackhole bh) {
     final RocksIterator iterator = r.db.newIterator();
     iterator.seekToLast();
     while (iterator.isValid()) {
@@ -88,7 +97,7 @@ public class RocksDb {
   }
 
   @Benchmark
-  public void readSeq(final Reader r, final Blackhole bh) throws Exception {
+  public void readSeq(final Reader r, final Blackhole bh) {
     final RocksIterator iterator = r.db.newIterator();
     iterator.seekToFirst();
     while (iterator.isValid()) {
@@ -98,7 +107,7 @@ public class RocksDb {
   }
 
   @Benchmark
-  public void readXxh64(final Reader r, final Blackhole bh) throws Exception {
+  public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
     final RocksIterator iterator = r.db.newIterator();
     iterator.seekToFirst();
@@ -111,11 +120,12 @@ public class RocksDb {
   }
 
   @Benchmark
-  public void write(final Writer w, final Blackhole bh) throws Exception {
+  public void write(final Writer w, final Blackhole bh) throws IOException {
     w.write(w.batchSize);
   }
 
   @State(value = Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class CommonRocksDb extends Common {
 
     RocksDB db;
@@ -131,7 +141,7 @@ public class RocksDb {
     MutableDirectBuffer wvb;
 
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
       wkb = new UnsafeBuffer(new byte[keySize]);
       wvb = new UnsafeBuffer(new byte[valSize]);
@@ -139,11 +149,15 @@ public class RocksDb {
       final Options options = new Options();
       options.setCreateIfMissing(true);
       options.setCompressionType(NO_COMPRESSION);
-      db = open(options, tmp.getAbsolutePath());
+      try {
+        db = open(options, tmp.getAbsolutePath());
+      } catch (final RocksDBException ex) {
+        throw new IOException(ex);
+      }
     }
 
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       reportSpaceBeforeClose();
       if (db != null) {
         db.close();
@@ -151,7 +165,7 @@ public class RocksDb {
       super.teardown();
     }
 
-    void write(final int batchSize) throws Exception {
+    void write(final int batchSize) throws IOException {
       final int rndByteMax = RND_MB.length - valSize;
       int rndByteOffset = 0;
 
@@ -175,11 +189,19 @@ public class RocksDb {
         }
         batch.put(wkb.byteArray(), wvb.byteArray());
         if (i % batchSize == 0) {
-          db.write(opt, batch);
+          try {
+            db.write(opt, batch);
+          } catch (final RocksDBException ex) {
+            throw new IOException(ex);
+          }
           batch.clear();
         }
       }
-      db.write(opt, batch); // possible partial batch
+      try {
+        db.write(opt, batch); // possible partial batch
+      } catch (final RocksDBException ex) {
+        throw new IOException(ex);
+      }
       batch.clear();
     }
   }
@@ -189,33 +211,34 @@ public class RocksDb {
 
     @Setup(Trial)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
       super.write(num);
     }
 
     @TearDown(Trial)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }
 
   @State(Benchmark)
+  @SuppressWarnings("checkstyle:visibilitymodifier")
   public static class Writer extends CommonRocksDb {
 
-    @Param({"1000000"})
+    @Param("1000000")
     int batchSize;
 
     @Setup(Invocation)
     @Override
-    public void setup(BenchmarkParams b) throws Exception {
+    public void setup(final BenchmarkParams b) throws IOException {
       super.setup(b);
     }
 
     @TearDown(Invocation)
     @Override
-    public void teardown() throws Exception {
+    public void teardown() throws IOException {
       super.teardown();
     }
   }

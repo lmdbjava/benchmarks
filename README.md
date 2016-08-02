@@ -1,5 +1,5 @@
+[![Build Status](https://travis-ci.org/lmdbjava/benchmarks.svg?branch=master)](https://travis-ci.org/lmdbjava/benchmarks)
 [![License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](http://www.apache.org/licenses/LICENSE-2.0.txt)
-![Size](https://reposs.herokuapp.com/?path=lmdbjava/benchmarks)
 
 # LmdbJava Benchmarks
 

@@ -63,20 +63,6 @@
     <uberjar.name>benchmarks</uberjar.name>
     <cpd.skip>true</cpd.skip>
   </properties>
-  <!--
-  <repositories>
-    <repository>
-      <id>sonatype-snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    </repositories>
-    -->
   <dependencies>
     <dependency>
       <groupId>org.openjdk.jmh</groupId>

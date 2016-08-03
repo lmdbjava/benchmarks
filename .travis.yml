@@ -11,3 +11,4 @@ script:
 notifications:
   email:
     - ben.alex@acegi.com.au
+    - stoffe@gmail.com

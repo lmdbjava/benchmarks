@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
 import static org.lmdbjava.ByteBufferProxy.PROXY_OPTIMAL;
@@ -80,7 +81,7 @@ public class LmdbJavaByteBuffer {
       if (r.intKey) {
         r.rwKey.putInt(key).flip();
       } else {
-        final byte[] str = r.padKey(key).getBytes();
+        final byte[] str = r.padKey(key).getBytes(US_ASCII);
         r.rwKey.put(str, 0, str.length).flip();
       }
       bh.consume(r.c.get(r.rwKey, MDB_SET_KEY));
@@ -147,7 +148,7 @@ public class LmdbJavaByteBuffer {
             if (intKey) {
               rwKey.putInt(key).flip();
             } else {
-              final byte[] str = padKey(key).getBytes();
+              final byte[] str = padKey(key).getBytes(US_ASCII);
               rwKey.put(str, 0, str.length).flip();
             }
             if (valRandom) {

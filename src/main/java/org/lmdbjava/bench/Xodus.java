@@ -73,10 +73,15 @@ public class Xodus {
   @Benchmark public void readKey(final Reader r, final Blackhole bh) {
     for (final int key : r.keys) {
       if (r.intKey) {
-        bh.consume(r.store.get(r.tx, intToEntry(key)).getBytesUnsafe());
+        final ByteIterable val = r.store.get(r.tx, intToEntry(key));
+        if (val != null) {
+          bh.consume(val.getBytesUnsafe());
+        }
       } else {
-        bh.consume(r.store.get(r.tx, stringToEntry(r.padKey(key))).
-            getBytesUnsafe());
+        final ByteIterable val = r.store.get(r.tx, stringToEntry(r.padKey(key)));
+        if (val != null) {
+          bh.consume(val.getBytesUnsafe());
+        }
       }
     }
   }

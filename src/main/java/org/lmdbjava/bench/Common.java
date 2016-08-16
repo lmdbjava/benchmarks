@@ -161,8 +161,12 @@ public class Common {
 
   @SuppressWarnings("UseOfSystemOutOrSystemErr")
   protected void reportSpaceUsed(final File dir, final String desc) {
+    final File[] files = dir.listFiles();
+    if (files == null) {
+      return;
+    }
     long bytes = 0;
-    for (final File f : dir.listFiles()) {
+    for (final File f : files) {
       if (f.isDirectory()) {
         throw new UnsupportedOperationException("impl created directory");
       }
@@ -179,7 +183,9 @@ public class Common {
 
   private File create(final BenchmarkParams b, final String suffix) {
     final File f = new File(TMP_BENCH, b.id() + suffix);
-    f.mkdirs();
+    if (!f.mkdirs()) {
+      throw new IllegalStateException("Cannot mkdir " + f);
+    }
     return f;
   }
 
@@ -188,10 +194,16 @@ public class Common {
       return;
     }
     if (file.isDirectory()) {
-      for (final File f : file.listFiles()) {
+      final File[] files = file.listFiles();
+      if (files == null) {
+        return;
+      }
+      for (final File f : files) {
         rmdir(f);
       }
     }
-    file.delete();
+    if (!file.delete()) {
+      throw new IllegalStateException("Cannot delete " + file);
+    }
   }
 }

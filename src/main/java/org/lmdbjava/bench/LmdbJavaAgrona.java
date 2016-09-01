@@ -156,8 +156,8 @@ public class LmdbJavaAgrona {
     }
 
     void write() {
-      try (final Txn<DirectBuffer> tx = env.txnWrite()) {
-        try (final Cursor<DirectBuffer> c = db.openCursor(tx);) {
+      try (Txn<DirectBuffer> tx = env.txnWrite()) {
+        try (Cursor<DirectBuffer> c = db.openCursor(tx);) {
           final PutFlags flags = sequential ? MDB_APPEND : null;
           final int rndByteMax = RND_MB.length - valSize;
           int rndByteOffset = 0;

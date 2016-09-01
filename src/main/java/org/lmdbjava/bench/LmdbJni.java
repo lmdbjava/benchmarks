@@ -176,7 +176,7 @@ public class LmdbJni {
       env.setMaxReaders(2);
       env.open(tmp.getAbsolutePath(), mask(envFlags), POSIX_MODE);
 
-      try (final Transaction tx = env.createWriteTransaction()) {
+      try (Transaction tx = env.createWriteTransaction()) {
         final DbiFlags[] flags = dbiFlags(intKey);
         db = env.openDatabase(tx, "db", mask(flags));
         tx.commit();
@@ -191,8 +191,8 @@ public class LmdbJni {
     }
 
     void write() {
-      try (final Transaction tx = env.createWriteTransaction()) {
-        try (final BufferCursor c = db.bufferCursor(tx);) {
+      try (Transaction tx = env.createWriteTransaction()) {
+        try (BufferCursor c = db.bufferCursor(tx);) {
           final int rndByteMax = RND_MB.length - valSize;
           int rndByteOffset = 0;
           for (final int key : keys) {

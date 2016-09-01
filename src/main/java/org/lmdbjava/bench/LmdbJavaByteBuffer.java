@@ -137,8 +137,8 @@ public class LmdbJavaByteBuffer {
     }
 
     void write() {
-      try (final Txn<ByteBuffer> tx = env.txnWrite();) {
-        try (final Cursor<ByteBuffer> c = db.openCursor(tx);) {
+      try (Txn<ByteBuffer> tx = env.txnWrite();) {
+        try (Cursor<ByteBuffer> c = db.openCursor(tx);) {
           final PutFlags flags = sequential ? MDB_APPEND : null;
           final int rndByteMax = RND_MB.length - valSize;
           int rndByteOffset = 0;

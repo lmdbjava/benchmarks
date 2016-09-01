@@ -63,7 +63,7 @@ public class LevelDb {
   @Benchmark
   public void readCrc(final Reader r, final Blackhole bh) throws IOException {
     r.crc.reset();
-    try (final DBIterator iterator = r.db.iterator()) {
+    try (DBIterator iterator = r.db.iterator()) {
       for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
         final Entry<byte[], byte[]> peeked = iterator.peekNext();
         r.crc.update(peeked.getKey());
@@ -87,7 +87,7 @@ public class LevelDb {
 
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) throws IOException {
-    try (final DBIterator iterator = r.db.iterator()) {
+    try (DBIterator iterator = r.db.iterator()) {
       for (iterator.seekToLast(); iterator.hasPrev(); iterator.prev()) {
         final Entry<byte[], byte[]> peeked = iterator.peekPrev();
         bh.consume(peeked.getValue());
@@ -97,7 +97,7 @@ public class LevelDb {
 
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) throws IOException {
-    try (final DBIterator iterator = r.db.iterator()) {
+    try (DBIterator iterator = r.db.iterator()) {
       for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
         final Entry<byte[], byte[]> peeked = iterator.peekNext();
         bh.consume(peeked.getValue());
@@ -108,7 +108,7 @@ public class LevelDb {
   @Benchmark
   public void readXxh64(final Reader r, final Blackhole bh) throws IOException {
     long result = 0;
-    try (final DBIterator iterator = r.db.iterator()) {
+    try (DBIterator iterator = r.db.iterator()) {
       for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
         final Entry<byte[], byte[]> peeked = iterator.peekNext();
         result += xx_r39().hashBytes(peeked.getKey());

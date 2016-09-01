@@ -61,7 +61,7 @@ public class Xodus {
 
   @Benchmark public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
-    try (final Cursor c = r.store.openCursor(r.tx)) {
+    try (Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
         r.crc.update(c.getKey().getBytesUnsafe(), 0, r.keySize);
         r.crc.update(c.getValue().getBytesUnsafe(), 0, r.valSize);
@@ -88,7 +88,7 @@ public class Xodus {
 
   @Benchmark
   public void readRev(final Reader r, final Blackhole bh) {
-    try (final Cursor c = r.store.openCursor(r.tx)) {
+    try (Cursor c = r.store.openCursor(r.tx)) {
       c.getLast();
       do {
         bh.consume(c.getValue().getBytesUnsafe());
@@ -98,7 +98,7 @@ public class Xodus {
 
   @Benchmark
   public void readSeq(final Reader r, final Blackhole bh) {
-    try (final Cursor c = r.store.openCursor(r.tx)) {
+    try (Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
         bh.consume(c.getValue().getBytesUnsafe());
       }
@@ -107,7 +107,7 @@ public class Xodus {
 
   @Benchmark public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
-    try (final Cursor c = r.store.openCursor(r.tx)) {
+    try (Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
         result += xx_r39().hashBytes(c.getKey().getBytesUnsafe(), 0, r.keySize);
         result += xx_r39().

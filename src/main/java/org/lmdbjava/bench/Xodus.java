@@ -157,8 +157,8 @@ public class Xodus {
         int rndByteOffset = 0;
         for (int i = 0; i < keys.length; i++) {
           final int key = keys[i];
-          ByteIterable keyBi;
-          ByteIterable valBi;
+          final ByteIterable keyBi;
+          final ByteIterable valBi;
           if (intKey) {
             keyBi = intToEntry(key);
           } else {

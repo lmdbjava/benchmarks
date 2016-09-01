@@ -4,9 +4,9 @@ cache:
 language: java
 jdk: oraclejdk8
 install:
-  - mvn -B -Pdeploy -V dependency:go-offline
+  - mvn -B -Pdeploy --settings .travis-settings.xml -V dependency:go-offline
 script:
-  - mvn -B -Pdeploy -Dgpg.skip=true verify
+  - mvn -B -Pdeploy --settings .travis-settings.xml -Dgpg.skip=true verify
   - java -jar target/benchmarks.jar -foe true -wi 0 -i 1 -f 1 -p num=512
 notifications:
   email:

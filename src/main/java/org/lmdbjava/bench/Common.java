@@ -189,6 +189,7 @@ public class Common {
     return f;
   }
 
+  @SuppressWarnings("checkstyle:ReturnCount")
   private void rmdir(final File file) {
     if (!file.exists()) {
       return;

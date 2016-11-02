@@ -35,11 +35,10 @@ import jetbrains.exodus.env.Store;
 import static jetbrains.exodus.env.StoreConfig.WITHOUT_DUPLICATES_WITH_PREFIXING;
 import jetbrains.exodus.env.Transaction;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
+import static org.lmdbjava.bench.Common.RND_MB;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
-
-import static org.lmdbjava.bench.Common.RND_MB;
 import static org.openjdk.jmh.annotations.Level.Invocation;
 import static org.openjdk.jmh.annotations.Level.Trial;
 import org.openjdk.jmh.annotations.Measurement;
@@ -142,7 +141,8 @@ public class Xodus {
       env = newInstance(tmp, cfg);
 
       env.executeInTransaction((final Transaction txn) -> {
-        // WITHOUT_DUPLICATES_WITH_PREFIXING means Patricia tree is used, not B+Tree (WITHOUT_DUPLICATES)
+        // WITHOUT_DUPLICATES_WITH_PREFIXING means Patricia tree is used,
+        // not B+Tree (WITHOUT_DUPLICATES)
         // Patricia tree gives faster random access, both for reading and writing
         store = env.openStore("without_dups", WITHOUT_DUPLICATES_WITH_PREFIXING, txn);
       });
@@ -156,13 +156,14 @@ public class Xodus {
     }
 
     void write() {
-      final int batchSize = Math.max(1_000_000 / valSize, 1_000); // optimal w/ valSize=16368 + default run
+      // optimal w/ valSize=16368 + default run
+      final int batchSize = Math.max(1_000_000 / valSize, 1_000);
       final RandomBytesIterator rbi = new RandomBytesIterator(valSize);
       int k = 0;
       while (k < keys.length) {
         // write in several transactions so as not to block GC
         final int keyStartIndex = k;
-        k+= batchSize;
+        k += batchSize;
         env.executeInTransaction((final Transaction tx) -> {
           for (int i = 0, j = keyStartIndex; i < batchSize && j < keys.length; i++, j++) {
             final int key = keys[j];

@@ -122,8 +122,7 @@ public class Xodus {
   }
 
   @Benchmark
-  public void write(final Writer w, final Blackhole bh) throws
-      Exception {
+  public void write(final Writer w, final Blackhole bh) {
     w.write();
   }
 
@@ -160,6 +159,7 @@ public class Xodus {
       super.teardown();
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     void write() {
       // optimal w/ valSize=16368 + default run
       final int batchSize = Math.max(1_000_000 / valSize, 1_000);

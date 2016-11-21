@@ -60,7 +60,8 @@ import org.openjdk.jmh.infra.Blackhole;
 @SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class Xodus {
 
-  @Benchmark public void readCrc(final Reader r, final Blackhole bh) {
+  @Benchmark
+  public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
     try (Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
@@ -71,7 +72,8 @@ public class Xodus {
     bh.consume(r.crc.getValue());
   }
 
-  @Benchmark public void readKey(final Reader r, final Blackhole bh) {
+  @Benchmark
+  public void readKey(final Reader r, final Blackhole bh) {
     for (final int key : r.keys) {
       if (r.intKey) {
         final ByteIterable val = r.store.get(r.tx, intToEntry(key));
@@ -106,7 +108,8 @@ public class Xodus {
     }
   }
 
-  @Benchmark public void readXxh64(final Reader r, final Blackhole bh) {
+  @Benchmark
+  public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
     try (Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
@@ -118,7 +121,8 @@ public class Xodus {
     bh.consume(result);
   }
 
-  @Benchmark public void write(final Writer w, final Blackhole bh) throws
+  @Benchmark
+  public void write(final Writer w, final Blackhole bh) throws
       Exception {
     w.write();
   }
@@ -136,15 +140,16 @@ public class Xodus {
 
       final EnvironmentConfig cfg = new EnvironmentConfig();
       // size of immutable .xd file is 32MB
-      cfg.setLogFileSize(32 * 1024);
-      cfg.setLogCachePageSize(0x20000);
+      cfg.setLogFileSize(32 * 1_024);
+      cfg.setLogCachePageSize(0x2_0000);
       env = newInstance(tmp, cfg);
 
       env.executeInTransaction((final Transaction txn) -> {
         // WITHOUT_DUPLICATES_WITH_PREFIXING means Patricia tree is used,
         // not B+Tree (WITHOUT_DUPLICATES)
         // Patricia tree gives faster random access, both for reading and writing
-        store = env.openStore("without_dups", WITHOUT_DUPLICATES_WITH_PREFIXING, txn);
+        store = env.openStore("without_dups", WITHOUT_DUPLICATES_WITH_PREFIXING,
+                              txn);
       });
     }
 
@@ -165,7 +170,8 @@ public class Xodus {
         final int keyStartIndex = k;
         k += batchSize;
         env.executeInTransaction((final Transaction tx) -> {
-          for (int i = 0, j = keyStartIndex; i < batchSize && j < keys.length; i++, j++) {
+          for (int i = 0, j = keyStartIndex; i < batchSize && j < keys.length;
+               i++, j++) {
             final int key = keys[j];
             final ByteIterable keyBi;
             final ByteIterable valBi;
@@ -236,9 +242,9 @@ public class Xodus {
 
   private static class RandomBytesIterator {
 
-    private final int valSize;
-    private final int rndByteMax;
     private int i;
+    private final int rndByteMax;
+    private final int valSize;
 
     RandomBytesIterator(final int valSize) {
       this.valSize = valSize;

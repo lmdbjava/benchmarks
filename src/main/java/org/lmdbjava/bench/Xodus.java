@@ -32,9 +32,10 @@ import jetbrains.exodus.env.Environment;
 import jetbrains.exodus.env.EnvironmentConfig;
 import static jetbrains.exodus.env.Environments.newInstance;
 import jetbrains.exodus.env.Store;
-import static jetbrains.exodus.env.StoreConfig.WITHOUT_DUPLICATES;
+import static jetbrains.exodus.env.StoreConfig.WITHOUT_DUPLICATES_WITH_PREFIXING;
 import jetbrains.exodus.env.Transaction;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
+import static org.lmdbjava.bench.Common.RND_MB;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -59,7 +60,8 @@ import org.openjdk.jmh.infra.Blackhole;
 @SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
 public class Xodus {
 
-  @Benchmark public void readCrc(final Reader r, final Blackhole bh) {
+  @Benchmark
+  public void readCrc(final Reader r, final Blackhole bh) {
     r.crc.reset();
     try (Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
@@ -70,7 +72,8 @@ public class Xodus {
     bh.consume(r.crc.getValue());
   }
 
-  @Benchmark public void readKey(final Reader r, final Blackhole bh) {
+  @Benchmark
+  public void readKey(final Reader r, final Blackhole bh) {
     for (final int key : r.keys) {
       if (r.intKey) {
         final ByteIterable val = r.store.get(r.tx, intToEntry(key));
@@ -105,7 +108,8 @@ public class Xodus {
     }
   }
 
-  @Benchmark public void readXxh64(final Reader r, final Blackhole bh) {
+  @Benchmark
+  public void readXxh64(final Reader r, final Blackhole bh) {
     long result = 0;
     try (Cursor c = r.store.openCursor(r.tx)) {
       while (c.getNext()) {
@@ -117,8 +121,8 @@ public class Xodus {
     bh.consume(result);
   }
 
-  @Benchmark public void write(final Writer w, final Blackhole bh) throws
-      Exception {
+  @Benchmark
+  public void write(final Writer w, final Blackhole bh) {
     w.write();
   }
 
@@ -134,12 +138,17 @@ public class Xodus {
       super.setup(b);
 
       final EnvironmentConfig cfg = new EnvironmentConfig();
-      cfg.setLogDurableWrite(false); // non-durable writes is xodus default
+      // size of immutable .xd file is 32MB
+      cfg.setLogFileSize(32 * 1_024);
+      cfg.setLogCachePageSize(0x2_0000);
       env = newInstance(tmp, cfg);
 
       env.executeInTransaction((final Transaction txn) -> {
-        store = env.openStore("without_dups", WITHOUT_DUPLICATES, txn);
-        txn.commit();
+        // WITHOUT_DUPLICATES_WITH_PREFIXING means Patricia tree is used,
+        // not B+Tree (WITHOUT_DUPLICATES)
+        // Patricia tree gives faster random access, both for reading and writing
+        store = env.openStore("without_dups", WITHOUT_DUPLICATES_WITH_PREFIXING,
+                              txn);
       });
     }
 
@@ -150,46 +159,45 @@ public class Xodus {
       super.teardown();
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     void write() {
-      final int batchSize = 1_000; // optimal w/ valSize=16368 + default run
-      env.executeInTransaction((final Transaction tx) -> {
-        final int rndByteMax = RND_MB.length - valSize;
-        int rndByteOffset = 0;
-        for (int i = 0; i < keys.length; i++) {
-          final int key = keys[i];
-          final ByteIterable keyBi;
-          final ByteIterable valBi;
-          if (intKey) {
-            keyBi = intToEntry(key);
-          } else {
-            keyBi = stringToEntry(padKey(key));
-          }
-          if (valRandom) {
-            final byte[] bytes = copyOfRange(RND_MB, rndByteOffset, valSize);
-            valBi = new ArrayByteIterable(bytes);
-            rndByteOffset += valSize;
-            if (rndByteOffset >= rndByteMax) {
-              rndByteOffset = 0;
+      // optimal w/ valSize=16368 + default run
+      final int batchSize = Math.max(1_000_000 / valSize, 1_000);
+      final RandomBytesIterator rbi = new RandomBytesIterator(valSize);
+      int k = 0;
+      while (k < keys.length) {
+        // write in several transactions so as not to block GC
+        final int keyStartIndex = k;
+        k += batchSize;
+        env.executeInTransaction((final Transaction tx) -> {
+          for (int i = 0, j = keyStartIndex; i < batchSize && j < keys.length;
+               i++, j++) {
+            final int key = keys[j];
+            final ByteIterable keyBi;
+            final ByteIterable valBi;
+            if (intKey) {
+              keyBi = intToEntry(key);
+            } else {
+              keyBi = stringToEntry(padKey(key));
             }
-          } else {
-            final byte[] bytes = new byte[valSize];
-            bytes[0] = (byte) (key >>> 24);
-            bytes[1] = (byte) (key >>> 16);
-            bytes[2] = (byte) (key >>> 8);
-            bytes[3] = (byte) key;
-            valBi = new ArrayByteIterable(bytes, valSize);
+            if (valRandom) {
+              valBi = new ArrayByteIterable(rbi.nextBytes());
+            } else {
+              final byte[] bytes = new byte[valSize];
+              bytes[0] = (byte) (key >>> 24);
+              bytes[1] = (byte) (key >>> 16);
+              bytes[2] = (byte) (key >>> 8);
+              bytes[3] = (byte) key;
+              valBi = new ArrayByteIterable(bytes, valSize);
+            }
+            if (sequential) {
+              store.putRight(tx, keyBi, valBi);
+            } else {
+              store.put(tx, keyBi, valBi);
+            }
           }
-          if (sequential) {
-            store.putRight(tx, keyBi, valBi);
-          } else {
-            store.put(tx, keyBi, valBi);
-          }
-          if (i % batchSize == 0) {
-            tx.flush();
-          }
-        }
-        tx.commit();
-      });
+        });
+      }
     }
   }
 
@@ -232,4 +240,25 @@ public class Xodus {
     }
   }
 
+  private static class RandomBytesIterator {
+
+    private int i;
+    private final int rndByteMax;
+    private final int valSize;
+
+    RandomBytesIterator(final int valSize) {
+      this.valSize = valSize;
+      rndByteMax = RND_MB.length - valSize;
+      i = 0;
+    }
+
+    byte[] nextBytes() {
+      final byte[] result = copyOfRange(RND_MB, i, valSize);
+      i += valSize;
+      if (i >= rndByteMax) {
+        i = 0;
+      }
+      return result;
+    }
+  }
 }

@@ -197,7 +197,7 @@ public class LmdbLwjgl {
     }
 
     private static int dbiFlags(final boolean intKey) {
-      int flags;
+      final int flags;
       if (intKey) {
         flags = MDB_CREATE | MDB_INTEGERKEY;
       } else {

@@ -231,12 +231,23 @@
     <dependency>
       <groupId>org.lwjgl</groupId>
       <artifactId>lwjgl</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
+      <version>3.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.lwjgl</groupId>
-      <artifactId>lwjgl-platform</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
+      <artifactId>lwjgl-lmdb</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>3.1.0</version>
+      <classifier>natives-linux</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-lmdb</artifactId>
+      <version>3.1.0</version>
       <classifier>natives-linux</classifier>
     </dependency>
     <dependency>
@@ -284,7 +295,8 @@
             <usedDependency>org.openjdk.jmh:jmh-generator-annprocess</usedDependency>
             <usedDependency>org.deephacks.lmdbjni:lmdbjni-linux64</usedDependency>
             <usedDependency>org.fusesource.leveldbjni:leveldbjni-linux64</usedDependency>
-            <usedDependency>org.lwjgl:lwjgl-platform</usedDependency>
+            <usedDependency>org.lwjgl:lwjgl</usedDependency>
+            <usedDependency>org.lwjgl:lwjgl-lmdb</usedDependency>
             <usedDependency>net.openhft:chronicle-core</usedDependency>
             <usedDependency>net.openhft:chronicle-bytes</usedDependency>
           </usedDependencies>

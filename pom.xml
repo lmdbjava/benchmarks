@@ -229,6 +229,17 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>3.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-platform</artifactId>
+      <version>3.0.1-SNAPSHOT</version>
+      <classifier>natives-linux</classifier>
+    </dependency>
+    <dependency>
       <groupId>org.jetbrains.xodus</groupId>
       <artifactId>xodus-environment</artifactId>
       <version>1.0.2</version>
@@ -273,6 +284,7 @@
             <usedDependency>org.openjdk.jmh:jmh-generator-annprocess</usedDependency>
             <usedDependency>org.deephacks.lmdbjni:lmdbjni-linux64</usedDependency>
             <usedDependency>org.fusesource.leveldbjni:leveldbjni-linux64</usedDependency>
+            <usedDependency>org.lwjgl:lwjgl-platform</usedDependency>
             <usedDependency>net.openhft:chronicle-core</usedDependency>
             <usedDependency>net.openhft:chronicle-bytes</usedDependency>
           </usedDependencies>

@@ -23,7 +23,6 @@ package org.lmdbjava.bench;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Integer.BYTES;
-import static java.lang.Integer.MIN_VALUE;
 import static java.lang.System.getProperty;
 import static java.lang.System.out;
 import java.util.zip.CRC32;
@@ -120,7 +119,7 @@ public class Common {
   public void setup(final BenchmarkParams b) throws IOException {
     keySize = intKey ? BYTES : STRING_KEY_LENGTH;
     crc = new CRC32();
-    final IntHashSet set = new IntHashSet(num, MIN_VALUE);
+    final IntHashSet set = new IntHashSet(num);
     keys = new int[num];
     for (int i = 0; i < num; i++) {
       if (sequential) {

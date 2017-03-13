@@ -99,8 +99,8 @@
     </dependency>
     <dependency>
       <groupId>org.agrona</groupId>
-      <artifactId>Agrona</artifactId>
-      <version>0.5.3</version>
+      <artifactId>agrona</artifactId>
+      <version>0.9.3</version>
     </dependency>
     <dependency>
       <groupId>org.lmdbjava</groupId>

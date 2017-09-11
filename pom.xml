@@ -100,7 +100,7 @@
     <dependency>
       <groupId>org.agrona</groupId>
       <artifactId>agrona</artifactId>
-      <version>0.9.3</version>
+      <version>0.9.7</version>
     </dependency>
     <dependency>
       <groupId>org.lmdbjava</groupId>

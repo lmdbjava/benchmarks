@@ -226,6 +226,10 @@
           <groupId>net.openhft</groupId>
           <artifactId>chronicle-bytes</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>com.sun.java</groupId>
+          <artifactId>tools</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>

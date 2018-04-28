@@ -136,6 +136,7 @@ public class LmdbJavaByteBuffer {
       rwVal = allocateDirect(valSize);
     }
 
+    @SuppressWarnings("PMD.NullAssignment")
     void write() {
       try (Txn<ByteBuffer> tx = env.txnWrite();) {
         try (Cursor<ByteBuffer> c = db.openCursor(tx);) {

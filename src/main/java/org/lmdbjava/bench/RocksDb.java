@@ -165,6 +165,7 @@ public class RocksDb {
       super.teardown();
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     void write(final int batchSize) throws IOException {
       final int rndByteMax = RND_MB.length - valSize;
       int rndByteOffset = 0;

@@ -155,6 +155,7 @@ public class LmdbJavaAgrona {
       rwVal = new UnsafeBuffer(allocateDirect(valSize));
     }
 
+    @SuppressWarnings("PMD.NullAssignment")
     void write() {
       try (Txn<DirectBuffer> tx = env.txnWrite()) {
         try (Cursor<DirectBuffer> c = db.openCursor(tx);) {

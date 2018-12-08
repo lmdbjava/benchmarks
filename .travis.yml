@@ -1,8 +1,9 @@
+dist: xenial
 cache:
   directories:
   - $HOME/.m2
 language: java
-jdk: oraclejdk8
+jdk: openjdk11
 install:
   - mvn -B -Pdeploy --settings .travis-settings.xml -V dependency:go-offline
 script:

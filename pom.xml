@@ -178,7 +178,7 @@
     <dependency>
       <groupId>net.openhft</groupId>
       <artifactId>chronicle-core</artifactId>
-      <version>1.7.3</version>
+      <version>2.17.2</version>
       <exclusions>
         <exclusion>
           <groupId>com.intellij</groupId>
@@ -189,35 +189,38 @@
     <dependency>
       <groupId>net.openhft</groupId>
       <artifactId>chronicle-bytes</artifactId>
-      <version>1.7.6</version>
+      <version>2.17.7</version>
       <exclusions>
+        <exclusion>
+          <groupId>net.openhft</groupId>
+          <artifactId>chronicle-core</artifactId>
+        </exclusion>
         <exclusion>
           <groupId>com.intellij</groupId>
           <artifactId>annotations</artifactId>
         </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>net.openhft</groupId>
+      <artifactId>chronicle-threads</artifactId>
+      <version>2.17.1</version>
+      <exclusions>
         <exclusion>
           <groupId>net.openhft</groupId>
           <artifactId>chronicle-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.intellij</groupId>
+          <artifactId>annotations</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>net.openhft</groupId>
       <artifactId>chronicle-map</artifactId>
-      <version>3.9.1</version>
+      <version>3.17.0</version>
       <exclusions>
-        <exclusion>
-          <groupId>com.intellij</groupId>
-          <artifactId>annotations</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>xmlpull</groupId>
-          <artifactId>xmlpull</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
         <exclusion>
           <groupId>net.openhft</groupId>
           <artifactId>chronicle-core</artifactId>
@@ -227,8 +230,24 @@
           <artifactId>chronicle-bytes</artifactId>
         </exclusion>
         <exclusion>
+          <groupId>net.openhft</groupId>
+          <artifactId>chronicle-threads</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+        <exclusion>
           <groupId>com.sun.java</groupId>
           <artifactId>tools</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xmlpull</groupId>
+          <artifactId>xmlpull</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.intellij</groupId>
+          <artifactId>annotations</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -303,6 +322,7 @@
             <usedDependency>org.lwjgl:lwjgl-lmdb</usedDependency>
             <usedDependency>net.openhft:chronicle-core</usedDependency>
             <usedDependency>net.openhft:chronicle-bytes</usedDependency>
+            <usedDependency>net.openhft:chronicle-threads</usedDependency>
           </usedDependencies>
         </configuration>
       </plugin>

@@ -159,7 +159,8 @@ public class Xodus {
       super.teardown();
     }
 
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops",
+                       "PMD.ForLoopVariableCount"})
     void write() {
       // optimal w/ valSize=16368 + default run
       final int batchSize = Math.max(1_000_000 / valSize, 1_000);

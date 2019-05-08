@@ -165,6 +165,33 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>io.swaydb</groupId>
+      <artifactId>swaydb-java</artifactId>
+      <version>0.8-beta.8.6</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swaydb</groupId>
+      <artifactId>api_2.12</artifactId>
+      <version>0.8-beta.8</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>io.swaydb</groupId>
+      <artifactId>swaydb_2.12</artifactId>
+      <version>0.8-beta.8</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2-mvstore</artifactId>
       <version>1.4.192</version>

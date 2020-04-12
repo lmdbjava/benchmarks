@@ -81,7 +81,8 @@ import org.openjdk.jmh.infra.Blackhole;
 @Warmup(iterations = 3)
 @Measurement(iterations = 3)
 @BenchmarkMode(SampleTime)
-@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension"})
+@SuppressWarnings({"checkstyle:javadoctype", "checkstyle:designforextension",
+                   "PMD.CloseResource"})
 public class LmdbLwjgl {
 
   @Benchmark

@@ -159,6 +159,7 @@ public class LevelDb {
       super.teardown();
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     void write(final int batchSize) throws IOException {
       final int rndByteMax = RND_MB.length - valSize;
       int rndByteOffset = 0;

@@ -1,0 +1,39 @@
+name: Maven Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Java 11 Build and Verify
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v2
+
+    - name: Set up Java and Maven
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Setup HTTPS mirror proxy for Maven Central (due to Chroncile Map POM)
+      uses: s4u/maven-settings-action@v2.1.0
+      with:
+        mirrors: '[{"id": "central-https-mirror", "name": "HTTPS Mirror of Maven Central", "mirrorOf": "central", "url": "https://repo1.maven.org/maven2"}]'
+
+    - name: Cache Maven packages
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
+    - name: Build with Maven
+      run: mvn -B verify
+
+    - name: Simple benchmark test
+      run: java -jar target/benchmarks.jar -foe true -wi 0 -i 1 -f 1 -p num=512

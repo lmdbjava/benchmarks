@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/lmdbjava/benchmarks.svg?branch=master)](https://travis-ci.org/lmdbjava/benchmarks)
+[![Maven Build](https://github.com/lmdbjava/benchmarks/workflows/Maven%20Build/badge.svg)](https://github.com/lmdbjava/benchmarks/actions)
 [![License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 # LmdbJava Benchmarks

@@ -20,8 +20,6 @@
 
 package org.lmdbjava.bench;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.nio.charset.StandardCharsets.US_ASCII;
@@ -29,25 +27,29 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
 import static org.lmdbjava.ByteBufferProxy.PROXY_OPTIMAL;
 import static org.lmdbjava.ByteBufferProxy.PROXY_SAFE;
-import org.lmdbjava.Cursor;
 import static org.lmdbjava.GetOp.MDB_SET_KEY;
-import org.lmdbjava.PutFlags;
 import static org.lmdbjava.PutFlags.MDB_APPEND;
 import static org.lmdbjava.SeekOp.MDB_FIRST;
 import static org.lmdbjava.SeekOp.MDB_LAST;
 import static org.lmdbjava.SeekOp.MDB_NEXT;
 import static org.lmdbjava.SeekOp.MDB_PREV;
+import static org.openjdk.jmh.annotations.Level.Invocation;
+import static org.openjdk.jmh.annotations.Level.Trial;
+import static org.openjdk.jmh.annotations.Mode.SampleTime;
+import static org.openjdk.jmh.annotations.Scope.Benchmark;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import org.lmdbjava.Cursor;
+import org.lmdbjava.PutFlags;
 import org.lmdbjava.Txn;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
-import static org.openjdk.jmh.annotations.Level.Invocation;
-import static org.openjdk.jmh.annotations.Level.Trial;
 import org.openjdk.jmh.annotations.Measurement;
-import static org.openjdk.jmh.annotations.Mode.SampleTime;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Param;
-import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;

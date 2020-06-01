@@ -20,31 +20,33 @@
 
 package org.lmdbjava.bench;
 
-import java.io.IOException;
 import static java.util.Arrays.copyOfRange;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import jetbrains.exodus.ArrayByteIterable;
-import jetbrains.exodus.ByteIterable;
 import static jetbrains.exodus.bindings.IntegerBinding.intToEntry;
 import static jetbrains.exodus.bindings.StringBinding.stringToEntry;
+import static jetbrains.exodus.env.Environments.newInstance;
+import static jetbrains.exodus.env.StoreConfig.WITHOUT_DUPLICATES_WITH_PREFIXING;
+import static net.openhft.hashing.LongHashFunction.xx_r39;
+import static org.lmdbjava.bench.Common.RND_MB;
+import static org.openjdk.jmh.annotations.Level.Invocation;
+import static org.openjdk.jmh.annotations.Level.Trial;
+import static org.openjdk.jmh.annotations.Mode.SampleTime;
+import static org.openjdk.jmh.annotations.Scope.Benchmark;
+
+import java.io.IOException;
+
+import jetbrains.exodus.ArrayByteIterable;
+import jetbrains.exodus.ByteIterable;
 import jetbrains.exodus.env.Cursor;
 import jetbrains.exodus.env.Environment;
 import jetbrains.exodus.env.EnvironmentConfig;
-import static jetbrains.exodus.env.Environments.newInstance;
 import jetbrains.exodus.env.Store;
-import static jetbrains.exodus.env.StoreConfig.WITHOUT_DUPLICATES_WITH_PREFIXING;
 import jetbrains.exodus.env.Transaction;
-import static net.openhft.hashing.LongHashFunction.xx_r39;
-import static org.lmdbjava.bench.Common.RND_MB;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
-import static org.openjdk.jmh.annotations.Level.Invocation;
-import static org.openjdk.jmh.annotations.Level.Trial;
 import org.openjdk.jmh.annotations.Measurement;
-import static org.openjdk.jmh.annotations.Mode.SampleTime;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;

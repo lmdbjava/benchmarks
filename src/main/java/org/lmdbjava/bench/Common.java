@@ -20,20 +20,22 @@
 
 package org.lmdbjava.bench;
 
-import java.io.File;
-import java.io.IOException;
 import static java.lang.Integer.BYTES;
 import static java.lang.System.getProperty;
 import static java.lang.System.out;
+import static jnr.posix.POSIXFactory.getPOSIX;
+import static org.openjdk.jmh.annotations.Scope.Benchmark;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.zip.CRC32;
+
 import jnr.posix.FileStat;
 import jnr.posix.POSIX;
-import static jnr.posix.POSIXFactory.getPOSIX;
 import org.agrona.collections.IntHashSet;
 import org.apache.commons.math3.random.BitsStreamGenerator;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.openjdk.jmh.annotations.Param;
-import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.BenchmarkParams;
 

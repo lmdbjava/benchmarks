@@ -20,13 +20,19 @@
 
 package org.lmdbjava.bench;
 
-import java.io.File;
-import java.io.IOException;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.util.Arrays.copyOf;
-import java.util.Iterator;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
+import static org.openjdk.jmh.annotations.Level.Invocation;
+import static org.openjdk.jmh.annotations.Level.Trial;
+import static org.openjdk.jmh.annotations.Mode.SampleTime;
+import static org.openjdk.jmh.annotations.Scope.Benchmark;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import org.h2.mvstore.MVMap;
@@ -34,12 +40,8 @@ import org.h2.mvstore.MVStore;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
-import static org.openjdk.jmh.annotations.Level.Invocation;
-import static org.openjdk.jmh.annotations.Level.Trial;
 import org.openjdk.jmh.annotations.Measurement;
-import static org.openjdk.jmh.annotations.Mode.SampleTime;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;

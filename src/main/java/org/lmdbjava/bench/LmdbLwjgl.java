@@ -20,13 +20,8 @@
 
 package org.lmdbjava.bench;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.util.lmdb.LMDB.MDB_APPEND;
@@ -57,18 +52,25 @@ import static org.lwjgl.util.lmdb.LMDB.mdb_strerror;
 import static org.lwjgl.util.lmdb.LMDB.mdb_txn_abort;
 import static org.lwjgl.util.lmdb.LMDB.mdb_txn_begin;
 import static org.lwjgl.util.lmdb.LMDB.mdb_txn_commit;
-import org.lwjgl.util.lmdb.MDBVal;
 import static org.lwjgl.util.lmdb.MDBVal.mallocStack;
+import static org.openjdk.jmh.annotations.Level.Invocation;
+import static org.openjdk.jmh.annotations.Level.Trial;
+import static org.openjdk.jmh.annotations.Mode.SampleTime;
+import static org.openjdk.jmh.annotations.Scope.Benchmark;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.util.lmdb.MDBVal;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
-import static org.openjdk.jmh.annotations.Level.Invocation;
-import static org.openjdk.jmh.annotations.Level.Trial;
 import org.openjdk.jmh.annotations.Measurement;
-import static org.openjdk.jmh.annotations.Mode.SampleTime;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Param;
-import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;

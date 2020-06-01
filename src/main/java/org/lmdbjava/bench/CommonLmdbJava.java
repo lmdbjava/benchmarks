@@ -20,24 +20,26 @@
 
 package org.lmdbjava.bench;
 
-import java.io.IOException;
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
+import static org.lmdbjava.DbiFlags.MDB_CREATE;
+import static org.lmdbjava.DbiFlags.MDB_INTEGERKEY;
+import static org.lmdbjava.Env.DISABLE_CHECKS_PROP;
+import static org.lmdbjava.Env.create;
+import static org.lmdbjava.EnvFlags.MDB_NOSYNC;
+import static org.lmdbjava.EnvFlags.MDB_WRITEMAP;
+import static org.openjdk.jmh.annotations.Scope.Benchmark;
+
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.lmdbjava.BufferProxy;
 import org.lmdbjava.Dbi;
 import org.lmdbjava.DbiFlags;
-import static org.lmdbjava.DbiFlags.MDB_CREATE;
-import static org.lmdbjava.DbiFlags.MDB_INTEGERKEY;
 import org.lmdbjava.Env;
-import static org.lmdbjava.Env.DISABLE_CHECKS_PROP;
-import static org.lmdbjava.Env.create;
 import org.lmdbjava.EnvFlags;
-import static org.lmdbjava.EnvFlags.MDB_NOSYNC;
-import static org.lmdbjava.EnvFlags.MDB_WRITEMAP;
 import org.openjdk.jmh.annotations.Param;
-import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.BenchmarkParams;
 

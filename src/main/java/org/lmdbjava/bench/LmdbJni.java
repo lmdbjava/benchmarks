@@ -20,35 +20,37 @@
 
 package org.lmdbjava.bench;
 
-import java.io.IOException;
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.setProperty;
 import static java.nio.ByteBuffer.allocateDirect;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.openhft.hashing.LongHashFunction.xx_r39;
-import org.fusesource.lmdbjni.BufferCursor;
-import org.fusesource.lmdbjni.Database;
-import org.fusesource.lmdbjni.DirectBuffer;
 import static org.fusesource.lmdbjni.DirectBuffer.DISABLE_BOUNDS_CHECKS_PROP_NAME;
-import org.fusesource.lmdbjni.Env;
-import org.fusesource.lmdbjni.Transaction;
-import org.lmdbjava.DbiFlags;
-import org.lmdbjava.EnvFlags;
 import static org.lmdbjava.MaskedFlag.mask;
 import static org.lmdbjava.bench.CommonLmdbJava.POSIX_MODE;
 import static org.lmdbjava.bench.CommonLmdbJava.dbiFlags;
 import static org.lmdbjava.bench.CommonLmdbJava.envFlags;
 import static org.lmdbjava.bench.CommonLmdbJava.mapSize;
+import static org.openjdk.jmh.annotations.Level.Invocation;
+import static org.openjdk.jmh.annotations.Level.Trial;
+import static org.openjdk.jmh.annotations.Mode.SampleTime;
+import static org.openjdk.jmh.annotations.Scope.Benchmark;
+
+import java.io.IOException;
+
+import org.fusesource.lmdbjni.BufferCursor;
+import org.fusesource.lmdbjni.Database;
+import org.fusesource.lmdbjni.DirectBuffer;
+import org.fusesource.lmdbjni.Env;
+import org.fusesource.lmdbjni.Transaction;
+import org.lmdbjava.DbiFlags;
+import org.lmdbjava.EnvFlags;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
-import static org.openjdk.jmh.annotations.Level.Invocation;
-import static org.openjdk.jmh.annotations.Level.Trial;
 import org.openjdk.jmh.annotations.Measurement;
-import static org.openjdk.jmh.annotations.Mode.SampleTime;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Param;
-import static org.openjdk.jmh.annotations.Scope.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;

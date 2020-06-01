@@ -12,75 +12,15 @@
   <packaging>jar</packaging>
   <name>LmdbJava Benchmarks</name>
   <description>Low latency Java API for the ultra-fast, embedded Symas Lightning Database (LMDB)</description>
-  <inceptionYear>2016</inceptionYear>
-  <organization>
-    <name>The LmdbJava Open Source Project</name>
-    <url>https://github.com/${github.org}</url>
-  </organization>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    </license>
-  </licenses>
-  <developers>
-    <developer>
-      <name>Kristoffer Sjogren</name>
-      <id>krisskross</id>
-      <email>stoffe -at- gmail.com</email>
-      <organization/>
-      <url>http://stoffe.deephacks.org/</url>
-      <timezone>+1</timezone>
-    </developer>
-    <developer>
-      <name>Ben Alex</name>
-      <id>benalexau</id>
-      <email>ben.alex@acegi.com.au</email>
-      <url>https://github.com/benalexau/</url>
-      <organization>Acegi Technology Pty Limited</organization>
-      <timezone>+10</timezone>
-    </developer>
-  </developers>
-  <scm>
-    <connection>scm:git:git@github.com:${github.org}/${github.repo}.git</connection>
-    <developerConnection>scm:git:git@github.com:${github.org}/${github.repo}.git</developerConnection>
-    <url>git@github.com:${github.org}/${github.repo}.git</url>
-    <tag>HEAD</tag>
-  </scm>
-  <issueManagement>
-    <system>GitHub Issues</system>
-    <url>https://github.com/${github.org}/${github.repo}/issues</url>
-  </issueManagement>
-  <ciManagement>
-    <system>GitHub Actions</system>
-    <url>https://github.com/${github.org}/${github.repo}/actions</url>
-  </ciManagement>
   <properties>
+    <cpd.skip>true</cpd.skip>
     <github.org>lmdbjava</github.org>
     <github.repo>benchmarks</github.repo>
-    <license.licenseName>apache_v2</license.licenseName>
     <jmh.version>1.13</jmh.version>
+    <license.licenseName>apache_v2</license.licenseName>
     <uberjar.name>benchmarks</uberjar.name>
-    <cpd.skip>true</cpd.skip>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>org.openjdk.jmh</groupId>
-      <artifactId>jmh-core</artifactId>
-      <version>${jmh.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.commons</groupId>
-          <artifactId>commons-math3</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.openjdk.jmh</groupId>
-      <artifactId>jmh-generator-annprocess</artifactId>
-      <version>${jmh.version}</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>com.github.jnr</groupId>
       <artifactId>jnr-posix</artifactId>
@@ -93,98 +33,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-math3</artifactId>
-      <version>3.6.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.agrona</groupId>
-      <artifactId>agrona</artifactId>
-      <version>0.9.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.lmdbjava</groupId>
-      <artifactId>lmdbjava</artifactId>
-      <version>0.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>net.openhft</groupId>
-      <artifactId>zero-allocation-hashing</artifactId>
-      <version>0.6</version>
-    </dependency>
-    <dependency>
-      <groupId>org.deephacks.lmdbjni</groupId>
-      <artifactId>lmdbjni-linux64</artifactId>
-      <version>0.4.6</version>
-    </dependency>
-    <dependency>
-      <groupId>org.deephacks.lmdbjni</groupId>
-      <artifactId>lmdbjni</artifactId>
-      <version>0.4.6</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.fusesource.hawtjni</groupId>
-          <artifactId>hawtjni-runtime</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.fusesource.leveldbjni</groupId>
-      <artifactId>leveldbjni-linux64</artifactId>
-      <version>1.8</version>
-    </dependency>
-    <dependency>
-      <groupId>org.fusesource.leveldbjni</groupId>
-      <artifactId>leveldbjni</artifactId>
-      <version>1.8</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.fusesource.hawtjni</groupId>
-          <artifactId>hawtjni-runtime</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.iq80.leveldb</groupId>
-          <artifactId>leveldb-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.iq80.leveldb</groupId>
-      <artifactId>leveldb-api</artifactId>
-      <version>0.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mapdb</groupId>
-      <artifactId>mapdb</artifactId>
-      <version>3.0.1</version>
-      <exclusions>
-        <exclusion>
-          <groupId>net.jcip</groupId>
-          <artifactId>jcip-annotations</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2-mvstore</artifactId>
       <version>1.4.192</version>
-    </dependency>
-    <dependency>
-      <groupId>org.rocksdb</groupId>
-      <artifactId>rocksdbjni</artifactId>
-      <version>4.8.0</version>
-    </dependency>
-    <!-- need explicit chronicle-* dependencies to resolve dependency convergence errors caused by chronicle-map importing multiple versions of transient dependencies -->
-    <dependency>
-      <groupId>net.openhft</groupId>
-      <artifactId>chronicle-core</artifactId>
-      <version>2.17.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.intellij</groupId>
-          <artifactId>annotations</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>net.openhft</groupId>
@@ -201,15 +52,12 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!-- need explicit chronicle-* dependencies to resolve dependency convergence errors caused by chronicle-map importing multiple versions of transient dependencies -->
     <dependency>
       <groupId>net.openhft</groupId>
-      <artifactId>chronicle-threads</artifactId>
-      <version>2.17.1</version>
+      <artifactId>chronicle-core</artifactId>
+      <version>2.17.2</version>
       <exclusions>
-        <exclusion>
-          <groupId>net.openhft</groupId>
-          <artifactId>chronicle-core</artifactId>
-        </exclusion>
         <exclusion>
           <groupId>com.intellij</groupId>
           <artifactId>annotations</artifactId>
@@ -252,26 +100,75 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.lwjgl</groupId>
-      <artifactId>lwjgl</artifactId>
-      <version>3.1.0</version>
+      <groupId>net.openhft</groupId>
+      <artifactId>chronicle-threads</artifactId>
+      <version>2.17.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>net.openhft</groupId>
+          <artifactId>chronicle-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.intellij</groupId>
+          <artifactId>annotations</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.lwjgl</groupId>
-      <artifactId>lwjgl-lmdb</artifactId>
-      <version>3.1.0</version>
+      <groupId>net.openhft</groupId>
+      <artifactId>zero-allocation-hashing</artifactId>
+      <version>0.6</version>
     </dependency>
     <dependency>
-      <groupId>org.lwjgl</groupId>
-      <artifactId>lwjgl</artifactId>
-      <version>3.1.0</version>
-      <classifier>natives-linux</classifier>
+      <groupId>org.agrona</groupId>
+      <artifactId>agrona</artifactId>
+      <version>0.9.7</version>
     </dependency>
     <dependency>
-      <groupId>org.lwjgl</groupId>
-      <artifactId>lwjgl-lmdb</artifactId>
-      <version>3.1.0</version>
-      <classifier>natives-linux</classifier>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math3</artifactId>
+      <version>3.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.deephacks.lmdbjni</groupId>
+      <artifactId>lmdbjni</artifactId>
+      <version>0.4.6</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.hawtjni</groupId>
+          <artifactId>hawtjni-runtime</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.deephacks.lmdbjni</groupId>
+      <artifactId>lmdbjni-linux64</artifactId>
+      <version>0.4.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.leveldbjni</groupId>
+      <artifactId>leveldbjni</artifactId>
+      <version>1.8</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.hawtjni</groupId>
+          <artifactId>hawtjni-runtime</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.iq80.leveldb</groupId>
+          <artifactId>leveldb-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.leveldbjni</groupId>
+      <artifactId>leveldbjni-linux64</artifactId>
+      <version>1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.iq80.leveldb</groupId>
+      <artifactId>leveldb-api</artifactId>
+      <version>0.7</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.xodus</groupId>
@@ -303,15 +200,89 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.lmdbjava</groupId>
+      <artifactId>lmdbjava</artifactId>
+      <version>0.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>3.1.0</version>
+      <classifier>natives-linux</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-lmdb</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-lmdb</artifactId>
+      <version>3.1.0</version>
+      <classifier>natives-linux</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.mapdb</groupId>
+      <artifactId>mapdb</artifactId>
+      <version>3.0.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>net.jcip</groupId>
+          <artifactId>jcip-annotations</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+      <version>${jmh.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-math3</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <version>${jmh.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.rocksdb</groupId>
+      <artifactId>rocksdbjni</artifactId>
+      <version>4.8.0</version>
+    </dependency>
     <!-- Koyoto Cabinet not benchmarked as required .so not in JAR or AUR -->
     <!-- Berkley DB Java Edition not benchmarked due to Affero license -->
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-enforcer-plugin</artifactId>
+        <groupId>au.com.acegi</groupId>
+        <artifactId>xml-format-maven-plugin</artifactId>
       </plugin>
       <plugin>
+        <groupId>com.github.ekryd.sortpom</groupId>
+        <artifactId>sortpom-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <configuration>
           <usedDependencies>
@@ -327,47 +298,22 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-checkstyle-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.basepom.maven</groupId>
-        <artifactId>duplicate-finder-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>versions-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>au.com.acegi</groupId>
-        <artifactId>xml-format-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <finalName>${uberjar.name}</finalName>
               <filters>
@@ -389,6 +335,69 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.basepom.maven</groupId>
+        <artifactId>duplicate-finder-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
+  <inceptionYear>2016</inceptionYear>
+  <organization>
+    <name>The LmdbJava Open Source Project</name>
+    <url>https://github.com/${github.org}</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>krisskross</id>
+      <name>Kristoffer Sjogren</name>
+      <email>stoffe -at- gmail.com</email>
+      <url>http://stoffe.deephacks.org/</url>
+      <organization />
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>benalexau</id>
+      <name>Ben Alex</name>
+      <email>ben.alex@acegi.com.au</email>
+      <url>https://github.com/benalexau/</url>
+      <organization>Acegi Technology Pty Limited</organization>
+      <timezone>+10</timezone>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:${github.org}/${github.repo}.git</connection>
+    <developerConnection>scm:git:git@github.com:${github.org}/${github.repo}.git</developerConnection>
+    <url>git@github.com:${github.org}/${github.repo}.git</url>
+    <tag>HEAD</tag>
+  </scm>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/${github.org}/${github.repo}/issues</url>
+  </issueManagement>
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>https://github.com/${github.org}/${github.repo}/actions</url>
+  </ciManagement>
 </project>

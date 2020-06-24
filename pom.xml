@@ -16,7 +16,7 @@
     <cpd.skip>true</cpd.skip>
     <github.org>lmdbjava</github.org>
     <github.repo>benchmarks</github.repo>
-    <jmh.version>1.13</jmh.version>
+    <jmh.version>1.23</jmh.version>
     <license.licenseName>apache_v2</license.licenseName>
     <uberjar.name>benchmarks</uberjar.name>
   </properties>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>com.github.jnr</groupId>
       <artifactId>jnr-posix</artifactId>
-      <version>3.0.29</version>
+      <version>3.0.57</version>
       <exclusions>
         <exclusion>
           <groupId>com.github.jnr</groupId>
@@ -35,19 +35,34 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2-mvstore</artifactId>
-      <version>1.4.192</version>
+      <version>1.4.200</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.microutils</groupId>
+      <artifactId>kotlin-logging</artifactId>
+      <version>1.7.10</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>net.openhft</groupId>
       <artifactId>chronicle-bytes</artifactId>
-      <version>2.17.7</version>
+      <version>2.19.42</version>
       <exclusions>
         <exclusion>
           <groupId>net.openhft</groupId>
           <artifactId>chronicle-core</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>com.intellij</groupId>
+          <groupId>org.jetbrains</groupId>
           <artifactId>annotations</artifactId>
         </exclusion>
       </exclusions>
@@ -56,18 +71,22 @@
     <dependency>
       <groupId>net.openhft</groupId>
       <artifactId>chronicle-core</artifactId>
-      <version>2.17.2</version>
+      <version>2.19.46</version>
       <exclusions>
         <exclusion>
-          <groupId>com.intellij</groupId>
+          <groupId>org.jetbrains</groupId>
           <artifactId>annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>net.openhft</groupId>
       <artifactId>chronicle-map</artifactId>
-      <version>3.17.0</version>
+      <version>3.19.40</version>
       <exclusions>
         <exclusion>
           <groupId>net.openhft</groupId>
@@ -97,20 +116,36 @@
           <groupId>com.intellij</groupId>
           <artifactId>annotations</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.jetbrains</groupId>
+          <artifactId>annotations</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>net.openhft</groupId>
       <artifactId>chronicle-threads</artifactId>
-      <version>2.17.1</version>
+      <version>2.19.43</version>
       <exclusions>
         <exclusion>
           <groupId>net.openhft</groupId>
           <artifactId>chronicle-core</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>com.intellij</groupId>
+          <groupId>org.jetbrains</groupId>
           <artifactId>annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>net.java.dev.jna</groupId>
+          <artifactId>jna</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>net.java.dev.jna</groupId>
+          <artifactId>jna-platform</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -122,7 +157,7 @@
     <dependency>
       <groupId>org.agrona</groupId>
       <artifactId>agrona</artifactId>
-      <version>0.9.7</version>
+      <version>1.5.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -132,7 +167,7 @@
     <dependency>
       <groupId>org.deephacks.lmdbjni</groupId>
       <artifactId>lmdbjni</artifactId>
-      <version>0.4.6</version>
+      <version>0.4.7</version>
       <exclusions>
         <exclusion>
           <groupId>org.fusesource.hawtjni</groupId>
@@ -143,7 +178,7 @@
     <dependency>
       <groupId>org.deephacks.lmdbjni</groupId>
       <artifactId>lmdbjni-linux64</artifactId>
-      <version>0.4.6</version>
+      <version>0.4.7</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.leveldbjni</groupId>
@@ -173,22 +208,18 @@
     <dependency>
       <groupId>org.jetbrains.xodus</groupId>
       <artifactId>xodus-environment</artifactId>
-      <version>1.0.2</version>
+      <version>1.3.232</version>
       <exclusions>
         <exclusion>
-          <groupId>org.jetbrains</groupId>
-          <artifactId>annotations</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
+          <groupId>io.github.microutils</groupId>
+          <artifactId>kotlin-logging</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.xodus</groupId>
       <artifactId>xodus-openAPI</artifactId>
-      <version>1.0.2</version>
+      <version>1.3.232</version>
       <exclusions>
         <exclusion>
           <groupId>org.jetbrains</groupId>
@@ -198,43 +229,47 @@
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>io.github.microutils</groupId>
+          <artifactId>kotlin-logging</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>org.lmdbjava</groupId>
       <artifactId>lmdbjava</artifactId>
-      <version>0.0.2</version>
+      <version>0.8.1</version>
     </dependency>
     <dependency>
       <groupId>org.lwjgl</groupId>
       <artifactId>lwjgl</artifactId>
-      <version>3.1.0</version>
+      <version>3.2.3</version>
     </dependency>
     <dependency>
       <groupId>org.lwjgl</groupId>
       <artifactId>lwjgl</artifactId>
-      <version>3.1.0</version>
+      <version>3.2.3</version>
       <classifier>natives-linux</classifier>
     </dependency>
     <dependency>
       <groupId>org.lwjgl</groupId>
       <artifactId>lwjgl-lmdb</artifactId>
-      <version>3.1.0</version>
+      <version>3.2.3</version>
     </dependency>
     <dependency>
       <groupId>org.lwjgl</groupId>
       <artifactId>lwjgl-lmdb</artifactId>
-      <version>3.1.0</version>
+      <version>3.2.3</version>
       <classifier>natives-linux</classifier>
     </dependency>
     <dependency>
       <groupId>org.mapdb</groupId>
       <artifactId>mapdb</artifactId>
-      <version>3.0.1</version>
+      <version>3.0.8</version>
       <exclusions>
         <exclusion>
-          <groupId>net.jcip</groupId>
-          <artifactId>jcip-annotations</artifactId>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -258,7 +293,7 @@
     <dependency>
       <groupId>org.rocksdb</groupId>
       <artifactId>rocksdbjni</artifactId>
-      <version>4.8.0</version>
+      <version>6.8.1</version>
     </dependency>
     <!-- Koyoto Cabinet not benchmarked as required .so not in JAR or AUR -->
     <!-- Berkley DB Java Edition not benchmarked due to Affero license -->
@@ -291,6 +326,7 @@
             <usedDependency>org.fusesource.leveldbjni:leveldbjni-linux64</usedDependency>
             <usedDependency>org.lwjgl:lwjgl</usedDependency>
             <usedDependency>org.lwjgl:lwjgl-lmdb</usedDependency>
+            <usedDependency>io.github.microutils:kotlin-logging</usedDependency>
             <usedDependency>net.openhft:chronicle-core</usedDependency>
             <usedDependency>net.openhft:chronicle-bytes</usedDependency>
             <usedDependency>net.openhft:chronicle-threads</usedDependency>
@@ -374,7 +410,7 @@
       <name>Kristoffer Sjogren</name>
       <email>stoffe -at- gmail.com</email>
       <url>http://stoffe.deephacks.org/</url>
-      <organization />
+      <organization/>
       <timezone>+1</timezone>
     </developer>
     <developer>

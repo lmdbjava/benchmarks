@@ -195,7 +195,11 @@ public class RocksDb {
         } else {
           wvb.putInt(0, key);
         }
-        batch.put(wkb.byteArray(), wvb.byteArray());
+        try {
+          batch.put(wkb.byteArray(), wvb.byteArray());
+        } catch (final RocksDBException ex) {
+          throw new IOException(ex);
+        }
         if (i % batchSize == 0) {
           try {
             db.write(opt, batch);

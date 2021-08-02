@@ -38,21 +38,6 @@
       <version>1.4.200</version>
     </dependency>
     <dependency>
-      <groupId>io.github.microutils</groupId>
-      <artifactId>kotlin-logging</artifactId>
-      <version>1.7.10</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-stdlib</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>net.openhft</groupId>
       <artifactId>chronicle-bytes</artifactId>
       <version>2.19.42</version>
@@ -271,6 +256,10 @@
           <groupId>org.jetbrains.kotlin</groupId>
           <artifactId>kotlin-stdlib</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.eclipse.collections</groupId>
+          <artifactId>eclipse-collections-forkjoin</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -326,7 +315,6 @@
             <usedDependency>org.fusesource.leveldbjni:leveldbjni-linux64</usedDependency>
             <usedDependency>org.lwjgl:lwjgl</usedDependency>
             <usedDependency>org.lwjgl:lwjgl-lmdb</usedDependency>
-            <usedDependency>io.github.microutils:kotlin-logging</usedDependency>
             <usedDependency>net.openhft:chronicle-core</usedDependency>
             <usedDependency>net.openhft:chronicle-bytes</usedDependency>
             <usedDependency>net.openhft:chronicle-threads</usedDependency>
